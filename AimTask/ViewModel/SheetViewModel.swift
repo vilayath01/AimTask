@@ -7,12 +7,10 @@
 
 import SwiftUI
 
-struct SheetViewModel: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    SheetViewModel()
+class ListViewModel: ObservableObject {
+    @Published var items: [ListItem] = [
+        ListItem(id: UUID(), text: "List item 0"),
+        ListItem(id: UUID(), text: "List item 2"),
+        ListItem(id: UUID(), text: "List item 3")
+    ]
 }

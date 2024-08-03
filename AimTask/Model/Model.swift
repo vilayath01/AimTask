@@ -6,3 +6,22 @@
 //
 
 import Foundation
+import CoreLocation
+import SwiftUI
+
+struct Task: Identifiable {
+    let id: String
+    let name: String
+    let location: CLLocation
+    let dateTime: Date
+}
+
+
+struct ListItem: Identifiable {
+    let id: UUID
+    var text: String
+    var isChecked: Bool = false
+}
+
+
+

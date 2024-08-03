@@ -8,13 +8,26 @@
 import SwiftUI
 import CoreLocation
 
-struct ContentView: View {
+struct MainApp: View {
     @ObservedObject var viewModel = TaskViewModel()
-    var body: some View {
-        UITabBar
+    
+    var body: some View {       
+        TabView {
+            HomeView() .tabItem {
+                Label("Home", systemImage: "house")
+            }
+            AddTaskView().tabItem {
+                Label("Add Task", systemImage: "target")
+            }
+            HistoryView().tabItem {
+                Label("History", systemImage: "calendar.badge.clock")
+                 
+            }
+            
         }
+    }
 }
 
 #Preview {
-    ContentView()
+    MainApp()
 }
