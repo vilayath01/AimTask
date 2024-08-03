@@ -6,17 +6,13 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct ContentView: View {
+    @ObservedObject var viewModel = TaskViewModel()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        UITabBar
         }
-        .padding()
-    }
 }
 
 #Preview {
