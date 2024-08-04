@@ -13,27 +13,38 @@ class AddingViewModel: ObservableObject {
   @Published  var items: [ListItem] = []
     
     
-    // A,B,C,D...
-    
-     func alphabet(for index: Int) -> String {
-        let startingString = UnicodeScalar("A").value
-        let unicode = startingString + UInt32(index % 26)
-        return String(UnicodeScalar(unicode)!)
-         
+    func alphabet(for index: Int) -> String {
+        var result = ""
+        var currentIndex = index
+
+        repeat {
+            let unicodeValue = UnicodeScalar("A").value
+            let letterIndex = Int(currentIndex % 26)
+            if let scalar = UnicodeScalar(unicodeValue + UInt32(letterIndex)) {
+                result = String(scalar) + result
+            }
+            currentIndex = (currentIndex / 26) - 1
+        } while currentIndex >= 0
+
+        return result
     }
     
-    func addItem() {
-        let newItemIndex = items.count
-        let newAlphabet = alphabet(for: newItemIndex)
-        let newItem = ListItem(id: UUID(), text: newAlphabet)
-        items.append(newItem)
-       }
+    func addItem(to items: inout [ListItem]) {
+          let newItemIndex = items.count
+          let newAlphabet = alphabet(for: newItemIndex)
+        let newItem = ListItem(text:"", letter: newAlphabet)
+          items.append(newItem)
+      }
+    
+    func removeItem(at index: Int, from items: inout [ListItem]) {
+          guard index >= 0 && index < items.count else { return }
+          items.remove(at: index)
+      }
     
      func getIndex(of id: UUID) -> Int {
-           // Find the index of the item based on the UUID
            if let index = items.firstIndex(where: { $0.id == id }) {
                return index
            }
-           return 0 // Default to 0 if not found
+           return 0
        }
 }

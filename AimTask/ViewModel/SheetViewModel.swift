@@ -9,8 +9,8 @@ import SwiftUI
 
 class ListViewModel: ObservableObject {
     @Published var items: [ListItem] = [
-        ListItem(id: UUID(), text: "List item 0"),
-        ListItem(id: UUID(), text: "List item 2"),
-        ListItem(id: UUID(), text: "List item 3")
+        ListItem( text: "List item 0", letter: "A"),
+        ListItem( text: "List item 1", letter: "B"),
+        ListItem( text: "List item 2", letter: "C")
     ]
 }

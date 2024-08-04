@@ -15,15 +15,11 @@ struct CustomAlertView: View {
             
             List {
                 ForEach($items.indices, id: \.self) { index in
-                    ListItemView(item: $items[index], isLast: index == items.count - 1) {
-                       addingViewModel.addItem()
-                    }
-                    
+                   createListItemView(for: index)
                 }
             }
             .frame(maxHeight: 250)
             .cornerRadius(16)
-       
             
             HStack {
                 Spacer()
@@ -37,7 +33,6 @@ struct CustomAlertView: View {
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 .shadow(radius: 5)
-                
                 .padding(.trailing)
      
                 Button("Save") {
@@ -48,34 +43,51 @@ struct CustomAlertView: View {
                 .padding(.init(top: 10, leading: 10, bottom: 10, trailing: 10))
                 .background(Color.green)
                 .foregroundColor(.white)
-                .cornerRadius(10) 
+                .cornerRadius(10)
                 .shadow(radius: 5)
-                
             }
         }
         .padding()
-        .background(Color(red: 105/255, green: 155/255, blue: 157/255))
+        .background(Color.white)
         .cornerRadius(16)
         .shadow(radius: 10)
         .padding()
     }
-        
+    
+    @ViewBuilder
+    private func createListItemView(for index: Int) -> some View {
+        ListItemView(
+            item: $items[index],
+            isLast: index == items.count - 1,
+            isFirst: index == 0,
+            onAdd: {
+                addingViewModel.addItem(to: &items)
+            },
+            onRemove: {
+                addingViewModel.removeItem(at: index, from: &items)
+            },
+            showRemoveButton: items.count > 1
+        )
+    }
 }
+
 
 
 
 struct ListItemView: View {
     @Binding var item: ListItem
-   @ObservedObject var addingViewModel = AddingViewModel()
     var isLast: Bool
+    var isFirst: Bool
     var onAdd: (() -> Void)?
+    var onRemove: (() -> Void)?
+    var showRemoveButton: Bool
     
     var body: some View {
         HStack {
             Circle()
                 .frame(width: 33, height: 33)
                 .foregroundColor(.cyan)
-                .overlay(Text(addingViewModel.alphabet(for: addingViewModel.getIndex(of: item.id))).foregroundColor(.white))
+                .overlay(Text(item.letter.prefix(1)).foregroundColor(.white))
             
             TextField("List item", text: $item.text)
                 .textFieldStyle(PlainTextFieldStyle())
@@ -85,7 +97,7 @@ struct ListItemView: View {
             
             if isLast {
                 Button(action: {
-                    onAdd!()
+                    onAdd?()
                 }) {
                     Image(systemName: "plus.circle.fill")
                         .foregroundColor(.blue)
@@ -93,11 +105,22 @@ struct ListItemView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
             }
-         
+            
+            if showRemoveButton  {
+                Button(action: {
+                    onRemove?()
+                }) {
+                    Image(systemName: "minus.circle.fill")
+                        .foregroundColor(.red)
+                        .padding(.trailing, 4)
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
         }
         .padding(.vertical, 2)
     }
 }
+
 
 struct AlertView_Previews: PreviewProvider {
     static var previews: some View {
