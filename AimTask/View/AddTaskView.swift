@@ -3,10 +3,11 @@ import MapKit
 
 struct AddTaskView: View {
     @State private var searchText = ""
-    @State private var region = MKCoordinateRegion(
+    @StateObject private var geocodingViewModel = GeocodingViewModel(region: MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: -37.86494, longitude: 145.09402),
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-    )
+    ))
+   
     
     @State private var showAlert = false
     @StateObject private var viewModel = ListViewModel()
@@ -22,12 +23,12 @@ struct AddTaskView: View {
 
                 HStack {
                     HStack {
-                        TextField("Hinted search text", text: $searchText)
+                        TextField("Enter address", text: $geocodingViewModel.searchText)
                             .padding(12)
                             .background(Color(.systemGray6))
                             .cornerRadius(10)
                         Button(action: {
-                            // Search button action
+                            geocodingViewModel.performGeocoding(for: geocodingViewModel.searchText)
                         }) {
                             Image(systemName: "magnifyingglass")
                                 .foregroundColor(.primary)
@@ -45,9 +46,28 @@ struct AddTaskView: View {
                 }
                 .padding()
                 
+                if !geocodingViewModel.searchResults.isEmpty {
+                    List(geocodingViewModel.searchResults, id: \.self) { result in
+                        Button(action: {
+                            geocodingViewModel.selectCompletion(result)
+                            geocodingViewModel.searchText = "\(result.title), \(result.subtitle)"
+                            geocodingViewModel.searchResults.removeAll()
+                                
+                        }) {
+                            VStack(alignment: .leading) {
+                                Text(result.title).font(.headline)
+                                Text(result.subtitle).font(.subheadline).foregroundColor(.gray)
+                                
+                            }
+                        }
+                    }
+                    .listStyle(PlainListStyle())
+                    .frame(maxHeight: 200)
+                }
+                
                 // Middle section with map
                 ZStack {
-                    Map(coordinateRegion: $region)
+                    Map(coordinateRegion: $geocodingViewModel.region)
                         .edgesIgnoringSafeArea(.horizontal)
                         .frame(maxHeight: .infinity)
                     
@@ -57,7 +77,7 @@ struct AddTaskView: View {
                         VStack {
                             Spacer()
                             Button(action: {
-                                // Location button action
+                                geocodingViewModel.currentUserLocation()
                             }) {
                                 Image(systemName: "location.fill")
                                     .foregroundColor(.primary)
@@ -72,8 +92,8 @@ struct AddTaskView: View {
                             VStack {
                                 Button(action: {
                                     // Zoom in action
-                                    region.span.latitudeDelta /= 2
-                                    region.span.longitudeDelta /= 2
+                                    geocodingViewModel.region.span.latitudeDelta /= 2
+                                    geocodingViewModel.region.span.longitudeDelta /= 2
                                 }) {
                                     Image(systemName: "plus")
                                         .foregroundColor(.primary)
@@ -87,8 +107,8 @@ struct AddTaskView: View {
                                 
                                 Button(action: {
                                     // Zoom out action
-                                    region.span.latitudeDelta *= 2
-                                    region.span.longitudeDelta *= 2
+                                    geocodingViewModel.region.span.latitudeDelta *= 2
+                                    geocodingViewModel.region.span.longitudeDelta *= 2
                                 }) {
                                     Image(systemName: "minus")
                                         .foregroundColor(.primary)
@@ -113,13 +133,13 @@ struct AddTaskView: View {
             }
             .background(Color(red: 105/255, green: 155/255, blue: 157/255))
             
-            // Custom Alert View
+          
             if showAlert {
                 CustomAlertView(isPresented: $showAlert, items: $viewModel.items) {
                     print("Items saved:", viewModel.items)
                 }
-                .transition(.opacity)  // Optional: Add transition for smooth appearance
-                .animation(.easeInOut)  // Optional: Add animation
+                .transition(.opacity)
+                .animation(.easeInOut)
             }
         }
     }

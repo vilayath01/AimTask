@@ -25,6 +25,7 @@
 		55A5CE6E2C5CCB7C00F9E533 /* AddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE6D2C5CCB7C00F9E533 /* AddingView.swift */; };
 		55A5CE702C5CCEA900F9E533 /* SheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE6F2C5CCEA900F9E533 /* SheetViewModel.swift */; };
 		55A5CE742C5D0B6700F9E533 /* AddingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE732C5D0B6700F9E533 /* AddingViewModel.swift */; };
+		55A5CE782C5F68B400F9E533 /* GeocodingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE772C5F68B400F9E533 /* GeocodingViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		55A5CE6D2C5CCB7C00F9E533 /* AddingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingView.swift; sourceTree = "<group>"; };
 		55A5CE6F2C5CCEA900F9E533 /* SheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewModel.swift; sourceTree = "<group>"; };
 		55A5CE732C5D0B6700F9E533 /* AddingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingViewModel.swift; sourceTree = "<group>"; };
+		55A5CE772C5F68B400F9E533 /* GeocodingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocodingViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				55A5CE5C2C4D137800F9E533 /* ViewModel.swift */,
 				55A5CE6F2C5CCEA900F9E533 /* SheetViewModel.swift */,
 				55A5CE732C5D0B6700F9E533 /* AddingViewModel.swift */,
+				55A5CE772C5F68B400F9E533 /* GeocodingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				55A5CE6E2C5CCB7C00F9E533 /* AddingView.swift in Sources */,
 				55A5CE682C4D512900F9E533 /* HomeView.swift in Sources */,
 				55A5CE442C4B571500F9E533 /* AimTaskApp.swift in Sources */,
+				55A5CE782C5F68B400F9E533 /* GeocodingViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,10 +359,12 @@
 				DEVELOPMENT_TEAM = 79V4PCSCQX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to notify you of tasks at specific locations, even when the app is in the background";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to remind you of tasks even when the app is closed.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show nearby tasks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -384,10 +390,12 @@
 				DEVELOPMENT_TEAM = 79V4PCSCQX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to notify you of tasks at specific locations, even when the app is in the background";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to remind you of tasks even when the app is closed.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show nearby tasks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
