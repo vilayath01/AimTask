@@ -37,6 +37,12 @@ class GeocodingViewModel: NSObject, ObservableObject {
         }
         .store(in: &cancellables)
     }
+    
+    func updateSearchText(_ text: String) {
+        DispatchQueue.main.async {
+            self.searchText = text
+        }
+    }
 func performGeocoding(for address: String) {
         guard !address.isEmpty else {return}
         
@@ -122,5 +128,11 @@ extension GeocodingViewModel: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         self.erroMessage = error.localizedDescription
+    }
+}
+
+extension CLLocationCoordinate2D: Identifiable {
+    public var id: String {
+        "\(latitude), \(longitude)"
     }
 }

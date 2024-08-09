@@ -50,7 +50,7 @@ struct AddTaskView: View {
                     List(geocodingViewModel.searchResults, id: \.self) { result in
                         Button(action: {
                             geocodingViewModel.selectCompletion(result)
-                            geocodingViewModel.searchText = "\(result.title), \(result.subtitle)"
+                            geocodingViewModel.updateSearchText("\(result.title), \(result.subtitle)") 
                             geocodingViewModel.searchResults.removeAll()
                                 
                         }) {
@@ -67,7 +67,11 @@ struct AddTaskView: View {
                 
                 // Middle section with map
                 ZStack {
-                    Map(coordinateRegion: $geocodingViewModel.region)
+                    Map(coordinateRegion: $geocodingViewModel.region, showsUserLocation: true, annotationItems: [geocodingViewModel.region.center]) { location in
+                        MapAnnotation(coordinate: location) {
+                          
+                        }
+                    }
                         .edgesIgnoringSafeArea(.horizontal)
                         .frame(maxHeight: .infinity)
                     
@@ -80,7 +84,7 @@ struct AddTaskView: View {
                                 geocodingViewModel.currentUserLocation()
                             }) {
                                 Image(systemName: "location.fill")
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(.black)
                                     .padding()
                                     .background(Color.white)
                                     .clipShape(Circle())
@@ -96,7 +100,7 @@ struct AddTaskView: View {
                                     geocodingViewModel.region.span.longitudeDelta /= 2
                                 }) {
                                     Image(systemName: "plus")
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(.black)
                                         .padding()
                                         .background(Color.white)
                                         .clipShape(Circle())
@@ -111,7 +115,7 @@ struct AddTaskView: View {
                                     geocodingViewModel.region.span.longitudeDelta *= 2
                                 }) {
                                     Image(systemName: "minus")
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(.black)
                                         .padding()
                                         .background(Color.white)
                                         .clipShape(Circle())
@@ -135,7 +139,7 @@ struct AddTaskView: View {
             
           
             if showAlert {
-                CustomAlertView(isPresented: $showAlert, items: $viewModel.items) {
+                CustomAlertView(isPresented: $showAlert, items: $viewModel.items) {_ in 
                     print("Items saved:", viewModel.items)
                 }
                 .transition(.opacity)
@@ -144,6 +148,8 @@ struct AddTaskView: View {
         }
     }
 }
+
+
 
 struct AddTaskView_Previews: PreviewProvider {
     static var previews: some View {

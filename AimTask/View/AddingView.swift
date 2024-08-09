@@ -3,19 +3,18 @@ import SwiftUI
 struct CustomAlertView: View {
     @Binding var isPresented: Bool
     @Binding var items: [ListItem]
-   @ObservedObject var addingViewModel = AddingViewModel()
-    
-    
-    var onSave: () -> Void
+    @ObservedObject var addingViewModel = AddingViewModel()
+    var taskViewModel = TaskViewModel()
     
     var body: some View {
         VStack(spacing: 20) {
             Text("Add task Items @ Location Name")
                 .font(.headline)
+                .foregroundColor(Color.black)
             
             List {
                 ForEach($items.indices, id: \.self) { index in
-                   createListItemView(for: index)
+                    createListItemView(for: index)
                 }
             }
             .frame(maxHeight: 250)
@@ -34,9 +33,9 @@ struct CustomAlertView: View {
                 .cornerRadius(10)
                 .shadow(radius: 5)
                 .padding(.trailing)
-     
+                
                 Button("Save") {
-                    onSave()
+                    onSave(items)
                     isPresented = false
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -69,6 +68,13 @@ struct CustomAlertView: View {
             showRemoveButton: items.count > 1
         )
     }
+    var onSave: ([ListItem]) -> Void = { items in
+        items.forEach { item in
+            TaskViewModel().addListItem(item)
+        }
+        
+    }
+    
 }
 
 
@@ -87,7 +93,7 @@ struct ListItemView: View {
             Circle()
                 .frame(width: 33, height: 33)
                 .foregroundColor(.cyan)
-                .overlay(Text(item.letter.prefix(1)).foregroundColor(.white))
+                .overlay(Text(item.letter?.prefix(1) ?? "A").foregroundColor(.white))
             
             TextField("List item", text: $item.text)
                 .textFieldStyle(PlainTextFieldStyle())
@@ -126,13 +132,13 @@ struct AlertView_Previews: PreviewProvider {
     static var previews: some View {
         AlertViewPreviewWrapper()
     }
-
+    
     struct AlertViewPreviewWrapper: View {
         @State private var showAlert = true
         @StateObject private var viewModel = ListViewModel()
-
+        
         var body: some View {
-            CustomAlertView(isPresented: $showAlert, items: $viewModel.items) {
+            CustomAlertView(isPresented: $showAlert, items: $viewModel.items) {_ in
                 // Handle save action for preview
                 print("Items saved in preview:", viewModel.items)
             }

@@ -20,7 +20,7 @@ struct Task: Identifiable {
 struct ListItem: Identifiable {
     let id: UUID = UUID()
     var text: String = ""
-    var letter: String 
+    var letter: String?
     var isChecked: Bool = false
 }
 
