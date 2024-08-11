@@ -11,18 +11,17 @@ import Combine
 import CoreLocation
 
 class TaskViewModel: ObservableObject {
-    @Published var tasks = [Task]()
-    @Published var listItem = [ListItem]()
+    @Published var tasks = [AimTask]()
     private let db = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
     
     func fetchTasks()  {
-        Future<[Task], Error> { promise in
+        Future<[AimTask], Error> { promise in
             self.db.collection("tasks").getDocuments { querySnapshot, error in
                 if let error = error {
                     promise(.failure(error))
                 } else {
-                    let tasks = querySnapshot?.documents.compactMap({ doc -> Task? in
+                    let tasks = querySnapshot?.documents.compactMap({ doc -> AimTask? in
                         let data = doc.data()
                         let id = doc.documentID
                         let name = data["name"] as? String ?? ""
@@ -30,7 +29,7 @@ class TaskViewModel: ObservableObject {
                         let longitude = data["longitude"] as? Double ?? 0.0
                         let location = CLLocation(latitude: latitude, longitude: longitude)
                         let dateTime = (data["dateTime"] as? Timestamp)?.dateValue() ?? Date()
-                        return Task(id: id, name: name, location: location, dateTime: dateTime)
+                        return AimTask(id: id, name: name, location: location, dateTime: dateTime)
                     }) ?? []
                     promise(.success(tasks))
                 }
@@ -43,12 +42,15 @@ class TaskViewModel: ObservableObject {
         
     }
     
-    func addTask(_ task: Task) {
+    func addTask(_ task: AimTask) {
         let data: [String: Any] = [
             "name": task.name,
-            "latitude" : task.location.coordinate.latitude,
-            "longitude" : task.location.coordinate.longitude,
-            "dateTime" : Timestamp(date: task.dateTime)
+            "latitude" : task.location?.coordinate.latitude ?? 0.0,
+            "longitude" : task.location?.coordinate.longitude ?? 0.0,
+            "dateTime" : Timestamp(date: task.dateTime ?? Date()),
+            "id": task.id,
+            "text" : task.text,
+            "isChecked" : task.isChecked,
             
         ]
         
@@ -64,54 +66,6 @@ class TaskViewModel: ObservableObject {
         .sink(receiveCompletion: {_ in}, receiveValue: { _ in
             self.fetchTasks()
         })
-        .store(in: &cancellables)
-    }
-    
-    func addListItem(_ listItem: ListItem) {
-        let data: [String: Any] = [
-            "id": listItem.id,
-            "text" : listItem.text,
-            "isChecked" : listItem.isChecked,
-        ]
-        
-        Future<Void, Error> { promise in
-            self.db.collection("listItems").addDocument(data: data) { error in
-                if let error = error {
-                    promise(.failure(error))
-                } else {
-                    promise(.success(()))
-                }
-            }
-        }
-        .sink(receiveCompletion: {_ in}, receiveValue: { _ in
-            self.fetchTasks()
-        })
-        .store(in: &cancellables)
-    }
-    
-    func fetchListItems() {
-        Future<[ListItem], Error> { promise in
-            self.db.collection("listItems").getDocuments { querySnapshot, error in
-                if let error = error {
-                    promise(.failure(error))
-                } else {
-                    let listItem = querySnapshot?.documents.compactMap({ doc -> ListItem? in
-                        let data = doc.data()
-                        guard
-                            let text = data["text"] as? String,
-                            let isChecked = data["isChecked"] as? Bool
-                        else {return nil}
-                        
-                        return ListItem(text:  text, isChecked: isChecked)
-                    }) ?? []
-                    promise(.success(listItem))
-                }
-            }
-            
-        }
-        .replaceError(with: [])
-        .receive(on: DispatchQueue.main)
-        .assign(to: \.listItem, on: self)
         .store(in: &cancellables)
     }
 }
