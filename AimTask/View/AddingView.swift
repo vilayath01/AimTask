@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CustomAlertView: View {
     @Binding var isPresented: Bool
-    @Binding var items: [ListItem]
+    @Binding var items: [AimTask]
     @ObservedObject var addingViewModel = AddingViewModel()
     var taskViewModel = TaskViewModel()
     
@@ -68,9 +68,9 @@ struct CustomAlertView: View {
             showRemoveButton: items.count > 1
         )
     }
-    var onSave: ([ListItem]) -> Void = { items in
+    var onSave: ([AimTask]) -> Void = { items in
         items.forEach { item in
-            TaskViewModel().addListItem(item)
+            TaskViewModel().addTask(item)
         }
         
     }
@@ -81,7 +81,7 @@ struct CustomAlertView: View {
 
 
 struct ListItemView: View {
-    @Binding var item: ListItem
+    @Binding var item: AimTask
     var isLast: Bool
     var isFirst: Bool
     var onAdd: (() -> Void)?
@@ -93,7 +93,7 @@ struct ListItemView: View {
             Circle()
                 .frame(width: 33, height: 33)
                 .foregroundColor(.cyan)
-                .overlay(Text(item.letter?.prefix(1) ?? "A").foregroundColor(.white))
+                .overlay(Text(item.letter.prefix(1)).foregroundColor(.white))
             
             TextField("List item", text: $item.text)
                 .textFieldStyle(PlainTextFieldStyle())
@@ -138,9 +138,9 @@ struct AlertView_Previews: PreviewProvider {
         @StateObject private var viewModel = ListViewModel()
         
         var body: some View {
-            CustomAlertView(isPresented: $showAlert, items: $viewModel.items) {_ in
+            CustomAlertView(isPresented: $showAlert, items: $viewModel.taskItems) {_ in
                 // Handle save action for preview
-                print("Items saved in preview:", viewModel.items)
+                print("Items saved in preview:", $viewModel.taskItems)
             }
         }
     }

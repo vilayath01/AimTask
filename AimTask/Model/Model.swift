@@ -9,18 +9,13 @@ import Foundation
 import CoreLocation
 import SwiftUI
 
-struct Task: Identifiable {
-    let id: String
-    let name: String
-    let location: CLLocation
-    let dateTime: Date
-}
-
-
-struct ListItem: Identifiable {
-    let id: UUID = UUID()
+struct AimTask: Identifiable {
+    var id: String = ""
+    var name: String = ""
+    var location: CLLocation?
+    var dateTime: Date?
     var text: String = ""
-    var letter: String?
+    var letter: String = ""
     var isChecked: Bool = false
 }
 

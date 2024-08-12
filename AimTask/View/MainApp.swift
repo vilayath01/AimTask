@@ -9,23 +9,31 @@ import SwiftUI
 import CoreLocation
 
 struct MainApp: View {
-    @ObservedObject var viewModel = TaskViewModel()
+//    @ObservedObject var viewModel = TaskViewModel()
+    @EnvironmentObject var loginViewModel: LoginViewModel
     
-    var body: some View {       
-//        TabView {
-//            HomeView() .tabItem {
-//                Label("Home", systemImage: "house")
-//            }
-//            AddTaskView().tabItem {
-//                Label("Add Task", systemImage: "target")
-//            }
-//            HistoryView().tabItem {
-//                Label("History", systemImage: "calendar.badge.clock")
-//                 
-//            }
-//            
-//        }
-        LoginView()
+    var body: some View {
+        Group {
+            if loginViewModel.authenticationState == .authenticated {
+                TabView {
+                    HomeView() .tabItem {
+                        Label("Home", systemImage: "house")
+                    }
+                    AddTaskView().tabItem {
+                        Label("Add Task", systemImage: "target")
+                    }
+                    HistoryView().tabItem {
+                        Label("History", systemImage: "calendar.badge.clock")
+                         
+                    }
+                    
+                }
+            } else {
+                LoginView()
+            }
+        }
+      
+      
     }
 }
 

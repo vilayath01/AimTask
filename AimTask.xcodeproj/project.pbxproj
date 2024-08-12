@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		556DE3762C6450210056EED3 /* loginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556DE3752C6450200056EED3 /* loginScreen.swift */; };
+		556DE3762C6450210056EED3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556DE3752C6450200056EED3 /* LoginView.swift */; };
 		556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556DE3772C6460900056EED3 /* LoginViewModel.swift */; };
 		55A5CE442C4B571500F9E533 /* AimTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE432C4B571500F9E533 /* AimTaskApp.swift */; };
 		55A5CE462C4B571500F9E533 /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE452C4B571500F9E533 /* MainApp.swift */; };
@@ -31,7 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		556DE3752C6450200056EED3 /* loginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginScreen.swift; sourceTree = "<group>"; };
+		556DE3752C6450200056EED3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		556DE3772C6460900056EED3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		55A5CE402C4B571500F9E533 /* AimTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AimTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A5CE432C4B571500F9E533 /* AimTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimTaskApp.swift; sourceTree = "<group>"; };
@@ -69,7 +69,6 @@
 		55A5CE372C4B571500F9E533 = {
 			isa = PBXGroup;
 			children = (
-				556DE3752C6450200056EED3 /* loginScreen.swift */,
 				55A5CE422C4B571500F9E533 /* AimTask */,
 				55A5CE412C4B571500F9E533 /* Products */,
 			);
@@ -129,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				55A5CE452C4B571500F9E533 /* MainApp.swift */,
+				556DE3752C6450200056EED3 /* LoginView.swift */,
 				55A5CE672C4D512900F9E533 /* HomeView.swift */,
 				55A5CE692C4D514900F9E533 /* AddTaskView.swift */,
 				55A5CE6B2C4D515E00F9E533 /* HistoryView.swift */,
@@ -228,7 +228,7 @@
 				55A5CE6E2C5CCB7C00F9E533 /* AddingView.swift in Sources */,
 				556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */,
 				55A5CE682C4D512900F9E533 /* HomeView.swift in Sources */,
-				556DE3762C6450210056EED3 /* loginScreen.swift in Sources */,
+				556DE3762C6450210056EED3 /* LoginView.swift in Sources */,
 				55A5CE442C4B571500F9E533 /* AimTaskApp.swift in Sources */,
 				55A5CE782C5F68B400F9E533 /* GeocodingViewModel.swift in Sources */,
 			);

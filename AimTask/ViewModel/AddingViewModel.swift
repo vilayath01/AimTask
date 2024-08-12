@@ -10,7 +10,7 @@ import Foundation
 
 class AddingViewModel: ObservableObject {
     
-  @Published  var items: [ListItem] = []
+  @Published  var items: [AimTask] = []
     
     
     func alphabet(for index: Int) -> String {
@@ -29,22 +29,22 @@ class AddingViewModel: ObservableObject {
         return result
     }
     
-    func addItem(to items: inout [ListItem]) {
+    func addItem(to items: inout [AimTask]) {
           let newItemIndex = items.count
           let newAlphabet = alphabet(for: newItemIndex)
-        let newItem = ListItem(text:"", letter: newAlphabet)
+        let newItem = AimTask(text:"", letter: newAlphabet)
           items.append(newItem)
       }
     
-    func removeItem(at index: Int, from items: inout [ListItem]) {
+    func removeItem(at index: Int, from items: inout [AimTask]) {
           guard index >= 0 && index < items.count else { return }
           items.remove(at: index)
       }
     
-     func getIndex(of id: UUID) -> Int {
-           if let index = items.firstIndex(where: { $0.id == id }) {
-               return index
-           }
-           return 0
-       }
+//     func getIndex(of id: UUID) -> Int {
+//           if let index = items.firstIndex(where: { $0.id == id }) {
+//               return index
+//           }
+//           return 0
+//       }
 }
