@@ -16,8 +16,16 @@ class TaskViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     func fetchTasks()  {
+        print("This is userEmail:\(Auth.auth().currentUser)")
+        guard let user = Auth.auth().currentUser
+               
+        else {
+            print("No authenticated user found")
+            return
+        }
+        
         Future<[AimTask], Error> { promise in
-            self.db.collection("tasks").getDocuments { querySnapshot, error in
+            self.db.collection("users").document(user.uid).collection("tasks").getDocuments { querySnapshot, error in
                 if let error = error {
                     promise(.failure(error))
                 } else {
@@ -29,6 +37,7 @@ class TaskViewModel: ObservableObject {
                         let longitude = data["longitude"] as? Double ?? 0.0
                         let location = CLLocation(latitude: latitude, longitude: longitude)
                         let dateTime = (data["dateTime"] as? Timestamp)?.dateValue() ?? Date()
+                        print("id: \(id), name: \(name)")
                         return AimTask(id: id, name: name, location: location, dateTime: dateTime)
                     }) ?? []
                     promise(.success(tasks))
@@ -43,6 +52,10 @@ class TaskViewModel: ObservableObject {
     }
     
     func addTask(_ task: AimTask) {
+        guard let user = Auth.auth().currentUser else {
+            print("No Authenticated user found")
+            return
+        }
         let data: [String: Any] = [
             "name": task.name,
             "latitude" : task.location?.coordinate.latitude ?? 0.0,
@@ -55,7 +68,7 @@ class TaskViewModel: ObservableObject {
         ]
         
         Future<Void, Error> { promise in
-            self.db.collection("tasks").addDocument(data: data) { error in
+            self.db.collection("users").document(user.uid).collection("tasks").addDocument(data: data) { error in
                 if let error = error {
                     promise(.failure(error))
                 } else {
