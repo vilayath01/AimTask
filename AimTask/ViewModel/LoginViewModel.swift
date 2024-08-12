@@ -134,16 +134,16 @@ extension LoginViewModel {
     func signInWithEmailPassword() async -> Bool {
         authenticationState = .authenticating
         self.isLoading = true
+        defer {self.isLoading = false}
         do {
             try await Auth.auth().signIn(withEmail: self.refineEmail, password: self.refinePassword)
             
             authenticationState = .authenticated
-            self.isLoading = false
             return true
         }
         catch let authError as NSError {
             handleError(authError)
-            self.isLoading = false
+            authenticationState = .unauthenticated
             return false
         }
     }
@@ -151,20 +151,21 @@ extension LoginViewModel {
     func signUpWithEmailPassword() async -> Bool {
         authenticationState = .authenticating
         self.isLoading = true
+        defer {self.isLoading = false}
         do  {
             try await Auth.auth().createUser(withEmail: refineEmail, password: refinePassword)
-            self.isLoading = false
             return true
         }
         catch let authError as NSError {
             handleError(authError)
-            self.isLoading = false
             return false
         }
     }
     
     
     func signOut() {
+        self.isLoading = true
+        defer {self.isLoading = false}
         do {
             try Auth.auth().signOut()
             authenticationState = .unauthenticated
@@ -176,6 +177,8 @@ extension LoginViewModel {
     }
     
     func deleteAccount() async -> Bool {
+        self.isLoading = true
+        defer {self.isLoading = false}
         do {
             try await user?.delete()
             authenticationState = .unauthenticated

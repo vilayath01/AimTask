@@ -25,7 +25,7 @@ struct AimTaskApp: App {
     @StateObject private var loginViewModel = LoginViewModel()
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            MainApp()
                 .environmentObject(loginViewModel)
         }
     }
