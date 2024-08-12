@@ -40,6 +40,7 @@ class LoginViewModel: ObservableObject {
     @Published var flow: AuthenticationFlow = .login
     @Published var authenticationState: AuthenticationState = .unauthenticated
     @Published var isLoading: Bool = false
+    @Published var displayName: String = ""
     
     init() {
         registerAuthStateHandler()
@@ -52,6 +53,7 @@ class LoginViewModel: ObservableObject {
             authStateHandler = Auth.auth().addStateDidChangeListener { auth, user in
                 self.user = user
                 self.authenticationState = user == nil ? .unauthenticated : .authenticated
+                self.displayName = user?.email  ?? "😉"
             }
         }
     }

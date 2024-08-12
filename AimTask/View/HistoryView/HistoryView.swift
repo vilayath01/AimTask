@@ -53,23 +53,44 @@ struct HistoryTaskSection: View {
 }
 
 struct HistoryView: View {
+    @EnvironmentObject var loginViewModel: LoginViewModel
     var body: some View {
         NavigationView {
-
-                ScrollView {
-                    VStack(spacing: 20) {
-                        HistoryTaskSection(title: "Location One Task")
-                        HistoryTaskSection(title: "Location Two Task")
-                        HistoryTaskSection(title: "Location Three Task")
-                    }
-                    .padding(.top)
-                   
+            
+            ScrollView {
+                VStack(spacing: 20) {
+                    HistoryTaskSection(title: "Location One Task")
+                    HistoryTaskSection(title: "Location Two Task")
+                    HistoryTaskSection(title: "Location Three Task")
                 }
-          
+                .padding(.top)
+                
+            }
+            
             .navigationTitle("History")
-            .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu {
+                        Button("Sign Out", action: signOut)
+                        Button("Delete Account", action: deleteAccount)
+                    } label: {
+                        Label("Options", systemImage: "ellipsis.circle")
+                    }
+                }
+            }
         }
-       
+        .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
+    }
+    
+    private func signOut() {
+        loginViewModel.signOut()
+    
+}
+    private func deleteAccount() {
+        Task {
+             await loginViewModel.deleteAccount()
+        }
+        
     }
 }
 

@@ -25,9 +25,10 @@
 		55A5CE6A2C4D514900F9E533 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE692C4D514900F9E533 /* AddTaskView.swift */; };
 		55A5CE6C2C4D515E00F9E533 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE6B2C4D515E00F9E533 /* HistoryView.swift */; };
 		55A5CE6E2C5CCB7C00F9E533 /* AddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE6D2C5CCB7C00F9E533 /* AddingView.swift */; };
-		55A5CE702C5CCEA900F9E533 /* SheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE6F2C5CCEA900F9E533 /* SheetViewModel.swift */; };
+		55A5CE702C5CCEA900F9E533 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE6F2C5CCEA900F9E533 /* ListViewModel.swift */; };
 		55A5CE742C5D0B6700F9E533 /* AddingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE732C5D0B6700F9E533 /* AddingViewModel.swift */; };
 		55A5CE782C5F68B400F9E533 /* GeocodingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE772C5F68B400F9E533 /* GeocodingViewModel.swift */; };
+		55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,9 +46,10 @@
 		55A5CE692C4D514900F9E533 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		55A5CE6B2C4D515E00F9E533 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		55A5CE6D2C5CCB7C00F9E533 /* AddingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingView.swift; sourceTree = "<group>"; };
-		55A5CE6F2C5CCEA900F9E533 /* SheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewModel.swift; sourceTree = "<group>"; };
+		55A5CE6F2C5CCEA900F9E533 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		55A5CE732C5D0B6700F9E533 /* AddingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingViewModel.swift; sourceTree = "<group>"; };
 		55A5CE772C5F68B400F9E533 /* GeocodingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocodingViewModel.swift; sourceTree = "<group>"; };
+		55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 		55A5CE372C4B571500F9E533 = {
 			isa = PBXGroup;
 			children = (
+				55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */,
 				55A5CE422C4B571500F9E533 /* AimTask */,
 				55A5CE412C4B571500F9E533 /* Products */,
 			);
@@ -116,10 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				55A5CE5C2C4D137800F9E533 /* TaskViewModel.swift */,
-				55A5CE6F2C5CCEA900F9E533 /* SheetViewModel.swift */,
-				55A5CE732C5D0B6700F9E533 /* AddingViewModel.swift */,
+				55A5CE6F2C5CCEA900F9E533 /* ListViewModel.swift */,
 				55A5CE772C5F68B400F9E533 /* GeocodingViewModel.swift */,
-				556DE3772C6460900056EED3 /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -127,14 +128,56 @@
 		55A5CE662C4D50AB00F9E533 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				55B5DFDC2C6996E500AC53A0 /* LoginView */,
+				55B5DFDB2C6996C700AC53A0 /* AddingView */,
+				55B5DFDA2C69968900AC53A0 /* AddTaskView */,
+				55B5DFD92C69962C00AC53A0 /* HomeView */,
+				55B5DFD82C69960E00AC53A0 /* HistoryView */,
 				55A5CE452C4B571500F9E533 /* MainApp.swift */,
-				556DE3752C6450200056EED3 /* LoginView.swift */,
-				55A5CE672C4D512900F9E533 /* HomeView.swift */,
-				55A5CE692C4D514900F9E533 /* AddTaskView.swift */,
-				55A5CE6B2C4D515E00F9E533 /* HistoryView.swift */,
-				55A5CE6D2C5CCB7C00F9E533 /* AddingView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		55B5DFD82C69960E00AC53A0 /* HistoryView */ = {
+			isa = PBXGroup;
+			children = (
+				55A5CE6B2C4D515E00F9E533 /* HistoryView.swift */,
+			);
+			path = HistoryView;
+			sourceTree = "<group>";
+		};
+		55B5DFD92C69962C00AC53A0 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				55A5CE672C4D512900F9E533 /* HomeView.swift */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
+		55B5DFDA2C69968900AC53A0 /* AddTaskView */ = {
+			isa = PBXGroup;
+			children = (
+				55A5CE692C4D514900F9E533 /* AddTaskView.swift */,
+			);
+			path = AddTaskView;
+			sourceTree = "<group>";
+		};
+		55B5DFDB2C6996C700AC53A0 /* AddingView */ = {
+			isa = PBXGroup;
+			children = (
+				55A5CE732C5D0B6700F9E533 /* AddingViewModel.swift */,
+				55A5CE6D2C5CCB7C00F9E533 /* AddingView.swift */,
+			);
+			path = AddingView;
+			sourceTree = "<group>";
+		};
+		55B5DFDC2C6996E500AC53A0 /* LoginView */ = {
+			isa = PBXGroup;
+			children = (
+				556DE3772C6460900056EED3 /* LoginViewModel.swift */,
+				556DE3752C6450200056EED3 /* LoginView.swift */,
+			);
+			path = LoginView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,11 +264,12 @@
 				55A5CE6C2C4D515E00F9E533 /* HistoryView.swift in Sources */,
 				55A5CE5A2C4D12B200F9E533 /* Model.swift in Sources */,
 				55A5CE462C4B571500F9E533 /* MainApp.swift in Sources */,
-				55A5CE702C5CCEA900F9E533 /* SheetViewModel.swift in Sources */,
+				55A5CE702C5CCEA900F9E533 /* ListViewModel.swift in Sources */,
 				55A5CE5D2C4D137800F9E533 /* TaskViewModel.swift in Sources */,
 				55A5CE742C5D0B6700F9E533 /* AddingViewModel.swift in Sources */,
 				55A5CE6A2C4D514900F9E533 /* AddTaskView.swift in Sources */,
 				55A5CE6E2C5CCB7C00F9E533 /* AddingView.swift in Sources */,
+				55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */,
 				556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */,
 				55A5CE682C4D512900F9E533 /* HomeView.swift in Sources */,
 				556DE3762C6450210056EED3 /* LoginView.swift in Sources */,

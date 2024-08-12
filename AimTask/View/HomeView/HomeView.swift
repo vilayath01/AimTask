@@ -53,6 +53,7 @@ struct TaskSection: View {
 }
 
 struct HomeView: View {
+    @EnvironmentObject var loginViewModel: LoginViewModel
     var body: some View {
         NavigationView {
 
@@ -66,7 +67,8 @@ struct HomeView: View {
                    
                 }
           
-            .navigationTitle("Home")
+                .navigationTitle("Home: \(loginViewModel.displayName.usernameFromEmail())")
+            
             .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
         }
        
