@@ -5,10 +5,11 @@ struct CustomAlertView: View {
     @Binding var items: [AimTask]
     @ObservedObject var addingViewModel = AddingViewModel()
     var taskViewModel = TaskViewModel()
+    var locationName: String? = ""
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Add task Items @ Location Name")
+            Text("Add task Items @ \(locationName)")
                 .font(.headline)
                 .foregroundColor(Color.black)
             
@@ -35,7 +36,7 @@ struct CustomAlertView: View {
                 .padding(.trailing)
                 
                 Button("Save") {
-                    onSave(items)
+                    onSave(items: items)
                     isPresented = false
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -68,12 +69,21 @@ struct CustomAlertView: View {
             showRemoveButton: items.count > 1
         )
     }
-    var onSave: ([AimTask]) -> Void = { items in
+//    var onSave: ([AimTask]) -> Void = { items in
+//        items.forEach { item in
+//         
+//            let updatedItem = AimTask(locationName: item.locationName)
+//            taskViewModel.addTask(updatedItem)
+//        }
+    
+    private func onSave(items: [AimTask]) {
         items.forEach { item in
-            TaskViewModel().addTask(item)
+            let updatedItem = AimTask(locationName: item.locationName)
+            taskViewModel.addTask(updatedItem)
         }
-        
     }
+    
+
     
 }
 
@@ -138,10 +148,7 @@ struct AlertView_Previews: PreviewProvider {
         @StateObject private var viewModel = ListViewModel()
         
         var body: some View {
-            CustomAlertView(isPresented: $showAlert, items: $viewModel.taskItems) {_ in
-                // Handle save action for preview
-                print("Items saved in preview:", $viewModel.taskItems)
-            }
+            CustomAlertView(isPresented: $showAlert, items: $viewModel.taskItems)
         }
     }
 }
