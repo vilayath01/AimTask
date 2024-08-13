@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		388CF5C72C6AED7C00EC361D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */; };
 		556DE3762C6450210056EED3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556DE3752C6450200056EED3 /* LoginView.swift */; };
 		556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556DE3772C6460900056EED3 /* LoginViewModel.swift */; };
 		55A5CE442C4B571500F9E533 /* AimTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE432C4B571500F9E533 /* AimTaskApp.swift */; };
 		55A5CE462C4B571500F9E533 /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE452C4B571500F9E533 /* MainApp.swift */; };
 		55A5CE482C4B571600F9E533 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55A5CE472C4B571600F9E533 /* Assets.xcassets */; };
 		55A5CE4B2C4B571600F9E533 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55A5CE4A2C4B571600F9E533 /* Preview Assets.xcassets */; };
-		55A5CE522C4D0D5500F9E533 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55A5CE512C4D0D5500F9E533 /* GoogleService-Info.plist */; };
 		55A5CE552C4D0EA400F9E533 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 55A5CE542C4D0EA400F9E533 /* FirebaseAuth */; };
 		55A5CE572C4D0EA400F9E533 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 55A5CE562C4D0EA400F9E533 /* FirebaseDatabase */; };
 		55A5CE5A2C4D12B200F9E533 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE592C4D12B200F9E533 /* Model.swift */; };
@@ -32,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		556DE3752C6450200056EED3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		556DE3772C6460900056EED3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		55A5CE402C4B571500F9E533 /* AimTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AimTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,7 +40,6 @@
 		55A5CE452C4B571500F9E533 /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
 		55A5CE472C4B571600F9E533 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55A5CE4A2C4B571600F9E533 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		55A5CE512C4D0D5500F9E533 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		55A5CE592C4D12B200F9E533 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		55A5CE5C2C4D137800F9E533 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		55A5CE672C4D512900F9E533 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 				55A5CE582C4D128400F9E533 /* Model */,
 				55A5CE432C4B571500F9E533 /* AimTaskApp.swift */,
 				55A5CE472C4B571600F9E533 /* Assets.xcassets */,
-				55A5CE512C4D0D5500F9E533 /* GoogleService-Info.plist */,
+				388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */,
 				55A5CE492C4B571600F9E533 /* Preview Content */,
 			);
 			path = AimTask;
@@ -249,8 +249,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				55A5CE4B2C4B571600F9E533 /* Preview Assets.xcassets in Resources */,
+				388CF5C72C6AED7C00EC361D /* GoogleService-Info.plist in Resources */,
 				55A5CE482C4B571600F9E533 /* Assets.xcassets in Resources */,
-				55A5CE522C4D0D5500F9E533 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

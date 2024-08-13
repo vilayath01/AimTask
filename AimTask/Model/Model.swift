@@ -17,6 +17,7 @@ struct AimTask: Identifiable {
     var text: String = ""
     var letter: String = ""
     var isChecked: Bool = false
+    var locationName: String = ""
 }
 
 

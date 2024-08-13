@@ -37,6 +37,7 @@ class TaskViewModel: ObservableObject {
                         let longitude = data["longitude"] as? Double ?? 0.0
                         let location = CLLocation(latitude: latitude, longitude: longitude)
                         let dateTime = (data["dateTime"] as? Timestamp)?.dateValue() ?? Date()
+                        let locationName = data["locationName"] as? String ?? ""
                         print("id: \(id), name: \(name)")
                         return AimTask(id: id, name: name, location: location, dateTime: dateTime)
                     }) ?? []
@@ -64,6 +65,7 @@ class TaskViewModel: ObservableObject {
             "id": task.id,
             "text" : task.text,
             "isChecked" : task.isChecked,
+            "locationName": task.locationName
             
         ]
         
