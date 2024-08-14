@@ -10,7 +10,7 @@ import Firebase
 import Combine
 import CoreLocation
 
-class TaskViewModel: ObservableObject {
+class FDBManager: ObservableObject {
     @Published var tasks = [AimTask]()
     private let db = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
@@ -52,19 +52,14 @@ class TaskViewModel: ObservableObject {
         
     }
     
-    func addTask(_ task: AimTask) {
+    func addTask(_ task: AddTaskModel) {
         guard let user = Auth.auth().currentUser else {
             print("No Authenticated user found")
             return
         }
         let data: [String: Any] = [
-            "name": task.name,
-            "latitude" : task.location?.coordinate.latitude ?? 0.0,
-            "longitude" : task.location?.coordinate.longitude ?? 0.0,
-            "dateTime" : Timestamp(date: task.dateTime ?? Date()),
-            "id": task.id,
-            "text" : task.text,
-            "isChecked" : task.isChecked,
+            "dateTime" : Timestamp(date: task.dateTime),
+            "taskItems" : task.taskItems,
             "locationName": task.locationName
             
         ]

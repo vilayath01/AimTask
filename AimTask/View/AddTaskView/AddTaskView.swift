@@ -139,7 +139,7 @@ struct AddTaskView: View {
             
           
             if showAlert {
-                CustomAlertView(isPresented: $showAlert, items: $viewModel.taskItems) 
+                CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems)
                 .transition(.opacity)
                 .animation(.easeInOut)
             }

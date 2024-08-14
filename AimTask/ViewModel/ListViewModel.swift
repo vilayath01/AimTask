@@ -8,9 +8,7 @@
 import SwiftUI
 
 class ListViewModel: ObservableObject {
-    @Published var taskItems: [AimTask] = [
-        AimTask( text: "List item 0", letter: "A"),
-        AimTask( text: "List item 1", letter: "B"),
-        AimTask( text: "List item 2", letter: "C")
+    @Published var taskItems: [AddTaskModel] = [
+        AddTaskModel(locationName: "Smaple", dateTime: Date(), taskItems: ["Example"])
     ]
 }

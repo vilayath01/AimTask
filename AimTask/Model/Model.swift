@@ -21,4 +21,18 @@ struct AimTask: Identifiable {
 }
 
 
+struct AddTaskModel: Identifiable {
+    var id: UUID = UUID()
+    var locationName: String = ""
+    var dateTime: Date = Date()
+    var taskItems: [String]
+
+    init(locationName: String, dateTime: Date, taskItems: [String] = []) {
+        self.locationName = locationName
+        self.dateTime = dateTime
+        self.taskItems = taskItems
+    }
+}
+
+
 
