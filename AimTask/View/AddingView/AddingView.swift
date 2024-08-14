@@ -2,19 +2,19 @@ import SwiftUI
 
 struct CustomAlertView: View {
     @Binding var isPresented: Bool
-    @Binding var items: [AimTask]
+    @Binding var addTaskModel: [AddTaskModel]
     @ObservedObject var addingViewModel = AddingViewModel()
-    var taskViewModel = TaskViewModel()
-    var locationName: String? = ""
+    var fdbManager = FDBManager()
+    var locationName: String?
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Add task Items @ \(locationName)")
+            Text("Add task Items @ \(locationName ?? "GlenFerrie Optional")")
                 .font(.headline)
                 .foregroundColor(Color.black)
             
             List {
-                ForEach($items.indices, id: \.self) { index in
+                ForEach($addTaskModel.indices, id: \.self) { index in
                     createListItemView(for: index)
                 }
             }
@@ -36,7 +36,7 @@ struct CustomAlertView: View {
                 .padding(.trailing)
                 
                 Button("Save") {
-                    onSave(items: items)
+                    onSave(addTaskModel: addTaskModel)
                     isPresented = false
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -56,42 +56,45 @@ struct CustomAlertView: View {
     
     @ViewBuilder
     private func createListItemView(for index: Int) -> some View {
-        ListItemView(
-            item: $items[index],
-            isLast: index == items.count - 1,
-            isFirst: index == 0,
-            onAdd: {
-                addingViewModel.addItem(to: &items)
-            },
-            onRemove: {
-                addingViewModel.removeItem(at: index, from: &items)
-            },
-            showRemoveButton: items.count > 1
-        )
-    }
-//    var onSave: ([AimTask]) -> Void = { items in
-//        items.forEach { item in
-//         
-//            let updatedItem = AimTask(locationName: item.locationName)
-//            taskViewModel.addTask(updatedItem)
-//        }
-    
-    private func onSave(items: [AimTask]) {
-        items.forEach { item in
-            let updatedItem = AimTask(locationName: item.locationName)
-            taskViewModel.addTask(updatedItem)
+        ForEach(addTaskModel[index].taskItems.indices, id: \.self) { taskIndex in
+            // Create a binding for the individual task item
+            let taskItemBinding = Binding<String>(
+                get: { addTaskModel[index].taskItems[taskIndex] },
+                set: { newValue in addTaskModel[index].taskItems[taskIndex] = newValue }
+            )
+            
+            let isLast = taskIndex == addTaskModel[index].taskItems.count - 1
+            let isFirst = taskIndex == 0
+            let showRemoveButton = addTaskModel[index].taskItems.count > 1
+            
+            ListItemView(
+                taskItem: taskItemBinding,
+                isLast: isLast,
+                isFirst: isFirst,
+                onAdd: {
+                    addingViewModel.addItem(to: &addTaskModel[index].taskItems)
+                }, onRemove: {
+                    addingViewModel.removeItem(at: taskIndex, from: &addTaskModel[index].taskItems)
+                }, showRemoveButton: showRemoveButton
+            )
         }
     }
-    
+
 
     
+    private func onSave(addTaskModel: [AddTaskModel]) {
+        addTaskModel.forEach { addTaskModel in
+            let updatedItem = AddTaskModel(locationName: addTaskModel.locationName, dateTime: addTaskModel.dateTime, taskItems: addTaskModel.taskItems)
+            fdbManager.addTask(updatedItem)
+        }
+    }  
 }
 
 
 
 
 struct ListItemView: View {
-    @Binding var item: AimTask
+    @Binding var taskItem: String
     var isLast: Bool
     var isFirst: Bool
     var onAdd: (() -> Void)?
@@ -103,9 +106,9 @@ struct ListItemView: View {
             Circle()
                 .frame(width: 33, height: 33)
                 .foregroundColor(.cyan)
-                .overlay(Text(item.letter.prefix(1)).foregroundColor(.white))
+                .overlay(Text("A").foregroundColor(.white))
             
-            TextField("List item", text: $item.text)
+            TextField("List item", text: $taskItem)
                 .textFieldStyle(PlainTextFieldStyle())
                 .padding(.leading, 4)
             
@@ -148,7 +151,7 @@ struct AlertView_Previews: PreviewProvider {
         @StateObject private var viewModel = ListViewModel()
         
         var body: some View {
-            CustomAlertView(isPresented: $showAlert, items: $viewModel.taskItems)
+            CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems)
         }
     }
 }
