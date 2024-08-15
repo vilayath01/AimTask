@@ -91,7 +91,7 @@ class GeocodingViewModel: NSObject, ObservableObject {
                 self?.updateSearchText("\(response?.mapItems.first?.placemark.title ?? ""), \(response?.mapItems.first?.placemark.subtitle ?? "")")
                 DispatchQueue.main.async {
                     self?.region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
-                    self?.addressName = "\(response?.mapItems.first?.placemark.title ?? ""), \(response?.mapItems.first?.placemark.subtitle ?? "")"
+                    self?.addressName = "\(response?.mapItems.first?.placemark.name ?? ""), \(response?.mapItems.first?.placemark.locality ?? ""), \(response?.mapItems.first?.placemark.country ?? "")."
                     self?.errorMessage = nil
                 }
             } else {
@@ -154,6 +154,16 @@ extension GeocodingViewModel: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
+            geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+                DispatchQueue.main.async {
+                    guard let placemark = placemarks?.first else {
+                        return
+                    }
+                    
+                    self?.addressName = "\(placemark.name ?? ""), \(placemark.locality ?? ""), \(placemark.country ?? "")."
+                }
+                
+            }
             DispatchQueue.main.async {
                 withAnimation(.easeIn(duration: 1.0)) {
                     self.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))

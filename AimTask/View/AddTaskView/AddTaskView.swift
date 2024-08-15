@@ -5,6 +5,7 @@ struct AddTaskView: View {
     @StateObject private var geocodingViewModel = GeocodingViewModel()
     @State private var showAlert = false
     @StateObject private var viewModel = ListViewModel()
+    @State private var addressSelected: Bool = false
     
     var body: some View {
         ZStack {
@@ -14,22 +15,31 @@ struct AddTaskView: View {
                 } icon: {
                     // Icon if needed
                 }
-
+                
                 HStack {
                     HStack {
                         TextField("Enter address", text: $geocodingViewModel.searchText)
                             .padding(12)
                             .background(Color(.systemGray6))
                             .cornerRadius(10)
+                            .onChange(of: geocodingViewModel.searchText) { newValue in
+                                if newValue.isEmpty {
+                                    geocodingViewModel.searchResults.removeAll()
+                                    addressSelected = false
+                                }
+                            }
                         Button(action: {
+                            geocodingViewModel.searchResults.removeAll()
                             geocodingViewModel.performGeocoding(for: geocodingViewModel.searchText)
                         }) {
                             Image(systemName: "magnifyingglass")
                                 .foregroundColor(.primary)
                                 .padding(.trailing, 8)
                         }
+                        
                     }
                     .padding(.horizontal, 8)
+                    
                     Button(action: {
                         showAlert = true
                     }) {
@@ -40,17 +50,17 @@ struct AddTaskView: View {
                 }
                 .padding()
                 
-                if !geocodingViewModel.searchResults.isEmpty {
+                if !geocodingViewModel.searchResults.isEmpty && !addressSelected {
+                    
                     List(geocodingViewModel.searchResults, id: \.self) { result in
                         Button(action: {
                             geocodingViewModel.selectCompletion(result)
                             geocodingViewModel.searchResults.removeAll()
-                                
+                            addressSelected = true
                         }) {
                             VStack(alignment: .leading) {
                                 Text(result.title).font(.headline)
                                 Text(result.subtitle).font(.subheadline).foregroundColor(.gray)
-                                
                             }
                         }
                     }
@@ -58,13 +68,15 @@ struct AddTaskView: View {
                     .frame(maxHeight: 200)
                 }
                 
+                
+                
                 // Middle section with map
                 ZStack {
                     Map(coordinateRegion: $geocodingViewModel.region, showsUserLocation: true, annotationItems: [geocodingViewModel.region.center]) { location in
-                                           MapMarker(coordinate: location, tint: .red)
-                                       }
-                                       .edgesIgnoringSafeArea(.horizontal)
-                                       .frame(maxHeight: .infinity)
+                        MapMarker(coordinate: location, tint: .red)
+                    }
+                    .edgesIgnoringSafeArea(.horizontal)
+                    .frame(maxHeight: .infinity)
                     
                     // Overlay with buttons
                     HStack {
@@ -120,18 +132,18 @@ struct AddTaskView: View {
                         .padding()
                     }
                 }
-
+                
                 HStack {
                     Spacer()
                 }
             }
             .background(Color(red: 105/255, green: 155/255, blue: 157/255))
             
-          
+            
             if showAlert {
                 CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems, locationName: $geocodingViewModel.addressName)
-                .transition(.opacity)
-                .animation(.easeInOut)
+                    .transition(.opacity)
+                    .animation(.easeInOut)
             }
         }
     }

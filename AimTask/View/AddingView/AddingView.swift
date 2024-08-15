@@ -79,15 +79,15 @@ struct CustomAlertView: View {
             )
         }
     }
-
-
+    
+    
     
     private func onSave(addTaskModel: [AddTaskModel]) {
         addTaskModel.forEach { addTaskModel in
             let updatedItem = AddTaskModel(locationName: locationName, dateTime: Date(), taskItems: addTaskModel.taskItems)
             fdbManager.addTask(updatedItem)
         }
-    }  
+    }
 }
 
 
