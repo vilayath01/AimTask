@@ -4,12 +4,12 @@ struct CustomAlertView: View {
     @Binding var isPresented: Bool
     @Binding var addTaskModel: [AddTaskModel]
     @ObservedObject var addingViewModel = AddingViewModel()
+    @Binding var locationName: String
     var fdbManager = FDBManager()
-    var locationName: String?
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Add task Items @ \(locationName ?? "GlenFerrie Optional")")
+            Text("Add task Items @ \(locationName)")
                 .font(.headline)
                 .foregroundColor(Color.black)
             
@@ -84,7 +84,7 @@ struct CustomAlertView: View {
     
     private func onSave(addTaskModel: [AddTaskModel]) {
         addTaskModel.forEach { addTaskModel in
-            let updatedItem = AddTaskModel(locationName: addTaskModel.locationName, dateTime: addTaskModel.dateTime, taskItems: addTaskModel.taskItems)
+            let updatedItem = AddTaskModel(locationName: locationName, dateTime: Date(), taskItems: addTaskModel.taskItems)
             fdbManager.addTask(updatedItem)
         }
     }  
@@ -149,9 +149,10 @@ struct AlertView_Previews: PreviewProvider {
     struct AlertViewPreviewWrapper: View {
         @State private var showAlert = true
         @StateObject private var viewModel = ListViewModel()
+        @State private var geoModel =  GeocodingViewModel()
         
         var body: some View {
-            CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems)
+            CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems, locationName: $geoModel.addressName)
         }
     }
 }
