@@ -2,13 +2,7 @@ import SwiftUI
 import MapKit
 
 struct AddTaskView: View {
-    @State private var searchText = ""
-    @StateObject private var geocodingViewModel = GeocodingViewModel(region: MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: -37.86494, longitude: 145.09402),
-        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-    ))
-   
-    
+    @StateObject private var geocodingViewModel = GeocodingViewModel()
     @State private var showAlert = false
     @StateObject private var viewModel = ListViewModel()
     
@@ -50,7 +44,6 @@ struct AddTaskView: View {
                     List(geocodingViewModel.searchResults, id: \.self) { result in
                         Button(action: {
                             geocodingViewModel.selectCompletion(result)
-                            geocodingViewModel.updateSearchText("\(result.title), \(result.subtitle)") 
                             geocodingViewModel.searchResults.removeAll()
                                 
                         }) {
@@ -68,12 +61,10 @@ struct AddTaskView: View {
                 // Middle section with map
                 ZStack {
                     Map(coordinateRegion: $geocodingViewModel.region, showsUserLocation: true, annotationItems: [geocodingViewModel.region.center]) { location in
-                        MapAnnotation(coordinate: location) {
-                          
-                        }
-                    }
-                        .edgesIgnoringSafeArea(.horizontal)
-                        .frame(maxHeight: .infinity)
+                                           MapMarker(coordinate: location, tint: .red)
+                                       }
+                                       .edgesIgnoringSafeArea(.horizontal)
+                                       .frame(maxHeight: .infinity)
                     
                     // Overlay with buttons
                     HStack {
@@ -81,7 +72,7 @@ struct AddTaskView: View {
                         VStack {
                             Spacer()
                             Button(action: {
-                                geocodingViewModel.currentUserLocation()
+                                geocodingViewModel.requestLocationPermission()
                             }) {
                                 Image(systemName: "location.fill")
                                     .foregroundColor(.black)
@@ -129,8 +120,7 @@ struct AddTaskView: View {
                         .padding()
                     }
                 }
-                
-                // Bottom section with background color
+
                 HStack {
                     Spacer()
                 }
@@ -139,7 +129,7 @@ struct AddTaskView: View {
             
           
             if showAlert {
-                CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems)
+                CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems, locationName: $geocodingViewModel.addressName)
                 .transition(.opacity)
                 .animation(.easeInOut)
             }

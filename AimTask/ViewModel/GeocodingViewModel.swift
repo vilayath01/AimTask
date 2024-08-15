@@ -8,34 +8,41 @@
 import Foundation
 import MapKit
 import Combine
-
+import SwiftUI
 
 class GeocodingViewModel: NSObject, ObservableObject {
+    
     @Published var searchText: String = ""
-    @Published var region: MKCoordinateRegion
+    @Published var region: MKCoordinateRegion = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0),
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    )
     @Published var searchResults: [MKLocalSearchCompletion] = []
-    @Published var erroMessage: String?
+    @Published var errorMessage: String?
+    @Published var addressName: String = ""
     
     private var geocoder = CLGeocoder()
     private var completer = MKLocalSearchCompleter()
     private var cancellables = Set<AnyCancellable>()
     private var locationManager = CLLocationManager()
     
-    init(region: MKCoordinateRegion) {
-        self.region = region
+    override init() {
         super.init()
-        setupBindins()
+        setupBindings()
         completer.resultTypes = .address
         completer.delegate = self
         locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
+        requestLocationPermission()
     }
     
-    private func setupBindins() {
-        $searchText.debounce(for: .seconds(0.5), scheduler: DispatchQueue.main).removeDuplicates().sink { [weak self] text in
-            self?.completer.queryFragment = text
-        }
-        .store(in: &cancellables)
+    private func setupBindings() {
+        $searchText
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] text in
+                self?.completer.queryFragment = text
+            }
+            .store(in: &cancellables)
     }
     
     func updateSearchText(_ text: String) {
@@ -43,22 +50,28 @@ class GeocodingViewModel: NSObject, ObservableObject {
             self.searchText = text
         }
     }
-func performGeocoding(for address: String) {
-        guard !address.isEmpty else {return}
+    
+    func performGeocoding(for address: String) {
+        guard !address.isEmpty else { return }
         
         geocoder.geocodeAddressString(address) { [weak self] (placemarks, error) in
             if let error = error {
-                self?.erroMessage = error.localizedDescription
+                DispatchQueue.main.async {
+                    self?.errorMessage = error.localizedDescription
+                }
                 return
             }
             
             if let placemark = placemarks?.first,
                let location = placemark.location {
-                self?.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta:  0.05))
-                self?.erroMessage = nil
-                    
+                DispatchQueue.main.async {
+                    self?.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+                    self?.errorMessage = nil
+                }
             } else {
-                self?.erroMessage = "No location found."
+                DispatchQueue.main.async {
+                    self?.errorMessage = "No location found."
+                }
             }
         }
     }
@@ -68,66 +81,91 @@ func performGeocoding(for address: String) {
         let search = MKLocalSearch(request: searchRequest)
         search.start { [weak self] (response, error) in
             if let error = error {
-                self?.erroMessage = error.localizedDescription
+                DispatchQueue.main.async {
+                    self?.errorMessage = error.localizedDescription
+                }
                 return
             }
             
             if let coordinate = response?.mapItems.first?.placemark.coordinate {
-                self?.region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
-                self?.erroMessage = nil
+                self?.updateSearchText("\(response?.mapItems.first?.placemark.title ?? ""), \(response?.mapItems.first?.placemark.subtitle ?? "")")
+                DispatchQueue.main.async {
+                    self?.region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+                    self?.addressName = "\(response?.mapItems.first?.placemark.title ?? ""), \(response?.mapItems.first?.placemark.subtitle ?? "")"
+                    self?.errorMessage = nil
+                }
             } else {
-                self?.erroMessage = error?.localizedDescription ?? "No location found"
+                DispatchQueue.main.sync {
+                    self?.errorMessage = error?.localizedDescription ?? "No location found"
+                }
             }
         }
     }
     
-    func currentUserLocation() {
+    func requestLocationPermission() {
         guard CLLocationManager.locationServicesEnabled() else {
-            self.erroMessage = "Location services are not enable"
+            DispatchQueue.main.async {
+                self.errorMessage = "Location services are not enabled."
+            }
             return
         }
+        
         switch locationManager.authorizationStatus {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .restricted, .denied:
-            self.erroMessage = "Location access is restricted or denied."
+            DispatchQueue.main.async {
+                self.errorMessage = "Location access is restricted or denied."
+            }
         case .authorizedWhenInUse, .authorizedAlways:
             locationManager.requestLocation()
         @unknown default:
-            self.erroMessage = "Unkown autorization status."
+            DispatchQueue.main.async {
+                self.errorMessage = "Unknown authorization status."
+            }
         }
     }
 }
 
 extension GeocodingViewModel: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        self.searchResults = completer.results
+        DispatchQueue.main.async {
+            self.searchResults = completer.results
+        }
     }
-    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: any Error) {
-        self.erroMessage = error.localizedDescription
+    
+    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
+        DispatchQueue.main.async {
+            self.errorMessage = error.localizedDescription
+        }
     }
 }
 
 extension GeocodingViewModel: CLLocationManagerDelegate {
-    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization authorizationStatus: CLAuthorizationStatus) {
-           if authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways {
-               locationManager.requestLocation()
-           } else if authorizationStatus == .denied || authorizationStatus == .restricted {
-               self.erroMessage = "Location access is restricted or denied."
-           }
-       }
-    
+        if authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways {
+            locationManager.requestLocation()
+        } else if authorizationStatus == .denied || authorizationStatus == .restricted {
+            DispatchQueue.main.async {
+                self.errorMessage = "Location access is restricted or denied."
+            }
+        }
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            self.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+            DispatchQueue.main.async {
+                withAnimation(.easeIn(duration: 1.0)) {
+                    self.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+                }
+            }
         }
-        
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
-        self.erroMessage = error.localizedDescription
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        DispatchQueue.main.async {
+            self.errorMessage = error.localizedDescription
+        }
     }
 }
 
