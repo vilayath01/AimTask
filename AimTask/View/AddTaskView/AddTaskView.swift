@@ -114,8 +114,20 @@ struct AddTaskView: View {
                                 
                                 Button(action: {
                                     // Zoom out action
-                                    geocodingViewModel.region.span.latitudeDelta *= 2
-                                    geocodingViewModel.region.span.longitudeDelta *= 2
+                                    let maxSpan: CLLocationDegrees = 180.0
+                                    
+                                    var newLatDalta = geocodingViewModel.region.span.latitudeDelta * 2
+                                    var newlongDelta = geocodingViewModel.region.span.longitudeDelta * 2
+                                    
+                                    if newLatDalta > maxSpan {
+                                        newLatDalta = maxSpan
+                                    }
+                                    
+                                    if newlongDelta > maxSpan {
+                                        newlongDelta = maxSpan
+                                    }
+                                    geocodingViewModel.region.span = MKCoordinateSpan(latitudeDelta: newLatDalta, longitudeDelta: newlongDelta)
+                                    
                                 }) {
                                     Image(systemName: "minus")
                                         .foregroundColor(.black)
