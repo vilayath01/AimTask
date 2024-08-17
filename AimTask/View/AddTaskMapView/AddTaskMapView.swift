@@ -1,10 +1,10 @@
 import SwiftUI
 import MapKit
 
-struct AddTaskView: View {
-    @StateObject private var geocodingViewModel = GeocodingViewModel()
+struct AddTaskMapView: View {
+    @StateObject private var geocodingViewModel = AddTaskMapViewModel()
     @State private var showAlert = false
-    @StateObject private var viewModel = ListViewModel()
+    @StateObject private var customAlertListViewModel = CustomAlertListViewModel()
     @State private var addressSelected: Bool = false
     
     var body: some View {
@@ -153,7 +153,7 @@ struct AddTaskView: View {
             
             
             if showAlert {
-                CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems, locationName: $geocodingViewModel.addressName)
+                CustomAlertView(isPresented: $showAlert, addTaskModel: $customAlertListViewModel.taskItems, locationName: $geocodingViewModel.addressName)
                     .transition(.opacity)
                     .animation(.easeInOut)
             }
@@ -165,6 +165,6 @@ struct AddTaskView: View {
 
 struct AddTaskView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTaskView()
+        AddTaskMapView()
     }
 }

@@ -1,9 +1,11 @@
 import SwiftUI
+import CoreLocation
 
 struct CustomAlertView: View {
     @Binding var isPresented: Bool
     @Binding var addTaskModel: [AddTaskModel]
-    @ObservedObject var addingViewModel = AddingViewModel()
+    @ObservedObject var customAlertViewModel = CustomAlertViewModel()
+    @StateObject var geocodingViewModel = AddTaskMapViewModel()
     @Binding var locationName: String
     var fdbManager = FDBManager()
     
@@ -67,79 +69,37 @@ struct CustomAlertView: View {
             let isFirst = taskIndex == 0
             let showRemoveButton = addTaskModel[index].taskItems.count > 1
             
-            ListItemView(
+            CustomAlertListView(
                 taskItem: taskItemBinding,
                 isLast: isLast,
                 isFirst: isFirst,
                 onAdd: {
-                    addingViewModel.addItem(to: &addTaskModel[index].taskItems)
+                    customAlertViewModel.addItem(to: &addTaskModel[index].taskItems)
                 }, onRemove: {
-                    addingViewModel.removeItem(at: taskIndex, from: &addTaskModel[index].taskItems)
+                    customAlertViewModel.removeItem(at: taskIndex, from: &addTaskModel[index].taskItems)
                 }, showRemoveButton: showRemoveButton
             )
         }
     }
     
-    
-    
     private func onSave(addTaskModel: [AddTaskModel]) {
-        addTaskModel.forEach { addTaskModel in
-            let updatedItem = AddTaskModel(locationName: locationName, dateTime: Date(), taskItems: addTaskModel.taskItems)
+        let selectedLocation = geocodingViewModel.region.center
+        addTaskModel.forEach { model in
+            let updatedItem = AddTaskModel(locationName: locationName, dateTime: Date(), taskItems: model.taskItems, coordinate: selectedLocation)
             fdbManager.addTask(updatedItem)
+            
+            let geofenceRegion = CLCircularRegion(
+                center: selectedLocation,
+                radius: 100,
+                identifier: locationName
+            )
+            geofenceRegion.notifyOnEntry = true
+            geofenceRegion.notifyOnExit = true
+            
+            geocodingViewModel.startMonitoring(geofenceRegion: geofenceRegion)
         }
     }
 }
-
-
-
-
-struct ListItemView: View {
-    @Binding var taskItem: String
-    var isLast: Bool
-    var isFirst: Bool
-    var onAdd: (() -> Void)?
-    var onRemove: (() -> Void)?
-    var showRemoveButton: Bool
-    
-    var body: some View {
-        HStack {
-            Circle()
-                .frame(width: 33, height: 33)
-                .foregroundColor(.cyan)
-                .overlay(Text("A").foregroundColor(.white))
-            
-            TextField("List item", text: $taskItem)
-                .textFieldStyle(PlainTextFieldStyle())
-                .padding(.leading, 4)
-            
-            Spacer()
-            
-            if isLast {
-                Button(action: {
-                    onAdd?()
-                }) {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.blue)
-                        .padding(.trailing, 4)
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-            
-            if showRemoveButton  {
-                Button(action: {
-                    onRemove?()
-                }) {
-                    Image(systemName: "minus.circle.fill")
-                        .foregroundColor(.red)
-                        .padding(.trailing, 4)
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-        }
-        .padding(.vertical, 2)
-    }
-}
-
 
 struct AlertView_Previews: PreviewProvider {
     static var previews: some View {
@@ -148,12 +108,11 @@ struct AlertView_Previews: PreviewProvider {
     
     struct AlertViewPreviewWrapper: View {
         @State private var showAlert = true
-        @StateObject private var viewModel = ListViewModel()
-        @State private var geoModel =  GeocodingViewModel()
+        @StateObject private var viewModel = CustomAlertListViewModel()
+        @State private var geoModel =  AddTaskMapViewModel()
         
         var body: some View {
             CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems, locationName: $geoModel.addressName)
         }
     }
 }
-

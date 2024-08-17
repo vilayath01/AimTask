@@ -57,10 +57,16 @@ class FDBManager: ObservableObject {
             print("No Authenticated user found")
             return
         }
+        
+        let coordinateData: [String: Any] = [
+            "latitude": task.coordinate.latitude,
+            "longitude": task.coordinate.longitude
+        ]
         let data: [String: Any] = [
             "dateTime" : Timestamp(date: task.dateTime),
             "taskItems" : task.taskItems,
-            "locationName": task.locationName
+            "locationName": task.locationName,
+            "coordinate" : coordinateData
             
         ]
         

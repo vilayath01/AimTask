@@ -26,11 +26,14 @@ struct AddTaskModel: Identifiable {
     var locationName: String = ""
     var dateTime: Date = Date()
     var taskItems: [String]
+    var coordinate: CLLocationCoordinate2D
+    
 
-    init(locationName: String, dateTime: Date, taskItems: [String] = []) {
+    init(locationName: String, dateTime: Date, taskItems: [String] = [], coordinate: CLLocationCoordinate2D) {
         self.locationName = locationName
         self.dateTime = dateTime
         self.taskItems = taskItems
+        self.coordinate = coordinate
     }
 }
 
