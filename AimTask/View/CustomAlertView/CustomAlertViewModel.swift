@@ -8,7 +8,7 @@
 import Foundation
 
 
-class AddingViewModel: ObservableObject {
+class CustomAlertViewModel: ObservableObject {
     
     @Published  var addTaskModel: [AddTaskModel] = []
     

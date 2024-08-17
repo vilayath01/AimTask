@@ -19,7 +19,7 @@ struct MainApp: View {
                     HomeView() .tabItem {
                         Label("Home", systemImage: "house")
                     }
-                    AddTaskView().tabItem {
+                    AddTaskMapView().tabItem {
                         Label("Add Task", systemImage: "target")
                     }
                     HistoryView().tabItem {

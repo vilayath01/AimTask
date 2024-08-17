@@ -10,7 +10,7 @@ import MapKit
 import Combine
 import SwiftUI
 
-class GeocodingViewModel: NSObject, ObservableObject {
+class AddTaskMapViewModel: NSObject, ObservableObject {
     
     @Published var searchText: String = ""
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
@@ -33,6 +33,9 @@ class GeocodingViewModel: NSObject, ObservableObject {
         completer.delegate = self
         locationManager.delegate = self
         requestLocationPermission()
+        //        locationManager.allowsBackgroundLocationUpdates = true
+        //        locationManager.pausesLocationUpdatesAutomatically = false
+        
     }
     
     private func setupBindings() {
@@ -127,7 +130,7 @@ class GeocodingViewModel: NSObject, ObservableObject {
     }
 }
 
-extension GeocodingViewModel: MKLocalSearchCompleterDelegate {
+extension AddTaskMapViewModel: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         DispatchQueue.main.async {
             self.searchResults = completer.results
@@ -141,7 +144,7 @@ extension GeocodingViewModel: MKLocalSearchCompleterDelegate {
     }
 }
 
-extension GeocodingViewModel: CLLocationManagerDelegate {
+extension AddTaskMapViewModel: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization authorizationStatus: CLAuthorizationStatus) {
         if authorizationStatus == .authorizedWhenInUse || authorizationStatus == .authorizedAlways {
             locationManager.requestLocation()
@@ -177,6 +180,20 @@ extension GeocodingViewModel: CLLocationManagerDelegate {
             self.errorMessage = error.localizedDescription
         }
     }
+    
+    // Geofence
+    
+    func startMonitoring(geofenceRegion: CLCircularRegion) {
+        if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+            locationManager.startMonitoring(for: geofenceRegion)
+        } else {
+            print("Geofenceing is not supported on this device.")
+        }
+    }
+    
+    func stopMonitoring(geofenceRegion: CLCircularRegion) {
+        locationManager.stopMonitoring(for: geofenceRegion)
+    }
 }
 
 extension CLLocationCoordinate2D: Identifiable {
@@ -184,3 +201,25 @@ extension CLLocationCoordinate2D: Identifiable {
         "\(latitude), \(longitude)"
     }
 }
+
+extension AddTaskMapViewModel {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            print("Entered geofence: \(region.identifier)")
+            // Handle entry event
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            print("Exited geofence: \(region.identifier)")
+            // Handle exit event
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        print("Failed to monitor region: \(error.localizedDescription)")
+    }
+}
+
+
