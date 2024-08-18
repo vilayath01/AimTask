@@ -10,7 +10,7 @@ import Foundation
 
 class CustomAlertViewModel: ObservableObject {
     
-    @Published  var addTaskModel: [AddTaskModel] = []
+    @Published  var addTaskModel: [TaskModel] = []
     
     func alphabet(for index: Int) -> String {
         var result = ""

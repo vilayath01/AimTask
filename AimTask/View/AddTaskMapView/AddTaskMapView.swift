@@ -2,10 +2,11 @@ import SwiftUI
 import MapKit
 
 struct AddTaskMapView: View {
-    @StateObject private var geocodingViewModel = AddTaskMapViewModel()
+    @StateObject private var addTaskMapViewModel = AddTaskMapViewModel()
     @State private var showAlert = false
     @StateObject private var customAlertListViewModel = CustomAlertListViewModel()
     @State private var addressSelected: Bool = false
+    @StateObject private var fdbManager = FDBManager()
     
     var body: some View {
         ZStack {
@@ -18,19 +19,19 @@ struct AddTaskMapView: View {
                 
                 HStack {
                     HStack {
-                        TextField("Enter address", text: $geocodingViewModel.searchText)
+                        TextField("Enter address", text: $addTaskMapViewModel.searchText)
                             .padding(12)
                             .background(Color(.systemGray6))
                             .cornerRadius(10)
-                            .onChange(of: geocodingViewModel.searchText) { newValue in
+                            .onChange(of: addTaskMapViewModel.searchText) { newValue in
                                 if newValue.isEmpty {
-                                    geocodingViewModel.searchResults.removeAll()
+                                    addTaskMapViewModel.searchResults.removeAll()
                                     addressSelected = false
                                 }
                             }
                         Button(action: {
-                            geocodingViewModel.searchResults.removeAll()
-                            geocodingViewModel.performGeocoding(for: geocodingViewModel.searchText)
+                            addTaskMapViewModel.searchResults.removeAll()
+                            addTaskMapViewModel.performGeocoding(for: addTaskMapViewModel.searchText)
                         }) {
                             Image(systemName: "magnifyingglass")
                                 .foregroundColor(.primary)
@@ -50,12 +51,12 @@ struct AddTaskMapView: View {
                 }
                 .padding()
                 
-                if !geocodingViewModel.searchResults.isEmpty && !addressSelected {
+                if !addTaskMapViewModel.searchResults.isEmpty && !addressSelected {
                     
-                    List(geocodingViewModel.searchResults, id: \.self) { result in
+                    List(addTaskMapViewModel.searchResults, id: \.self) { result in
                         Button(action: {
-                            geocodingViewModel.selectCompletion(result)
-                            geocodingViewModel.searchResults.removeAll()
+                            addTaskMapViewModel.selectCompletion(result)
+                            addTaskMapViewModel.searchResults.removeAll()
                             addressSelected = true
                         }) {
                             VStack(alignment: .leading) {
@@ -72,7 +73,7 @@ struct AddTaskMapView: View {
                 
                 // Middle section with map
                 ZStack {
-                    Map(coordinateRegion: $geocodingViewModel.region, showsUserLocation: true, annotationItems: [geocodingViewModel.region.center]) { location in
+                    Map(coordinateRegion: $addTaskMapViewModel.region, showsUserLocation: true, annotationItems: [addTaskMapViewModel.region.center]) { location in
                         MapMarker(coordinate: location, tint: .red)
                     }
                     .edgesIgnoringSafeArea(.horizontal)
@@ -84,7 +85,7 @@ struct AddTaskMapView: View {
                         VStack {
                             Spacer()
                             Button(action: {
-                                geocodingViewModel.requestLocationPermission()
+                                addTaskMapViewModel.requestLocationPermission()
                             }) {
                                 Image(systemName: "location.fill")
                                     .foregroundColor(.black)
@@ -99,8 +100,8 @@ struct AddTaskMapView: View {
                             VStack {
                                 Button(action: {
                                     // Zoom in action
-                                    geocodingViewModel.region.span.latitudeDelta /= 2
-                                    geocodingViewModel.region.span.longitudeDelta /= 2
+                                    addTaskMapViewModel.region.span.latitudeDelta /= 2
+                                    addTaskMapViewModel.region.span.longitudeDelta /= 2
                                 }) {
                                     Image(systemName: "plus")
                                         .foregroundColor(.black)
@@ -116,8 +117,8 @@ struct AddTaskMapView: View {
                                     // Zoom out action
                                     let maxSpan: CLLocationDegrees = 180.0
                                     
-                                    var newLatDalta = geocodingViewModel.region.span.latitudeDelta * 2
-                                    var newlongDelta = geocodingViewModel.region.span.longitudeDelta * 2
+                                    var newLatDalta = addTaskMapViewModel.region.span.latitudeDelta * 2
+                                    var newlongDelta = addTaskMapViewModel.region.span.longitudeDelta * 2
                                     
                                     if newLatDalta > maxSpan {
                                         newLatDalta = maxSpan
@@ -126,7 +127,7 @@ struct AddTaskMapView: View {
                                     if newlongDelta > maxSpan {
                                         newlongDelta = maxSpan
                                     }
-                                    geocodingViewModel.region.span = MKCoordinateSpan(latitudeDelta: newLatDalta, longitudeDelta: newlongDelta)
+                                    addTaskMapViewModel.region.span = MKCoordinateSpan(latitudeDelta: newLatDalta, longitudeDelta: newlongDelta)
                                     
                                 }) {
                                     Image(systemName: "minus")
@@ -153,15 +154,13 @@ struct AddTaskMapView: View {
             
             
             if showAlert {
-                CustomAlertView(isPresented: $showAlert, addTaskModel: $customAlertListViewModel.taskItems, locationName: $geocodingViewModel.addressName)
+                CustomAlertView(isPresented: $showAlert, addTaskModel: $customAlertListViewModel.taskItems, locationName: $addTaskMapViewModel.addressName)
                     .transition(.opacity)
                     .animation(.easeInOut)
             }
         }
     }
 }
-
-
 
 struct AddTaskView_Previews: PreviewProvider {
     static var previews: some View {

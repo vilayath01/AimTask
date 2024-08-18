@@ -11,35 +11,38 @@ import Combine
 import CoreLocation
 
 class FDBManager: ObservableObject {
-    @Published var tasks = [AimTask]()
+    @Published var tasks = [TaskModel]()
     private let db = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
     
     func fetchTasks()  {
         print("This is userEmail:\(Auth.auth().currentUser)")
         guard let user = Auth.auth().currentUser
-               
+                
         else {
             print("No authenticated user found")
             return
         }
         
-        Future<[AimTask], Error> { promise in
+        Future<[TaskModel], Error> { promise in
             self.db.collection("users").document(user.uid).collection("tasks").getDocuments { querySnapshot, error in
                 if let error = error {
                     promise(.failure(error))
                 } else {
-                    let tasks = querySnapshot?.documents.compactMap({ doc -> AimTask? in
+                    let tasks = querySnapshot?.documents.compactMap({ doc -> TaskModel? in
                         let data = doc.data()
-                        let id = doc.documentID
-                        let name = data["name"] as? String ?? ""
-                        let latitude = data["latitude"] as? Double ?? 0.0
-                        let longitude = data["longitude"] as? Double ?? 0.0
-                        let location = CLLocation(latitude: latitude, longitude: longitude)
-                        let dateTime = (data["dateTime"] as? Timestamp)?.dateValue() ?? Date()
-                        let locationName = data["locationName"] as? String ?? ""
-                        print("id: \(id), name: \(name)")
-                        return AimTask(id: id, name: name, location: location, dateTime: dateTime)
+                        guard
+                            let locationName = data["locationName"] as? String,
+                            let taskItems = data["taskItems"] as? [String],
+                            let dateTime = (data["dateTime"] as? Timestamp)?.dateValue(),
+                            let coordinateData = data["coordinate"] as? [String: Double],
+                            let latitude = coordinateData["latitude"],
+                            let longitude = coordinateData["longitude"]
+                        else {
+                            return nil
+                        }
+                        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                        return TaskModel(locationName: locationName, dateTime: dateTime, taskItems: taskItems, coordinate: location, documentID: doc.documentID)
                     }) ?? []
                     promise(.success(tasks))
                 }
@@ -52,7 +55,7 @@ class FDBManager: ObservableObject {
         
     }
     
-    func addTask(_ task: AddTaskModel) {
+    func addTask(_ task: TaskModel) {
         guard let user = Auth.auth().currentUser else {
             print("No Authenticated user found")
             return
