@@ -8,75 +8,42 @@
 
 import SwiftUI
 
-struct TaskItem: View {
-    var body: some View {
-        HStack {
-            Circle()
-                .fill(Color.purple)
-                .frame(width: 30, height: 30)
-                .overlay(Text("A").foregroundColor(.white).font(.headline))
-            Text("List item")
-                .font(.body)
-                .foregroundColor(.primary)
-            Spacer()
-            Image(systemName: "checkmark.square.fill")
-                .foregroundColor(.purple)
-        }
-        .padding()
-        .background(Color(red: 105/255, green: 155/255, blue: 157/255).opacity(0))
-        .cornerRadius(8)
-        .shadow(color: Color.black.opacity(0.4), radius: 5, x: 0, y: 2)
-    }
-}
-
-struct TaskSection: View {
-    var title: String
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(title)
-                .font(.title3)
-                .fontWeight(.semibold)
-                .foregroundColor(.primary)
-                .padding(.leading)
-                .padding(.top, 10)
-            
-            
-            ForEach(0..<4) { _ in
-                TaskItem()
-            }
-        }
-        .background(Color(red: 105/255, green: 155/255, blue: 157/255).opacity(1))
-        .cornerRadius(10)
-        .padding()
-    }
-}
-
 struct HomeView: View {
     @EnvironmentObject var loginViewModel: LoginViewModel
+    @StateObject private var fdbManager = FDBManager()
+    
     var body: some View {
         NavigationView {
-
-                ScrollView {
-                    VStack(spacing: 20) {
-                        TaskSection(title: "Location One Task")
-                        TaskSection(title: "Location Two Task")
-                        TaskSection(title: "Location Three Task")
+            VStack {
+                if fdbManager.tasks.isEmpty {
+                    NoTasksView()
+                } else {
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            ForEach(Dictionary(grouping: fdbManager.tasks, by: { $0.locationName }).keys.sorted(), id: \.self) { locationName in
+                                let tasksForLocation = fdbManager.tasks.filter { $0.locationName == locationName }
+                                TaskSectionView(title: locationName, tasks: tasksForLocation)
+                            }
+                        }
+                        .padding(.top)
                     }
-                    .padding(.top)
-                   
+                    
                 }
-          
-                .navigationTitle("Home: \(loginViewModel.displayName.usernameFromEmail())")
-            
+            }
+            .navigationTitle("Home: \(loginViewModel.displayName.usernameFromEmail())")
             .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
+           
         }
-       
+        .onAppear {
+            fdbManager.fetchTasks()
+        }
     }
 }
 
+// Preview for SwiftUI
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(LoginViewModel()) // Mocked LoginViewModel
     }
 }
