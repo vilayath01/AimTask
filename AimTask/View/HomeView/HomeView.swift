@@ -22,7 +22,8 @@ struct HomeView: View {
                         VStack(spacing: 20) {
                             ForEach(Dictionary(grouping: fdbManager.tasks, by: { $0.locationName }).keys.sorted(), id: \.self) { locationName in
                                 let tasksForLocation = fdbManager.tasks.filter { $0.locationName == locationName }
-                                TaskSectionView(title: locationName, tasks: tasksForLocation)
+                                let docIDsForLocation = tasksForLocation.map {$0.documentID}
+                                TaskSectionView(title: locationName, tasks: tasksForLocation, docId: docIDsForLocation )
                             }
                         }
                         .padding(.top)
@@ -32,7 +33,7 @@ struct HomeView: View {
             }
             .navigationTitle("Home: \(loginViewModel.displayName.usernameFromEmail())")
             .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
-           
+            
         }
         .onAppear {
             fdbManager.fetchTasks()
