@@ -4,11 +4,10 @@ import CoreLocation
 struct CustomAlertView: View {
     @Binding var isPresented: Bool
     @Binding var addTaskModel: [TaskModel]
-    @ObservedObject var customAlertViewModel = CustomAlertViewModel()
-    @StateObject var geocodingViewModel = AddTaskMapViewModel()
     @Binding var locationName: String
-    var fdbManager = FDBManager()
-    
+    @StateObject private var customAlertViewModel = CustomAlertViewModel()
+    @StateObject  private var geocodingViewModel = AddTaskMapViewModel()
+   
     var body: some View {
         VStack(spacing: 20) {
             Text("Add task Items @ \(locationName)")
@@ -82,11 +81,11 @@ struct CustomAlertView: View {
         }
     }
     
-    private func onSave(addTaskModel: [TaskModel]) {
+  private  func onSave(addTaskModel: [TaskModel]) {
         let selectedLocation = geocodingViewModel.region.center
         addTaskModel.forEach { model in
             let updatedItem = TaskModel(locationName: locationName, dateTime: Date(), taskItems: model.taskItems, coordinate: selectedLocation, documentID: "")
-            fdbManager.addTask(updatedItem)
+            customAlertViewModel.fdbManager.addTask(updatedItem)
             
             let geofenceRegion = CLCircularRegion(
                 center: selectedLocation,
@@ -98,7 +97,7 @@ struct CustomAlertView: View {
             
             geocodingViewModel.startMonitoring(geofenceRegion: geofenceRegion)
         }
-        fdbManager.fetchTasks()
+        customAlertViewModel.fdbManager.fetchTasks()
     }
 }
 

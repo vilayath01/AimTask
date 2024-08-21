@@ -7,10 +7,14 @@
 
 import Foundation
 
-
 class CustomAlertViewModel: ObservableObject {
     
     @Published  var addTaskModel: [TaskModel] = []
+    var fdbManager: FDBManager
+  
+    init(fdbManager: FDBManager = FDBManager()) {
+        self.fdbManager = fdbManager
+    }
     
     func alphabet(for index: Int) -> String {
         var result = ""
@@ -39,5 +43,4 @@ class CustomAlertViewModel: ObservableObject {
         guard index >= 0 && index < items.count else { return }
         items.remove(at: index)
     }
-
 }
