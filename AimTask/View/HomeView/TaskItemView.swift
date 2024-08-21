@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 struct TaskItemView: View {
-    @State private var completedItems = Set<String>()
     let task: TaskModel
-    @StateObject private var fdbManager = FDBManager()
+    
+    @ObservedObject var viewModel: HomeViewModel
     @State var enteredToLocation: Bool = false
     
     var body: some View {
@@ -22,7 +22,7 @@ struct TaskItemView: View {
                     let alphabet = String(UnicodeScalar(65 + index)!)
                     
                     Button(action: {
-                        toggleItemCompletion(task.taskItems[index])
+                        viewModel.toggleItemCompletion(task.taskItems[index])
                     }) {
                         HStack {
                             Circle()
@@ -34,17 +34,17 @@ struct TaskItemView: View {
                             
                             Text(task.taskItems[index])
                                 .font(.subheadline)
-                                .foregroundColor(enteredToLocation ? (completedItems.contains(task.taskItems[index]) ? .secondary : .primary) : .primary)
-                                .strikethrough( enteredToLocation && completedItems.contains(task.taskItems[index]), color: .secondary)
+                                .foregroundColor(enteredToLocation ? (viewModel.completedItems.contains(task.taskItems[index]) ? .secondary : .primary) : .primary)
+                                .strikethrough( enteredToLocation && viewModel.completedItems.contains(task.taskItems[index]), color: .secondary)
                             
                             Spacer()
                             
                             if enteredToLocation {
-                                Image(systemName: completedItems.contains(task.taskItems[index]) ? "checkmark.square.fill" : "square")
-                                    .foregroundColor(completedItems.contains(task.taskItems[index]) ? .purple : .secondary)
+                                Image(systemName: viewModel.completedItems.contains(task.taskItems[index]) ? "checkmark.square.fill" : "square")
+                                    .foregroundColor(viewModel.completedItems.contains(task.taskItems[index]) ? .purple : .secondary)
                             } else {
                                 Button(action: {
-                                    fdbManager.deleteTask(from: task.documentID, item: task.taskItems[index])
+                                    viewModel.deleteTask(from: task.documentID, item: task.taskItems[index])
                                 }) {
                                     Image(systemName: "trash")
                                 }
@@ -71,17 +71,11 @@ struct TaskItemView: View {
         .cornerRadius(8)
     }
     
-    private func toggleItemCompletion(_ item: String) {
-        if completedItems.contains(item) {
-            completedItems.remove(item)
-        } else {
-            completedItems.insert(item)
-        }
-    }
+    
 }
 
 struct TaskItemView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskItemView(task: TaskModel(locationName:"", dateTime: Date(),taskItems:  ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: ""))
+        TaskItemView(task: TaskModel(locationName:"", dateTime: Date(),taskItems:  ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: ""), viewModel: HomeViewModel())
     }
 }

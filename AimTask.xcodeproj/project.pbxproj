@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		388CF5C72C6AED7C00EC361D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */; };
+		551E58482C7603340008986A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E58472C7603340008986A /* HomeViewModel.swift */; };
 		553EA91D2C719E7900AC44DE /* NoTaskaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA91C2C719E7900AC44DE /* NoTaskaView.swift */; };
 		553EA91F2C719ED600AC44DE /* TaskItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA91E2C719ED600AC44DE /* TaskItemView.swift */; };
 		553EA9212C719F5F00AC44DE /* TaskSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA9202C719F5F00AC44DE /* TaskSectionView.swift */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		551E58472C7603340008986A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		553EA91C2C719E7900AC44DE /* NoTaskaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTaskaView.swift; sourceTree = "<group>"; };
 		553EA91E2C719ED600AC44DE /* TaskItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemView.swift; sourceTree = "<group>"; };
 		553EA9202C719F5F00AC44DE /* TaskSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionView.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				553EA91C2C719E7900AC44DE /* NoTaskaView.swift */,
 				553EA91E2C719ED600AC44DE /* TaskItemView.swift */,
 				553EA9202C719F5F00AC44DE /* TaskSectionView.swift */,
+				551E58472C7603340008986A /* HomeViewModel.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				55A5CE6C2C4D515E00F9E533 /* HistoryView.swift in Sources */,
 				55A5CE5A2C4D12B200F9E533 /* Model.swift in Sources */,
 				553EA9232C71AF4B00AC44DE /* Geofence.swift in Sources */,
+				551E58482C7603340008986A /* HomeViewModel.swift in Sources */,
 				55A5CE462C4B571500F9E533 /* MainApp.swift in Sources */,
 				55A5CE702C5CCEA900F9E533 /* CustomAlertListViewModel.swift in Sources */,
 				55632C4C2C708128006C3DD8 /* CustomeAlertListView.swift in Sources */,

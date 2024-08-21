@@ -12,7 +12,7 @@ struct TaskSectionView: View {
     var title: String
     var tasks: [TaskModel]
     var docId: [String]
-    @StateObject private var fdbManager = FDBManager()
+    @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -28,7 +28,7 @@ struct TaskSectionView: View {
                 Spacer()
                 
                 Button(action: {
-                    deleteItem(docId)
+                    viewModel.deleteWholeDoc(docId)
                     
                 }, label: {
                     Image(systemName: "trash")
@@ -40,7 +40,7 @@ struct TaskSectionView: View {
             }
             
             ForEach(tasks) { task in
-                TaskItemView(task: task)
+                TaskItemView(task: task, viewModel: viewModel)
                 
             }
         }
@@ -49,10 +49,7 @@ struct TaskSectionView: View {
         .padding()
     }
     
-    private func deleteItem(_ documentId: [String]) {
-        
-        fdbManager.deleteDocument(with: documentId)
-    }
+    
 }
 
 struct TaskSectionView_Previews: PreviewProvider {
@@ -61,7 +58,7 @@ struct TaskSectionView_Previews: PreviewProvider {
             title: "Example: 510 glenferrie Road, Hawthorn,Australia.",
             tasks: [
                 TaskModel(locationName:"", dateTime: Date(),taskItems:  ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: ""),
-            ], docId: [""]
+            ], docId: [""], viewModel: HomeViewModel()
         )
     }
 }

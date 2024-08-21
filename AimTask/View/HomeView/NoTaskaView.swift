@@ -29,6 +29,6 @@ struct NoTasksView: View {
 
 struct NoTasksView_Previews: PreviewProvider {
     static var previews: some View {
-       NoTasksView()
+        NoTasksView()
     }
 }
