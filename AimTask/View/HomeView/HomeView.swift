@@ -10,20 +10,21 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var loginViewModel: LoginViewModel
-    @StateObject private var fdbManager = FDBManager()
+    @StateObject private var viewModel =  HomeViewModel()
+    
     
     var body: some View {
         NavigationView {
             VStack {
-                if fdbManager.tasks.isEmpty {
+                if viewModel.tasks.isEmpty {
                     NoTasksView()
                 } else {
                     ScrollView {
                         VStack(spacing: 20) {
-                            ForEach(Dictionary(grouping: fdbManager.tasks, by: { $0.locationName }).keys.sorted(), id: \.self) { locationName in
-                                let tasksForLocation = fdbManager.tasks.filter { $0.locationName == locationName }
+                            ForEach(Dictionary(grouping: viewModel.tasks, by: { $0.locationName }).keys.sorted(), id: \.self) { locationName in
+                                let tasksForLocation = viewModel.tasks.filter { $0.locationName == locationName }
                                 let docIDsForLocation = tasksForLocation.map {$0.documentID}
-                                TaskSectionView(title: locationName, tasks: tasksForLocation, docId: docIDsForLocation )
+                                TaskSectionView(title: locationName, tasks: tasksForLocation, docId: docIDsForLocation, viewModel: viewModel)
                             }
                         }
                         .padding(.top)
@@ -36,7 +37,7 @@ struct HomeView: View {
             
         }
         .onAppear {
-            fdbManager.fetchTasks()
+            viewModel.fetchTasks()
         }
     }
 }
