@@ -20,21 +20,31 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
     @Published var searchResults: [MKLocalSearchCompletion] = []
     @Published var errorMessage: String?
     @Published var addressName: String = ""
-    
+    @Published var tasks: [TaskModel] = []
+    private var geofenceRegions: [String: CLCircularRegion] = [:]
     private var geocoder = CLGeocoder()
     private var completer = MKLocalSearchCompleter()
     private var cancellables = Set<AnyCancellable>()
     private var locationManager = CLLocationManager()
+    private var fdbManager: FDBManager
     
-    override init() {
+    init(fdbManager: FDBManager = FDBManager()) {
+        self.fdbManager = fdbManager
         super.init()
+        
+        fetchTasks()
         setupBindings()
+        
         completer.resultTypes = .address
         completer.delegate = self
+        
         locationManager.delegate = self
-        requestLocationPermission()
-        //        locationManager.allowsBackgroundLocationUpdates = true
-        //        locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestAlwaysAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
         
     }
     
@@ -105,27 +115,21 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         }
     }
     
-    func requestLocationPermission() {
-        guard CLLocationManager.locationServicesEnabled() else {
-            DispatchQueue.main.async {
-                self.errorMessage = "Location services are not enabled."
-            }
-            return
+    // Map Recenter
+    func centerOnUserLocation() {
+        if let location = locationManager.location {
+            centerMap(on: location.coordinate, animated: true)
         }
-        
-        switch locationManager.authorizationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted, .denied:
-            DispatchQueue.main.async {
-                self.errorMessage = "Location access is restricted or denied."
+    }
+    
+    func centerMap(on coordinate: CLLocationCoordinate2D, animated: Bool) {
+        if animated {
+            withAnimation(.easeInOut(duration: 1.0)) {
+                region.center = coordinate
+                region.span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
             }
-        case .authorizedWhenInUse, .authorizedAlways:
-            locationManager.requestLocation()
-        @unknown default:
-            DispatchQueue.main.async {
-                self.errorMessage = "Unknown authorization status."
-            }
+        } else {
+            region.center = coordinate
         }
     }
 }
@@ -167,11 +171,6 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
                 }
                 
             }
-            DispatchQueue.main.async {
-                withAnimation(.easeIn(duration: 1.0)) {
-                    self.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
-                }
-            }
         }
     }
     
@@ -179,20 +178,6 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
         DispatchQueue.main.async {
             self.errorMessage = error.localizedDescription
         }
-    }
-    
-    // Geofence
-    
-    func startMonitoring(geofenceRegion: CLCircularRegion) {
-        if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
-            locationManager.startMonitoring(for: geofenceRegion)
-        } else {
-            print("Geofenceing is not supported on this device.")
-        }
-    }
-    
-    func stopMonitoring(geofenceRegion: CLCircularRegion) {
-        locationManager.stopMonitoring(for: geofenceRegion)
     }
 }
 
@@ -202,8 +187,75 @@ extension CLLocationCoordinate2D: Identifiable {
     }
 }
 
+
+// Geofence
 extension AddTaskMapViewModel {
+    
+    func fetchTasks() {
+        fdbManager.fetchTasks()
+        fdbManager.$tasks
+            .sink { [weak self] tasks in
+                self?.tasks = tasks
+                self?.updateGeofences()
+            }
+            .store(in: &cancellables)
+    }
+    
+    
+    private func updateGeofences() {
+        clearGeofences()
+        
+        // Add new geofences for each task
+        for task in tasks {
+            addGeofence(for: task)
+        }
+        
+        print("Updated geofences: \(geofenceRegions.keys)")
+    }
+    
+    func clearGeofences() {
+        for region in geofenceRegions.values {
+//            locationManager.stopMonitoring(for: region)
+            stopMonitoring(geofenceRegion: region)
+            print("Stopped monitoring for geofence: \(region.identifier)")
+        }
+        geofenceRegions.removeAll()
+        print("Cleared all geofences")
+    }
+    
+    func addGeofence(for task: TaskModel) {
+        let geofenceRegion = CLCircularRegion(
+            center: task.coordinate,
+            radius: 100.0, // Define the radius for the geofence
+            identifier: task.documentID
+        )
+        
+        geofenceRegion.notifyOnEntry = true
+        geofenceRegion.notifyOnExit = true
+        
+        // Start monitoring the geofence region
+//        locationManager.startMonitoring(for: geofenceRegion)
+        startMonitoring(geofenceRegion: geofenceRegion)
+        
+        // Store the region for future reference
+        geofenceRegions[task.documentID] = geofenceRegion
+        print("Started monitoring geofence for task: \(task.documentID) / \(task.locationName)")
+    }
+
+    func startMonitoring(geofenceRegion: CLCircularRegion) {
+        if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+            locationManager.startMonitoring(for: geofenceRegion)
+            print("This is monitor region: \(geofenceRegion.identifier)")
+        } else {
+            print("Geofenceing is not supported on this device.")
+        }
+    }
+    
+    func stopMonitoring(geofenceRegion: CLCircularRegion) {
+        locationManager.stopMonitoring(for: geofenceRegion)
+    }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("this is region\(region.identifier)")
         if region is CLCircularRegion {
             print("Entered geofence: \(region.identifier)")
             // Handle entry event

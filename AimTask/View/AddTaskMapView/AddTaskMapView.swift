@@ -7,6 +7,7 @@ struct AddTaskMapView: View {
     @StateObject private var customAlertListViewModel = CustomAlertListViewModel()
     @State private var addressSelected: Bool = false
     @StateObject private var fdbManager = FDBManager()
+    @State var tracking: MapUserTrackingMode = .follow
     
     var body: some View {
         ZStack {
@@ -73,7 +74,7 @@ struct AddTaskMapView: View {
                 
                 // Middle section with map
                 ZStack {
-                    Map(coordinateRegion: $addTaskMapViewModel.region, showsUserLocation: true, annotationItems: [addTaskMapViewModel.region.center]) { location in
+                    Map(coordinateRegion: $addTaskMapViewModel.region, showsUserLocation: true, userTrackingMode: $tracking, annotationItems: [addTaskMapViewModel.region.center]) { location in
                         MapMarker(coordinate: location, tint: .red)
                     }
                     .edgesIgnoringSafeArea(.horizontal)
@@ -85,7 +86,7 @@ struct AddTaskMapView: View {
                         VStack {
                             Spacer()
                             Button(action: {
-                                addTaskMapViewModel.requestLocationPermission()
+                                addTaskMapViewModel.centerOnUserLocation()
                             }) {
                                 Image(systemName: "location.fill")
                                     .foregroundColor(.black)

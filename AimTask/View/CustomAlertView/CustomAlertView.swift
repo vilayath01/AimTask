@@ -87,16 +87,6 @@ struct CustomAlertView: View {
         addTaskModel.forEach { model in
             let updatedItem = TaskModel(locationName: locationName, dateTime: Date(), taskItems: model.taskItems, coordinate: selectedLocation, documentID: "")
             fdbManager.addTask(updatedItem)
-            
-            let geofenceRegion = CLCircularRegion(
-                center: selectedLocation,
-                radius: 100,
-                identifier: locationName
-            )
-            geofenceRegion.notifyOnEntry = true
-            geofenceRegion.notifyOnExit = true
-            
-            geocodingViewModel.startMonitoring(geofenceRegion: geofenceRegion)
         }
         fdbManager.fetchTasks()
     }
