@@ -144,7 +144,10 @@ struct AddTaskMapView: View {
             
             
             if showAlert {
-                CustomAlertView(isPresented: $showAlert, addTaskModel: $customAlertListViewModel.taskItems, locationName: $addTaskMapViewModel.addressName)
+                CustomAlertView(isPresented: $showAlert,
+                                locationName: $addTaskMapViewModel.addressName, addTaskModel: $customAlertListViewModel.taskItems,
+                                customAlertViewModel: CustomAlertViewModel(),
+                                addTaskMapViewModel: addTaskMapViewModel)
                     .transition(.opacity)
                     .animation(.easeInOut)
             }

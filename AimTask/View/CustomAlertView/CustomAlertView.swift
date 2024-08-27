@@ -3,10 +3,11 @@ import CoreLocation
 
 struct CustomAlertView: View {
     @Binding var isPresented: Bool
-    @Binding var addTaskModel: [TaskModel]
-    @ObservedObject var customAlertViewModel = CustomAlertViewModel()
-    @StateObject var geocodingViewModel = AddTaskMapViewModel()
     @Binding var locationName: String
+    @Binding var addTaskModel: [TaskModel]
+    @ObservedObject var customAlertViewModel: CustomAlertViewModel
+    @ObservedObject var addTaskMapViewModel: AddTaskMapViewModel
+
     var fdbManager = FDBManager()
     
     var body: some View {
@@ -83,12 +84,13 @@ struct CustomAlertView: View {
     }
     
     private func onSave(addTaskModel: [TaskModel]) {
-        let selectedLocation = geocodingViewModel.region.center
+        let selectedLocation = addTaskMapViewModel.region.center
         addTaskModel.forEach { model in
             let updatedItem = TaskModel(locationName: locationName, dateTime: Date(), taskItems: model.taskItems, coordinate: selectedLocation, documentID: "")
             fdbManager.addTask(updatedItem)
+
         }
-        fdbManager.fetchTasks()
+       fdbManager.fetchTasks()
     }
 }
 
@@ -103,7 +105,7 @@ struct AlertView_Previews: PreviewProvider {
         @State private var geoModel =  AddTaskMapViewModel()
         
         var body: some View {
-            CustomAlertView(isPresented: $showAlert, addTaskModel: $viewModel.taskItems, locationName: $geoModel.addressName)
+            CustomAlertView(isPresented: $showAlert, locationName: $geoModel.addressName, addTaskModel: $viewModel.taskItems, customAlertViewModel: CustomAlertViewModel(), addTaskMapViewModel: geoModel)
         }
     }
 }

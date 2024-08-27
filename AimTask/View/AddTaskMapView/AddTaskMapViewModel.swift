@@ -25,7 +25,6 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
     @Published var tasks: [TaskModel] = []
     private var geofenceRegions: [String: CLCircularRegion] = [:]
     
-    //other properties
     private var geocoder = CLGeocoder()
     private var completer = MKLocalSearchCompleter()
     private var cancellables = Set<AnyCancellable>()
@@ -37,8 +36,9 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
     init(fdbManager: FDBManager = FDBManager()) {
         self.fdbManager = fdbManager
         super.init()
-        fetchTasks()
         setupBindings()
+        fetchTasks()
+       
         completer.resultTypes = .address
         completer.delegate = self
         setupLocationManager()
@@ -54,7 +54,17 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         locationManager.pausesLocationUpdatesAutomatically = false
     }
     
-    private func setupBindings() {
+     func setupBindings() {
+        
+        fdbManager.$tasks
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] tasks in
+                print("Tasks updated: \(tasks.count)")
+                self?.tasks = tasks
+                self?.updateGeofences()
+            }
+            .store(in: &cancellables)
+        
         $searchText
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .removeDuplicates()
@@ -201,21 +211,14 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
-        
-        // Compare with the previous location
         if let previousLocation = previousLocation {
             let distance = location.distance(from: previousLocation)
             if distance < 10 {  // Only update if the location has changed by more than 10 meters
                 return
             }
         }
-        
         // Update the previousLocation to the current one
         previousLocation = location
-        
-        // Perform reverse geocoding
-        reverseGeocodeLocation(location)
-        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -246,12 +249,6 @@ extension AddTaskMapViewModel {
     
     func fetchTasks() {
         fdbManager.fetchTasks()
-        fdbManager.$tasks
-            .sink { [weak self] tasks in
-                self?.tasks = tasks
-                self?.updateGeofences()
-            }
-            .store(in: &cancellables)
     }
     
     
@@ -276,21 +273,25 @@ extension AddTaskMapViewModel {
     }
     
     func addGeofence(for task: TaskModel) {
+        guard task.coordinate.latitude != 0.0 && task.coordinate.longitude != 0.0 else {
+            print("Invalid coordinates for task \(task.documentID)")
+            return
+        }
+        
         let geofenceRegion = CLCircularRegion(
             center: task.coordinate,
-            radius: 100.0, // Define the radius for the geofence
+            radius: 100.0,
             identifier: task.documentID
         )
         
         geofenceRegion.notifyOnEntry = true
         geofenceRegion.notifyOnExit = true
         
-        // Start monitoring the geofence region
         startMonitoring(geofenceRegion: geofenceRegion)
         
-        // Store the region for future reference
+        print("This is geo: \(geofenceRegion)")
+        
         geofenceRegions[task.documentID] = geofenceRegion
-        print("Started monitoring geofence for task: \(task.documentID) / \(task.locationName)")
     }
     
     func startMonitoring(geofenceRegion: CLCircularRegion) {
@@ -306,17 +307,19 @@ extension AddTaskMapViewModel {
         locationManager.stopMonitoring(for: geofenceRegion)
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if region is CLCircularRegion {
-            print("Entered geofence: \(region.identifier)")
-            // Handle entry event
-        }
+        if let circularRegion = region as? CLCircularRegion {
+              print("Entered geofence: \(circularRegion.identifier) at \(Date())")
+              print("Location: \(String(describing: manager.location))")
+              // Handle entry event
+          }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        if region is CLCircularRegion {
-            print("Exited geofence: \(String(describing: manager.location))")
-            // Handle exit event
-        }
+        if let circularRegion = region as? CLCircularRegion {
+               print("Exited geofence: \(circularRegion.identifier) at \(Date())")
+               print("Location: \(String(describing: manager.location))")
+               // Handle exit event
+           }
     }
     
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
