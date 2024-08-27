@@ -25,7 +25,6 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
     @Published var tasks: [TaskModel] = []
     private var geofenceRegions: [String: CLCircularRegion] = [:]
     
-    //other properties
     private var geocoder = CLGeocoder()
     private var completer = MKLocalSearchCompleter()
     private var cancellables = Set<AnyCancellable>()
