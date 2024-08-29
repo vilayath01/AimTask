@@ -6,7 +6,6 @@ struct AddTaskMapView: View {
     @State private var showAlert = false
     @ObservedObject private var customAlertListViewModel = CustomAlertListViewModel()
     @State private var addressSelected: Bool = false
-    @StateObject private var fdbManager = FDBManager()
     
     var body: some View {
         ZStack {
@@ -71,69 +70,12 @@ struct AddTaskMapView: View {
                     .listStyle(PlainListStyle())
                     .frame(maxHeight: 200)
                 }
-                
-                
-                
+
                 // Middle section with map
                 ZStack {
-                    Map(coordinateRegion: $addTaskMapViewModel.region, showsUserLocation: true, annotationItems: [addTaskMapViewModel.region.center]) { location in
-                        MapMarker(coordinate: location, tint: .red)
-                    }
-                    .edgesIgnoringSafeArea(.horizontal)
-                    .frame(maxHeight: .infinity)
                     
-                    // Overlay with buttons
-                    HStack {
-                        Spacer()
-                        VStack {
-                            Spacer()
-                            Button(action: {
-                                addTaskMapViewModel.centerOnUserLocation()
-                            }) {
-                                Image(systemName: "location.fill")
-                                    .foregroundColor(.black)
-                                    .padding()
-                                    .background(Color.white)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 3)
-                            }
-                            
-                            Spacer().frame(height: 10)
-                            
-                            VStack {
-                                Button(action: {
-                                    // Zoom in action
-                                    addTaskMapViewModel.zoomInOption()
-                                }) {
-                                    Image(systemName: "plus")
-                                        .foregroundColor(.black)
-                                        .padding()
-                                        .background(Color.white)
-                                        .clipShape(Circle())
-                                        .shadow(radius: 3)
-                                }
-                                
-                                Divider().frame(width: 40)
-                                
-                                Button(action: {
-                                    // Zoom out action
-                                    addTaskMapViewModel.zoomOutOption()
-                                    
-                                }) {
-                                    Image(systemName: "minus")
-                                        .foregroundColor(.black)
-                                        .padding()
-                                        .background(Color.white)
-                                        .clipShape(Circle())
-                                        .shadow(radius: 3)
-                                }
-                            }
-                            .background(Color.clear)
-                            .cornerRadius(10)
-                            .shadow(radius: 3)
-                        }
-                        .padding()
-                    }
+                    CustomMapView(addTaskMapViewModel: addTaskMapViewModel)
+                    .ignoresSafeArea()
                 }
                 
                 HStack {
@@ -148,9 +90,10 @@ struct AddTaskMapView: View {
                                 locationName: $addTaskMapViewModel.addressName, addTaskModel: $customAlertListViewModel.taskItems,
                                 customAlertViewModel: CustomAlertViewModel(),
                                 addTaskMapViewModel: addTaskMapViewModel)
-                    .transition(.opacity)
-                    .animation(.easeInOut)
+                .transition(.opacity)
+                .animation(.easeInOut)
             }
+            
         }
     }
 }

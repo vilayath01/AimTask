@@ -15,6 +15,7 @@
 		55632C4C2C708128006C3DD8 /* CustomeAlertListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55632C4B2C708128006C3DD8 /* CustomeAlertListView.swift */; };
 		556DE3762C6450210056EED3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556DE3752C6450200056EED3 /* LoginView.swift */; };
 		556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556DE3772C6460900056EED3 /* LoginViewModel.swift */; };
+		5584C6452C8072E60007F27C /* CustomMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5584C6442C8072E60007F27C /* CustomMapView.swift */; };
 		55A5CE442C4B571500F9E533 /* AimTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE432C4B571500F9E533 /* AimTaskApp.swift */; };
 		55A5CE462C4B571500F9E533 /* MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE452C4B571500F9E533 /* MainApp.swift */; };
 		55A5CE482C4B571600F9E533 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55A5CE472C4B571600F9E533 /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 		55632C4B2C708128006C3DD8 /* CustomeAlertListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomeAlertListView.swift; sourceTree = "<group>"; };
 		556DE3752C6450200056EED3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		556DE3772C6460900056EED3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		5584C6442C8072E60007F27C /* CustomMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMapView.swift; sourceTree = "<group>"; };
 		55A5CE402C4B571500F9E533 /* AimTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AimTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A5CE432C4B571500F9E533 /* AimTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimTaskApp.swift; sourceTree = "<group>"; };
 		55A5CE452C4B571500F9E533 /* MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainApp.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 			children = (
 				55A5CE692C4D514900F9E533 /* AddTaskMapView.swift */,
 				55A5CE772C5F68B400F9E533 /* AddTaskMapViewModel.swift */,
+				5584C6442C8072E60007F27C /* CustomMapView.swift */,
 			);
 			path = AddTaskMapView;
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 				553EA91F2C719ED600AC44DE /* TaskItemView.swift in Sources */,
 				553EA9212C719F5F00AC44DE /* TaskSectionView.swift in Sources */,
 				55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */,
+				5584C6452C8072E60007F27C /* CustomMapView.swift in Sources */,
 				556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */,
 				55A5CE682C4D512900F9E533 /* HomeView.swift in Sources */,
 				556DE3762C6450210056EED3 /* LoginView.swift in Sources */,
@@ -442,6 +446,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -476,6 +481,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
