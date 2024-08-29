@@ -13,17 +13,24 @@ import SwiftUI
 class AddTaskMapViewModel: NSObject, ObservableObject {
     //Map related properties
     @Published var searchText: String = ""
-    @Published var region: MKCoordinateRegion = MKCoordinateRegion(
+    @Published var regionFromViewModel: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0),
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     )
+    @Published var geofenceRegionsOnly: [CLCircularRegion] = []
     @Published var searchResults: [MKLocalSearchCompletion] = []
     @Published var errorMessage: String?
     @Published var addressName: String = ""
+    @Published var position: MapCameraPosition = .automatic
     
     // Geofence-related properties
     @Published var tasks: [TaskModel] = []
-    private var geofenceRegions: [String: CLCircularRegion] = [:]
+    @Published var geofenceRegions: [String: CLCircularRegion] = [:] {
+        didSet {
+            geofenceRegionsOnly = Array(geofenceRegions.values)
+        }
+    }
+    
     
     private var geocoder = CLGeocoder()
     private var completer = MKLocalSearchCompleter()
@@ -38,7 +45,7 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         super.init()
         setupBindings()
         fetchTasks()
-       
+        
         completer.resultTypes = .address
         completer.delegate = self
         setupLocationManager()
@@ -54,7 +61,7 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         locationManager.pausesLocationUpdatesAutomatically = false
     }
     
-     func setupBindings() {
+    func setupBindings() {
         
         fdbManager.$tasks
             .receive(on: DispatchQueue.main)
@@ -75,39 +82,6 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
             .store(in: &cancellables)
     }
     
-    func zoomInOption() {
-        DispatchQueue.main.async {
-            self.region.span.latitudeDelta /= 2.0
-            self.region.span.longitudeDelta /= 2.0
-        }
-    }
-    
-    func zoomOutOption() {
-        // Zoom out action
-        let maxSpan: CLLocationDegrees = 180.0
-        
-        var newLatDalta = region.span.latitudeDelta * 2
-        var newlongDelta = region.span.longitudeDelta * 2
-        
-        if newLatDalta > maxSpan {
-            newLatDalta = maxSpan
-        }
-        
-        if newlongDelta > maxSpan {
-            newlongDelta = maxSpan
-        }
-        DispatchQueue.main.async {
-            self.region.span = MKCoordinateSpan(latitudeDelta: newLatDalta, longitudeDelta: newlongDelta)
-        }
-        
-    }
-    
-    func updateSearchText(_ text: String) {
-        DispatchQueue.main.async {
-            self.searchText = text
-        }
-    }
-    
     func performGeocoding(for address: String) {
         guard !address.isEmpty else { return }
         
@@ -123,7 +97,7 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
                let location = placemark.location {
                 
                 DispatchQueue.main.async {
-                    self?.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+                    self?.regionFromViewModel = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
                     self?.errorMessage = nil
                     self?.addressName = "\(placemark.name ?? ""), \(placemark.locality ?? ""), \(placemark.country ?? "")."
                 }
@@ -135,9 +109,16 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         }
     }
     
+    func updateSearchText(_ text: String) {
+        DispatchQueue.main.async {
+            self.searchText = text
+        }
+    }
+
     func selectCompletion(_ completion: MKLocalSearchCompletion) {
         let searchRequest = MKLocalSearch.Request(completion: completion)
         let search = MKLocalSearch(request: searchRequest)
+        
         search.start { [weak self] (response, error) in
             if let error = error {
                 DispatchQueue.main.async {
@@ -149,7 +130,9 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
             if let coordinate = response?.mapItems.first?.placemark.coordinate {
                 self?.updateSearchText("\(response?.mapItems.first?.placemark.title ?? ""), \(response?.mapItems.first?.placemark.subtitle ?? "")")
                 DispatchQueue.main.async {
-                    self?.region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+                    self?.regionFromViewModel = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+                    self?.position = .region(self?.regionFromViewModel ?? MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
+                    
                     self?.addressName = "\(response?.mapItems.first?.placemark.name ?? ""), \(response?.mapItems.first?.placemark.locality ?? ""), \(response?.mapItems.first?.placemark.country ?? "")."
                     self?.errorMessage = nil
                 }
@@ -158,25 +141,6 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
                     self?.errorMessage = error?.localizedDescription ?? "No location found"
                 }
             }
-        }
-    }
-    
-    // Map Recenter
-    func centerOnUserLocation() {
-        if let location = locationManager.location {
-            centerMap(on: location.coordinate, animated: true)
-            reverseGeocodeLocation(location)
-        }
-    }
-    
-    func centerMap(on coordinate: CLLocationCoordinate2D, animated: Bool) {
-        if animated {
-            withAnimation(.easeInOut(duration: 1.0)) {
-                region.center = coordinate
-                region.span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-            }
-        } else {
-            region.center = coordinate
         }
     }
 }
@@ -219,6 +183,8 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
         }
         // Update the previousLocation to the current one
         previousLocation = location
+        reverseGeocodeLocation(location)
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -261,6 +227,7 @@ extension AddTaskMapViewModel {
         }
         
         print("Updated geofences: \(geofenceRegions.keys)")
+        
     }
     
     func clearGeofences() {
@@ -308,23 +275,21 @@ extension AddTaskMapViewModel {
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if let circularRegion = region as? CLCircularRegion {
-              print("Entered geofence: \(circularRegion.identifier) at \(Date())")
-              print("Location: \(String(describing: manager.location))")
-              // Handle entry event
-          }
+            print("Entered geofence: \(circularRegion.identifier) at \(Date())")
+            print("Location: \(String(describing: manager.location))")
+            // Handle entry event
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if let circularRegion = region as? CLCircularRegion {
-               print("Exited geofence: \(circularRegion.identifier) at \(Date())")
-               print("Location: \(String(describing: manager.location))")
-               // Handle exit event
-           }
+            print("Exited geofence: \(circularRegion.identifier) at \(Date())")
+            print("Location: \(String(describing: manager.location))")
+            // Handle exit event
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
         print("Failed to monitor region: \(error.localizedDescription)")
     }
 }
-
-

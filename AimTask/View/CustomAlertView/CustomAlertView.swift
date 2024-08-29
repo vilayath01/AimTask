@@ -84,7 +84,7 @@ struct CustomAlertView: View {
     }
     
     private func onSave(addTaskModel: [TaskModel]) {
-        let selectedLocation = addTaskMapViewModel.region.center
+        let selectedLocation = addTaskMapViewModel.regionFromViewModel.center
         addTaskModel.forEach { model in
             let updatedItem = TaskModel(locationName: locationName, dateTime: Date(), taskItems: model.taskItems, coordinate: selectedLocation, documentID: "")
             fdbManager.addTask(updatedItem)
