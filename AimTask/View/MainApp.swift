@@ -9,7 +9,7 @@ import SwiftUI
 import CoreLocation
 
 struct MainApp: View {
-//    @ObservedObject var viewModel = TaskViewModel()
+
     @EnvironmentObject var loginViewModel: LoginViewModel
     
     var body: some View {
