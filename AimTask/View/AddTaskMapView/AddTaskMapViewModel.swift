@@ -274,18 +274,22 @@ extension AddTaskMapViewModel {
         locationManager.stopMonitoring(for: geofenceRegion)
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if let circularRegion = region as? CLCircularRegion {
-            print("Entered geofence: \(circularRegion.identifier) at \(Date())")
-            print("Location: \(String(describing: manager.location))")
-            // Handle entry event
+        if let circularRegion = region as? CLCircularRegion,
+           let task = tasks.first(where: { $0.documentID == circularRegion.identifier }) {
+
+            let title = task.locationName
+            let body = "Tasks: " + task.taskItems.joined(separator: ", ")
+            LocalNotifications.shared.scheduleNotification(title: title, body: body)
         }
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        if let circularRegion = region as? CLCircularRegion {
-            print("Exited geofence: \(circularRegion.identifier) at \(Date())")
-            print("Location: \(String(describing: manager.location))")
-            // Handle exit event
+        if let circularRegion = region as? CLCircularRegion,
+           let task = tasks.first(where: { $0.documentID == circularRegion.identifier }) {
+
+            let title = task.locationName
+            let body = "You have exited the area of task: \(task.locationName)."
+            LocalNotifications.shared.scheduleNotification(title: title, body: body)
         }
     }
     

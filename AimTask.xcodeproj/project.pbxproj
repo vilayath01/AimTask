@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		388CF5C72C6AED7C00EC361D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */; };
+		551009252C8093FD00EE4E8C /* LocalNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551009242C8093FD00EE4E8C /* LocalNotifications.swift */; };
 		551E58482C7603340008986A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E58472C7603340008986A /* HomeViewModel.swift */; };
 		553EA91D2C719E7900AC44DE /* NoTaskaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA91C2C719E7900AC44DE /* NoTaskaView.swift */; };
 		553EA91F2C719ED600AC44DE /* TaskItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA91E2C719ED600AC44DE /* TaskItemView.swift */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		551009242C8093FD00EE4E8C /* LocalNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotifications.swift; sourceTree = "<group>"; };
 		551E58472C7603340008986A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		553EA91C2C719E7900AC44DE /* NoTaskaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTaskaView.swift; sourceTree = "<group>"; };
 		553EA91E2C719ED600AC44DE /* TaskItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemView.swift; sourceTree = "<group>"; };
@@ -81,6 +83,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		551009232C8093E100EE4E8C /* LocalNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				551009242C8093FD00EE4E8C /* LocalNotifications.swift */,
+			);
+			path = LocalNotifications;
+			sourceTree = "<group>";
+		};
 		55A5CE372C4B571500F9E533 = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +112,7 @@
 		55A5CE422C4B571500F9E533 /* AimTask */ = {
 			isa = PBXGroup;
 			children = (
+				551009232C8093E100EE4E8C /* LocalNotifications */,
 				55A5CE662C4D50AB00F9E533 /* View */,
 				55A5CE5B2C4D135A00F9E533 /* ViewModel */,
 				55A5CE582C4D128400F9E533 /* Model */,
@@ -296,6 +307,7 @@
 				553EA9212C719F5F00AC44DE /* TaskSectionView.swift in Sources */,
 				55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */,
 				5584C6452C8072E60007F27C /* CustomMapView.swift in Sources */,
+				551009252C8093FD00EE4E8C /* LocalNotifications.swift in Sources */,
 				556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */,
 				55A5CE682C4D512900F9E533 /* HomeView.swift in Sources */,
 				556DE3762C6450210056EED3 /* LoginView.swift in Sources */,
