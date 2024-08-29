@@ -16,7 +16,6 @@ class FDBManager: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     func fetchTasks()  {
-        print("This is userEmail:\(Auth.auth().currentUser)")
         guard let user = Auth.auth().currentUser
                 
         else {

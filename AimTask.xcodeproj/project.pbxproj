@@ -12,7 +12,6 @@
 		553EA91D2C719E7900AC44DE /* NoTaskaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA91C2C719E7900AC44DE /* NoTaskaView.swift */; };
 		553EA91F2C719ED600AC44DE /* TaskItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA91E2C719ED600AC44DE /* TaskItemView.swift */; };
 		553EA9212C719F5F00AC44DE /* TaskSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA9202C719F5F00AC44DE /* TaskSectionView.swift */; };
-		553EA9232C71AF4B00AC44DE /* Geofence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA9222C71AF4B00AC44DE /* Geofence.swift */; };
 		55632C4C2C708128006C3DD8 /* CustomeAlertListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55632C4B2C708128006C3DD8 /* CustomeAlertListView.swift */; };
 		556DE3762C6450210056EED3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556DE3752C6450200056EED3 /* LoginView.swift */; };
 		556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556DE3772C6460900056EED3 /* LoginViewModel.swift */; };
@@ -43,7 +42,6 @@
 		553EA91C2C719E7900AC44DE /* NoTaskaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTaskaView.swift; sourceTree = "<group>"; };
 		553EA91E2C719ED600AC44DE /* TaskItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemView.swift; sourceTree = "<group>"; };
 		553EA9202C719F5F00AC44DE /* TaskSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionView.swift; sourceTree = "<group>"; };
-		553EA9222C71AF4B00AC44DE /* Geofence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geofence.swift; sourceTree = "<group>"; };
 		55632C4B2C708128006C3DD8 /* CustomeAlertListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomeAlertListView.swift; sourceTree = "<group>"; };
 		556DE3752C6450200056EED3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		556DE3772C6460900056EED3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -62,6 +60,7 @@
 		55A5CE732C5D0B6700F9E533 /* CustomAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertViewModel.swift; sourceTree = "<group>"; };
 		55A5CE772C5F68B400F9E533 /* AddTaskMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskMapViewModel.swift; sourceTree = "<group>"; };
 		55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LocationTest.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +82,7 @@
 		55A5CE372C4B571500F9E533 = {
 			isa = PBXGroup;
 			children = (
+				55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */,
 				55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */,
 				55A5CE422C4B571500F9E533 /* AimTask */,
 				55A5CE412C4B571500F9E533 /* Products */,
@@ -173,7 +173,6 @@
 			children = (
 				55A5CE692C4D514900F9E533 /* AddTaskMapView.swift */,
 				55A5CE772C5F68B400F9E533 /* AddTaskMapViewModel.swift */,
-				553EA9222C71AF4B00AC44DE /* Geofence.swift */,
 			);
 			path = AddTaskMapView;
 			sourceTree = "<group>";
@@ -281,7 +280,6 @@
 			files = (
 				55A5CE6C2C4D515E00F9E533 /* HistoryView.swift in Sources */,
 				55A5CE5A2C4D12B200F9E533 /* Model.swift in Sources */,
-				553EA9232C71AF4B00AC44DE /* Geofence.swift in Sources */,
 				551E58482C7603340008986A /* HomeViewModel.swift in Sources */,
 				55A5CE462C4B571500F9E533 /* MainApp.swift in Sources */,
 				55A5CE702C5CCEA900F9E533 /* CustomAlertListViewModel.swift in Sources */,

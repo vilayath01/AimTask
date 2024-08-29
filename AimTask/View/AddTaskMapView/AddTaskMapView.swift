@@ -2,9 +2,9 @@ import SwiftUI
 import MapKit
 
 struct AddTaskMapView: View {
-    @StateObject private var addTaskMapViewModel = AddTaskMapViewModel()
+    @ObservedObject private var addTaskMapViewModel = AddTaskMapViewModel()
     @State private var showAlert = false
-    @StateObject private var customAlertListViewModel = CustomAlertListViewModel()
+    @ObservedObject private var customAlertListViewModel = CustomAlertListViewModel()
     @State private var addressSelected: Bool = false
     @StateObject private var fdbManager = FDBManager()
     
@@ -30,8 +30,11 @@ struct AddTaskMapView: View {
                                 }
                             }
                         Button(action: {
-                            addTaskMapViewModel.searchResults.removeAll()
-                            addTaskMapViewModel.performGeocoding(for: addTaskMapViewModel.searchText)
+                            if !addTaskMapViewModel.searchText.isEmpty {
+                                addTaskMapViewModel.searchResults.removeAll()
+                                addTaskMapViewModel.performGeocoding(for: addTaskMapViewModel.searchText)
+                            }
+                            
                         }) {
                             Image(systemName: "magnifyingglass")
                                 .foregroundColor(.primary)
@@ -85,7 +88,7 @@ struct AddTaskMapView: View {
                         VStack {
                             Spacer()
                             Button(action: {
-                                addTaskMapViewModel.requestLocationPermission()
+                                addTaskMapViewModel.centerOnUserLocation()
                             }) {
                                 Image(systemName: "location.fill")
                                     .foregroundColor(.black)
@@ -100,8 +103,7 @@ struct AddTaskMapView: View {
                             VStack {
                                 Button(action: {
                                     // Zoom in action
-                                    addTaskMapViewModel.region.span.latitudeDelta /= 2
-                                    addTaskMapViewModel.region.span.longitudeDelta /= 2
+                                    addTaskMapViewModel.zoomInOption()
                                 }) {
                                     Image(systemName: "plus")
                                         .foregroundColor(.black)
@@ -115,19 +117,7 @@ struct AddTaskMapView: View {
                                 
                                 Button(action: {
                                     // Zoom out action
-                                    let maxSpan: CLLocationDegrees = 180.0
-                                    
-                                    var newLatDalta = addTaskMapViewModel.region.span.latitudeDelta * 2
-                                    var newlongDelta = addTaskMapViewModel.region.span.longitudeDelta * 2
-                                    
-                                    if newLatDalta > maxSpan {
-                                        newLatDalta = maxSpan
-                                    }
-                                    
-                                    if newlongDelta > maxSpan {
-                                        newlongDelta = maxSpan
-                                    }
-                                    addTaskMapViewModel.region.span = MKCoordinateSpan(latitudeDelta: newLatDalta, longitudeDelta: newlongDelta)
+                                    addTaskMapViewModel.zoomOutOption()
                                     
                                 }) {
                                     Image(systemName: "minus")
@@ -154,7 +144,10 @@ struct AddTaskMapView: View {
             
             
             if showAlert {
-                CustomAlertView(isPresented: $showAlert, addTaskModel: $customAlertListViewModel.taskItems, locationName: $addTaskMapViewModel.addressName)
+                CustomAlertView(isPresented: $showAlert,
+                                locationName: $addTaskMapViewModel.addressName, addTaskModel: $customAlertListViewModel.taskItems,
+                                customAlertViewModel: CustomAlertViewModel(),
+                                addTaskMapViewModel: addTaskMapViewModel)
                     .transition(.opacity)
                     .animation(.easeInOut)
             }
