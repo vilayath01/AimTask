@@ -95,6 +95,9 @@ struct AddTaskMapView: View {
             }
             
         }
+        .onAppear {
+            addTaskMapViewModel.fetchTasks()
+        }
     }
 }
 
