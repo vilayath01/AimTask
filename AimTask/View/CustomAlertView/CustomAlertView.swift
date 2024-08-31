@@ -85,12 +85,26 @@ struct CustomAlertView: View {
     
     private func onSave(addTaskModel: [TaskModel]) {
         let selectedLocation = addTaskMapViewModel.regionFromViewModel.center
+        print("selectLocation: \(selectedLocation)")
+        guard !(selectedLocation.latitude == 0.0 && selectedLocation.longitude == 0.0) else {
+                return
+            }
         addTaskModel.forEach { model in
-            let updatedItem = TaskModel(locationName: locationName, dateTime: Date(), taskItems: model.taskItems, coordinate: selectedLocation, documentID: "")
+            let updatedItem = TaskModel(
+                locationName: locationName,
+                dateTime: Date(),
+                taskItems: model.taskItems,
+                coordinate: selectedLocation,
+                documentID: ""
+            )
             fdbManager.addTask(updatedItem)
-
         }
-       fdbManager.fetchTasks()
+        
+        addTaskMapViewModel.searchText = ""
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            fdbManager.fetchTasks()
+            addTaskMapViewModel.fetchTasks()
+        }
     }
 }
 
