@@ -9,73 +9,113 @@ import Foundation
 import SwiftUI
 
 struct TaskItemView: View {
-    let task: TaskModel
-    
     @ObservedObject var viewModel: HomeViewModel
-    @State var enteredToLocation: Bool = false
+    @State private var newTaskText: String = ""
+    @State private var isAddingTask: Bool = false
+    
+    var task: TaskModel
     
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                
+                // Existing tasks
                 ForEach(task.taskItems.indices, id: \.self) { index in
                     let alphabet = String(UnicodeScalar(65 + index)!)
                     
-                    Button(action: {
-                        viewModel.toggleItemCompletion(task.taskItems[index])
-                    }) {
-                        HStack {
-                            Circle()
-                                .fill(Color.purple)
-                                .frame(width: 30, height: 30)
-                                .overlay(Text(alphabet)
-                                    .foregroundColor(.white)
-                                    .font(.headline))
-                            
-                            Text(task.taskItems[index])
-                                .font(.subheadline)
-                                .foregroundColor(enteredToLocation ? (viewModel.completedItems.contains(task.taskItems[index]) ? .secondary : .primary) : .primary)
-                                .strikethrough( enteredToLocation && viewModel.completedItems.contains(task.taskItems[index]), color: .secondary)
-                            
-                            Spacer()
-                            
-                            if enteredToLocation {
-                                Image(systemName: viewModel.completedItems.contains(task.taskItems[index]) ? "checkmark.square.fill" : "square")
-                                    .foregroundColor(viewModel.completedItems.contains(task.taskItems[index]) ? .purple : .secondary)
-                            } else {
-                                Button(action: {
-                                    viewModel.deleteTask(from: task.documentID, item: task.taskItems[index])
-                                }) {
-                                    Image(systemName: "trash")
-                                }
-                                .foregroundColor(.red)
+                    HStack {
+                        Circle()
+                            .fill(Color.purple)
+                            .frame(width: 30, height: 30)
+                            .overlay(Text(alphabet)
+                                .foregroundColor(.white)
+                                .font(.headline))
+                        
+                        Text(task.taskItems[index])
+                            .font(.subheadline)
+                            .foregroundColor(.primary)
+                        
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            viewModel.deleteTask(from: task.documentID, item: task.taskItems[index])
+                        }) {
+                            Image(systemName: "trash")
+                        }
+                        .foregroundColor(.red)
+                        
+                    }
+                    .padding()
+                    .background(
+                        LinearGradient(gradient: Gradient(colors: [Color.purple.opacity(0.2), Color.blue.opacity(0.2)]),
+                                       startPoint: .leading,
+                                       endPoint: .trailing)
+                        .cornerRadius(10)
+                    )
+                    .shadow(color: Color.black.opacity(0.2), radius: 4, x: 2, y: 2)
+                }
+                
+                // Add new task section
+                if isAddingTask {
+                    HStack {
+                        TextField("Add new task", text: $newTaskText)
+                            .padding(10)
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                            )
+                            .padding(.horizontal)
+                        
+                        Button(action: {
+                            if !newTaskText.isEmpty {
+                                viewModel.addTaskItem(from: task.documentID, item: newTaskText)
+                                newTaskText = ""
+                                isAddingTask = false
                             }
+                        }) {
+                            Image(systemName: "checkmark")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 16, height: 16)
+                                .foregroundColor(.white)
+                                .padding(8)
+                                .background(Color.green)
+                                .clipShape(Rectangle())
+                                .cornerRadius(4)
+                                .shadow(color: .gray, radius: 2, x: 0, y: 2)
                             
                         }
-                        .padding()
-                        .background(
-                            LinearGradient(gradient: Gradient(colors: [Color.purple.opacity(0.2), Color.blue.opacity(0.2)]),
-                                           startPoint: .leading,
-                                           endPoint: .trailing)
-                            .cornerRadius(10)
-                        )
-                        .shadow(color: Color.black.opacity(0.2), radius: 4, x: 2, y: 2)
+                    }
+                    .padding()
+                }
+                
+                // Add Task button
+                Button(action: {
+                    isAddingTask.toggle()
+                }) {
+                    HStack {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundColor(.blue)
+                        Text("Add Task")
+                            .foregroundColor(.blue)
+                            .font(.headline)
+                            .padding(.leading, 5)
                     }
                 }
+                .padding(.top)
             }
-            
             Spacer()
         }
         .padding()
         .background(Color.clear)
         .cornerRadius(8)
     }
-    
-    
 }
 
 struct TaskItemView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskItemView(task: TaskModel(locationName:"", dateTime: Date(),taskItems:  ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: ""), viewModel: HomeViewModel())
+        TaskItemView(viewModel: HomeViewModel(), task: TaskModel(locationName: "", dateTime: Date(), taskItems: ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: "", enteredGeofence: false))
     }
 }
