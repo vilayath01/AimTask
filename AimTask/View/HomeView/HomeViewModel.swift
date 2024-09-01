@@ -7,13 +7,15 @@
 
 import Foundation
 import SwiftUI
+import CoreLocation
 
 class HomeViewModel: ObservableObject {
+    
     @Published var tasks: [TaskModel] = []
-    @Published var completedItems: Set<String> = []
     private var fdbManager: FDBManager
     
     init(fdbManager: FDBManager = FDBManager()) {
+        
         self.fdbManager = fdbManager
         self.fdbManager.$tasks
             .receive(on: DispatchQueue.main)
@@ -22,18 +24,13 @@ class HomeViewModel: ObservableObject {
     }
     
     func fetchTasks() {
+        
         fdbManager.fetchTasks()
     }
-    
-    func toggleItemCompletion(_ item: String) {
-        if completedItems.contains(item) {
-            completedItems.remove(item)
-        } else {
-            completedItems.insert(item)
-        }
-    }
+
     
     func deleteTask(from documentID: String, item: String) {
+        
         fdbManager.deleteTask(from: documentID, item: item)
     }
     
@@ -42,5 +39,13 @@ class HomeViewModel: ObservableObject {
         fdbManager.deleteDocument(with: documentId)
     }
     
+    func addTaskItem(from documentID: String, item: String) {
+        
+        fdbManager.addTaskItem(from: documentID, item: item)
+    }
+    
+    func isGeofenceEntered(task: TaskModel) -> Bool {
+        
+        return task.enteredGeofence
+    }
 }
-

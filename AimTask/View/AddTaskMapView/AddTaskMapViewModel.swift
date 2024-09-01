@@ -31,7 +31,6 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         }
     }
     
-    
     private var geocoder = CLGeocoder()
     private var completer = MKLocalSearchCompleter()
     private var cancellables = Set<AnyCancellable>()
@@ -181,7 +180,7 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
                 return
             }
         }
-        // Update the previousLocation to the current one
+//         Update the previousLocation to the current one
         previousLocation = location
         reverseGeocodeLocation(location)
         
@@ -196,8 +195,10 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
     private func reverseGeocodeLocation(_ location: CLLocation) {
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             DispatchQueue.main.async {
+                print("This is loc: \(location)")
                 guard let placemark = placemarks?.first else { return }
                 self?.addressName = "\(placemark.name ?? ""), \(placemark.locality ?? ""), \(placemark.country ?? "")."
+                self?.regionFromViewModel = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
             }
         }
     }
@@ -276,6 +277,7 @@ extension AddTaskMapViewModel {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if let circularRegion = region as? CLCircularRegion,
            let task = tasks.first(where: { $0.documentID == circularRegion.identifier }) {
+            fdbManager.updateEnteredGeofence(for:task.documentID , to: true)
 
             let title = task.locationName
             let body = "Tasks: " + task.taskItems.joined(separator: ", ")
@@ -286,6 +288,8 @@ extension AddTaskMapViewModel {
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if let circularRegion = region as? CLCircularRegion,
            let task = tasks.first(where: { $0.documentID == circularRegion.identifier }) {
+            
+            fdbManager.updateEnteredGeofence(for:task.documentID , to: false)
 
             let title = task.locationName
             let body = "You have exited the area of task: \(task.locationName)."

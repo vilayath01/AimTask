@@ -16,14 +16,16 @@ struct TaskModel: Identifiable {
     var taskItems: [String]
     var coordinate: CLLocationCoordinate2D
     var documentID: String
+    var enteredGeofence: Bool = false
     
 
-    init(locationName: String, dateTime: Date, taskItems: [String] = [], coordinate: CLLocationCoordinate2D, documentID: String) {
+    init(locationName: String, dateTime: Date, taskItems: [String] = [], coordinate: CLLocationCoordinate2D, documentID: String,enteredGeofence: Bool ) {
         self.locationName = locationName
         self.dateTime = dateTime
         self.taskItems = taskItems
         self.coordinate = coordinate
         self.documentID = documentID
+        self.enteredGeofence = enteredGeofence
     }
 }
 
