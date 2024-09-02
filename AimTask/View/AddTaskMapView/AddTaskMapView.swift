@@ -5,6 +5,8 @@ struct AddTaskMapView: View {
     @ObservedObject private var addTaskMapViewModel = AddTaskMapViewModel()
     @State private var showAlert = false
     @ObservedObject private var customAlertListViewModel = CustomAlertListViewModel()
+    @ObservedObject private var networkMonitor = NetworkMonitor()
+    @State private var showSomethingWentWrong = false
     @State private var addressSelected: Bool = false
     
     var body: some View {
@@ -44,7 +46,12 @@ struct AddTaskMapView: View {
                     .padding(.horizontal, 8)
                     
                     Button(action: {
-                        showAlert = true
+                        if networkMonitor.isConnected {
+                            showAlert = true
+                        } else {
+                            showSomethingWentWrong = true
+                            
+                        }
                     }) {
                         Image(systemName: "plus")
                             .foregroundColor(.primary)
@@ -75,12 +82,9 @@ struct AddTaskMapView: View {
                 ZStack {
                     
                     CustomMapView(addTaskMapViewModel: addTaskMapViewModel)
-                    .ignoresSafeArea()
+                        .ignoresSafeArea()
                 }
-                
-                HStack {
-                    Spacer()
-                }
+                .frame(maxHeight: .infinity)
             }
             .background(Color(red: 105/255, green: 155/255, blue: 157/255))
             
@@ -92,6 +96,14 @@ struct AddTaskMapView: View {
                                 addTaskMapViewModel: addTaskMapViewModel)
                 .transition(.opacity)
                 .animation(.easeInOut)
+            }
+            
+            if showSomethingWentWrong {
+                SomethingWentWrongView {
+                    if networkMonitor.isConnected {
+                        showSomethingWentWrong = false
+                    }
+                }
             }
             
         }

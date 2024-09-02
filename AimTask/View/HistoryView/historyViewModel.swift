@@ -8,11 +8,17 @@
 import Foundation
 
 class HistoryViewModel: ObservableObject {
-    private var fdbManager = FDBManager()
+    private var fdbManager: FDBManager
     @Published var loginViewModel: LoginViewModel
+    @Published var tasks: [TaskModel] = []
 
-    init(loginViewModel: LoginViewModel) {
+    init(loginViewModel: LoginViewModel, fdbManager: FDBManager = FDBManager()) {
         self.loginViewModel = loginViewModel
+        self.fdbManager = fdbManager
+        self.fdbManager.$tasks
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$tasks)
+        fetchTasks()
     }
 
     @MainActor func signOut() {
@@ -22,6 +28,11 @@ class HistoryViewModel: ObservableObject {
     func deleteAccount()  {
         
         fdbManager.delteAccount()
+    }
+    
+    func fetchTasks() {
+        
+        fdbManager.fetchTasks()
     }
 }
 
