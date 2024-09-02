@@ -21,7 +21,7 @@ struct CustomMapView: View {
 
             // Geofence markers and circles
             ForEach(addTaskMapViewModel.geofenceRegionsOnly, id: \.identifier) { result in
-                MapCircle(center: result.center, radius: 1000.0)
+                MapCircle(center: result.center, radius: 100.0)
                     .foregroundStyle(.orange.opacity(0.3))
                 
                 Marker("", image: "", coordinate: result.center)

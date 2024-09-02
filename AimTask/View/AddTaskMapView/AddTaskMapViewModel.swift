@@ -113,7 +113,7 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
             self.searchText = text
         }
     }
-
+    
     func selectCompletion(_ completion: MKLocalSearchCompletion) {
         let searchRequest = MKLocalSearch.Request(completion: completion)
         let search = MKLocalSearch(request: searchRequest)
@@ -172,23 +172,6 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
         }
     }
     
-    func isWithinTolerance(_ value1: Double, _ value2: Double, tolerance: Double) -> Bool {
-        return abs(value1 - value2) < tolerance
-    }
-    
-    func handleLocationUpdate(location: CLLocation, tasks: [TaskModel], fdbManager: FDBManager) {
-        let tolerance = 0.0001
-        
-        for task in self.tasks {
-            
-            if isWithinTolerance(location.coordinate.latitude, task.coordinate.latitude, tolerance: tolerance) && isWithinTolerance(location.coordinate.longitude, task.coordinate.longitude, tolerance: tolerance) {
-                
-                fdbManager.updateEnteredGeofence(for: task.documentID, to: true)
-            }
-            
-        }
-    }
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         if let previousLocation = previousLocation {
@@ -197,14 +180,12 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
                 return
             }
         }
-//         Update the previousLocation to the current one
+        //         Update the previousLocation to the current one
         previousLocation = location
         reverseGeocodeLocation(location)
         
-        handleLocationUpdate(location: location, tasks: tasks, fdbManager: fdbManager)
-
-        }
-        
+    }
+    
     
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -299,19 +280,19 @@ extension AddTaskMapViewModel {
         if let circularRegion = region as? CLCircularRegion,
            let task = tasks.first(where: { $0.documentID == circularRegion.identifier }) {
             fdbManager.updateEnteredGeofence(for:task.documentID , to: true)
-
+            
             let title = task.locationName
             let body = "Tasks: " + task.taskItems.joined(separator: ", ")
             LocalNotifications.shared.scheduleNotification(title: title, body: body)
         }
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if let circularRegion = region as? CLCircularRegion,
            let task = tasks.first(where: { $0.documentID == circularRegion.identifier }) {
             
             fdbManager.updateEnteredGeofence(for:task.documentID , to: false)
-
+            
             let title = task.locationName
             let body = "You have exited the area of task: \(task.locationName)."
             LocalNotifications.shared.scheduleNotification(title: title, body: body)
