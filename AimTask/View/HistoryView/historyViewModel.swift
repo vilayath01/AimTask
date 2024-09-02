@@ -8,6 +8,7 @@
 import Foundation
 
 class HistoryViewModel: ObservableObject {
+    private var fdbManager = FDBManager()
     @Published var loginViewModel: LoginViewModel
 
     init(loginViewModel: LoginViewModel) {
@@ -18,8 +19,9 @@ class HistoryViewModel: ObservableObject {
         loginViewModel.signOut()
     }
 
-    func deleteAccount() async {
-        await loginViewModel.deleteAccount()
+    func deleteAccount()  {
+        
+        fdbManager.delteAccount()
     }
 }
 

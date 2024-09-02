@@ -21,6 +21,7 @@ class HomeViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$tasks)
         fetchTasks()
+        LocalNotifications.shared.requestNotificationPermission()
     }
     
     func fetchTasks() {

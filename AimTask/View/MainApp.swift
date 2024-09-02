@@ -32,11 +32,14 @@ struct MainApp: View {
                 LoginView()
             }
         }
-      
+        .onAppear {
+                   LocalNotifications.shared.configure(with: loginViewModel)
+               }
       
     }
 }
 
 #Preview {
     MainApp()
+        .environmentObject(LoginViewModel())
 }
