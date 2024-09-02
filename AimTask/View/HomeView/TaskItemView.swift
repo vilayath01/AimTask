@@ -32,7 +32,7 @@ struct TaskItemView: View {
                         
                         Text(task.taskItems[index])
                             .font(.subheadline)
-                            .foregroundColor(.primary)
+                            .fontWeight(task.enteredGeofence ? .semibold : .regular)
                         
                         
                         Spacer()
@@ -47,12 +47,14 @@ struct TaskItemView: View {
                     }
                     .padding()
                     .background(
-                        LinearGradient(gradient: Gradient(colors: [Color.purple.opacity(0.2), Color.blue.opacity(0.2)]),
-                                       startPoint: .leading,
-                                       endPoint: .trailing)
+                        LinearGradient(
+                            gradient: Gradient(colors: task.enteredGeofence ? [Color.green.opacity(0.2), Color.blue.opacity(0.2)] : [Color.gray.opacity(0.2), Color.blue.opacity(0.2)]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
                         .cornerRadius(10)
                     )
-                    .shadow(color: Color.black.opacity(0.2), radius: 4, x: 2, y: 2)
+                    .shadow(color: task.enteredGeofence ? Color.green.opacity(0.5) : Color.black.opacity(0.2), radius: 4, x: 2, y: 2)
                 }
                 
                 // Add new task section
