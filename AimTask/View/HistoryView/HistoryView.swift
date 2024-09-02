@@ -53,10 +53,10 @@ struct HistoryTaskSection: View {
 }
 
 struct HistoryView: View {
-    @EnvironmentObject var loginViewModel: LoginViewModel
+    @ObservedObject  var historyViewModel: HistoryViewModel
+
     var body: some View {
         NavigationView {
-            
             ScrollView {
                 VStack(spacing: 20) {
                     HistoryTaskSection(title: "Location One Task")
@@ -64,15 +64,17 @@ struct HistoryView: View {
                     HistoryTaskSection(title: "Location Three Task")
                 }
                 .padding(.top)
-                
             }
-            
             .navigationTitle("History")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
-                        Button("Sign Out", action: signOut)
-                        Button("Delete Account", action: deleteAccount)
+                        Button("Sign Out", action: historyViewModel.signOut)
+                        Button("Delete Account", action: {
+                            Task {
+                                await historyViewModel.deleteAccount()
+                            }
+                        })
                     } label: {
                         Label("Options", systemImage: "ellipsis.circle")
                     }
@@ -81,22 +83,13 @@ struct HistoryView: View {
         }
         .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
     }
-    
-    private func signOut() {
-        loginViewModel.signOut()
-    
-}
-    private func deleteAccount() {
-        Task {
-             await loginViewModel.deleteAccount()
-        }
-        
-    }
 }
 
 struct HistoryView_Previews: PreviewProvider {
     static var previews: some View {
-        HistoryView()
+        let loginViewModel = LoginViewModel()
+        let historyViewModel = HistoryViewModel(loginViewModel: loginViewModel)
+        HistoryView(historyViewModel: historyViewModel)
     }
 }
 
