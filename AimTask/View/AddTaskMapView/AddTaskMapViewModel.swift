@@ -172,6 +172,23 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
         }
     }
     
+    func isWithinTolerance(_ value1: Double, _ value2: Double, tolerance: Double) -> Bool {
+        return abs(value1 - value2) < tolerance
+    }
+    
+    func handleLocationUpdate(location: CLLocation, tasks: [TaskModel], fdbManager: FDBManager) {
+        let tolerance = 0.0001
+        
+        for task in self.tasks {
+            
+            if isWithinTolerance(location.coordinate.latitude, task.coordinate.latitude, tolerance: tolerance) && isWithinTolerance(location.coordinate.longitude, task.coordinate.longitude, tolerance: tolerance) {
+                
+                fdbManager.updateEnteredGeofence(for: task.documentID, to: true)
+            }
+            
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         if let previousLocation = previousLocation {
@@ -184,7 +201,11 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
         previousLocation = location
         reverseGeocodeLocation(location)
         
-    }
+        handleLocationUpdate(location: location, tasks: tasks, fdbManager: fdbManager)
+
+        }
+        
+    
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         DispatchQueue.main.async {
