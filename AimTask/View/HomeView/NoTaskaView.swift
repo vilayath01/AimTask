@@ -9,15 +9,16 @@ import Foundation
 import SwiftUI
 
 struct NoTasksView: View {
+    @State var taskViewToShow: Bool
     var body: some View {
         VStack {
-            Text("No tasks added🙁")
+            Text(taskViewToShow ? "No tasks added🙁" : "Good Luck!😉")
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.black)
                 .padding()
             
-            Text("It looks like you haven't added any tasks yet!")
+            Text(taskViewToShow ? "It looks like you haven't added any tasks yet!" : "Complete the task to share it with friends!")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
@@ -29,6 +30,6 @@ struct NoTasksView: View {
 
 struct NoTasksView_Previews: PreviewProvider {
     static var previews: some View {
-        NoTasksView()
+        NoTasksView(taskViewToShow: true)
     }
 }

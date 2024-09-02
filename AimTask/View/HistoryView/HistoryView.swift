@@ -7,8 +7,10 @@
 
 
 import SwiftUI
+import Combine
 
 struct HistoryTaskItem: View {
+    
     var body: some View {
         HStack {
             Circle()
@@ -53,41 +55,63 @@ struct HistoryTaskSection: View {
 }
 
 struct HistoryView: View {
-    @ObservedObject  var historyViewModel: HistoryViewModel
-
+    @StateObject var historyViewModel = HistoryViewModel(loginViewModel: LoginViewModel())
+    @StateObject private var networkMonitor = NetworkMonitor()
+    @State private var showSomethingWentWrong = false
+    
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    HistoryTaskSection(title: "Location One Task")
-                    HistoryTaskSection(title: "Location Two Task")
-                    HistoryTaskSection(title: "Location Three Task")
+        ZStack {
+            NavigationView {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        if historyViewModel.tasks.isEmpty {
+                        
+                            NoTasksView(taskViewToShow: false)
+                            
+                        } else {
+                            HistoryTaskSection(title: "Location One Task")
+                            HistoryTaskSection(title: "Location Two Task")
+                            HistoryTaskSection(title: "Location Three Task")
+                        }
+                    }
+                    .padding(.top)
                 }
-                .padding(.top)
-            }
-            .navigationTitle("History")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button("Sign Out", action: historyViewModel.signOut)
-                        Button("Delete Account", action: {
-                            historyViewModel.deleteAccount()
-                        })
-                    } label: {
-                        Label("Options", systemImage: "ellipsis.circle")
+                .navigationTitle("History")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Menu {
+                            Button("Sign Out", action: historyViewModel.signOut)
+                            Button("Delete Account", action: {
+                                historyViewModel.deleteAccount()
+                            })
+                        } label: {
+                            Label("Options", systemImage: "ellipsis.circle")
+                        }
                     }
                 }
+                .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
+            }
+            .onAppear {
+                historyViewModel.fetchTasks()
+            }
+            
+            // Overlay the "Something Went Wrong" card
+            if showSomethingWentWrong {
+                SomethingWentWrongView(retryAction: {
+                    if networkMonitor.isConnected {
+                        showSomethingWentWrong = false
+                    } else {
+                        print("Network is still down!")
+                    }
+                })
+                .transition(.scale)
             }
         }
-        .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
-    }
-}
-
-struct HistoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        let loginViewModel = LoginViewModel()
-        let historyViewModel = HistoryViewModel(loginViewModel: loginViewModel)
-        HistoryView(historyViewModel: historyViewModel)
+        .animation(.easeInOut, value: showSomethingWentWrong)
+        .onReceive(networkMonitor.$isConnected) { isConnected in
+            print("Network status changed: \(isConnected)")
+            showSomethingWentWrong = !isConnected
+        }
     }
 }
 
