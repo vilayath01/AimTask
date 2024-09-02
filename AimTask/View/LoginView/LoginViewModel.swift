@@ -178,21 +178,6 @@ extension LoginViewModel {
         }
     }
     
-    func deleteAccount() async -> Bool {
-        self.isLoading = true
-        defer {self.isLoading = false}
-        do {
-            try await user?.delete()
-            authenticationState = .unauthenticated
-            return true
-        }
-        catch {
-            errorMessage = error.localizedDescription
-            isAlert = true
-            return false
-        }
-    }
-    
     func switchFlow() {
         flow = flow == .login ? .signUp : .login
         errorMessage = ""

@@ -71,9 +71,7 @@ struct HistoryView: View {
                     Menu {
                         Button("Sign Out", action: historyViewModel.signOut)
                         Button("Delete Account", action: {
-                            Task {
-                                await historyViewModel.deleteAccount()
-                            }
+                            historyViewModel.deleteAccount()
                         })
                     } label: {
                         Label("Options", systemImage: "ellipsis.circle")

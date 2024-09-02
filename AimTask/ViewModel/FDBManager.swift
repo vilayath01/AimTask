@@ -257,4 +257,32 @@ class FDBManager: ObservableObject {
             }
         }
     }
+    
+    func delteAccount() {
+        guard let user = Auth.auth().currentUser else {
+            print("No authenticated user found")
+            return
+        }
+        
+        Future<Void, Error> { promise in
+            user.delete { error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    promise(.success(()))
+                }
+            }
+            
+        }
+        .sink(receiveCompletion: {completion in
+            switch completion {
+            case .failure(let error):
+                print("Failed to delete Account: \(error.localizedDescription)")
+            case .finished:
+                print("Account deleted successfully")
+            }}, receiveValue: { _ in
+                
+            })
+        .store(in: &cancellables)  
+    }
 }
