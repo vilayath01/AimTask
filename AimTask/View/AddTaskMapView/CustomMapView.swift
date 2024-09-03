@@ -26,8 +26,6 @@ struct CustomMapView: View {
                 
                 Marker("", image: "", coordinate: result.center)
             }
-
-            
         }
         .mapStyle(.standard(elevation: .realistic))
         .mapControls {

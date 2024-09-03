@@ -127,6 +127,7 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
             }
             
             if let coordinate = response?.mapItems.first?.placemark.coordinate {
+                
                 self?.updateSearchText("\(response?.mapItems.first?.placemark.title ?? ""), \(response?.mapItems.first?.placemark.subtitle ?? "")")
                 DispatchQueue.main.async {
                     self?.regionFromViewModel = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
@@ -176,7 +177,7 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
         guard let location = locations.first else { return }
         if let previousLocation = previousLocation {
             let distance = location.distance(from: previousLocation)
-            if distance < 10 {  // Only update if the location has changed by more than 10 meters
+            if distance < 2.0 {  // Only update if the location has changed by more than 10 meters
                 return
             }
         }

@@ -34,22 +34,23 @@ struct AddTaskMapView: View {
                             if !addTaskMapViewModel.searchText.isEmpty {
                                 addTaskMapViewModel.searchResults.removeAll()
                                 addTaskMapViewModel.performGeocoding(for: addTaskMapViewModel.searchText)
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             }
-                            
                         }) {
                             Image(systemName: "magnifyingglass")
                                 .foregroundColor(.primary)
                                 .padding(.trailing, 8)
                         }
-                        
                     }
                     .padding(.horizontal, 8)
                     
                     Button(action: {
                         if networkMonitor.isConnected {
                             showAlert = true
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                         } else {
                             showSomethingWentWrong = true
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             
                         }
                     }) {
@@ -77,7 +78,7 @@ struct AddTaskMapView: View {
                     .listStyle(PlainListStyle())
                     .frame(maxHeight: 200)
                 }
-
+                
                 // Middle section with map
                 ZStack {
                     
