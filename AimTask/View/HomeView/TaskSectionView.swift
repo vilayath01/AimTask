@@ -68,9 +68,12 @@ struct TaskSectionView: View {
                 
             }
         }
-        .background(Color(red: 105/255, green: 155/255, blue: 157/255).opacity(1))
-        .cornerRadius(10)
         .padding()
+        .background(Color.white.opacity(0.7))
+        .cornerRadius(15)
+        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal)
     }
     
 }
