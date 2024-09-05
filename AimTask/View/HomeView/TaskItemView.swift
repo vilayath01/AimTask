@@ -118,6 +118,6 @@ struct TaskItemView: View {
 
 struct TaskItemView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskItemView(viewModel: HomeViewModel(), task: TaskModel(locationName: "", dateTime: Date(), taskItems: ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: "", enteredGeofence: false))
+        TaskItemView(viewModel: HomeViewModel(), task: TaskModel(locationName: "", dateTime: Date(), taskItems: ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: "", enteredGeofence: false, saveHistory: false))
     }
 }

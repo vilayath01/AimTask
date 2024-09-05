@@ -96,7 +96,8 @@ struct CustomAlertView: View {
                 taskItems: model.taskItems,
                 coordinate: selectedLocation,
                 documentID: "", 
-                enteredGeofence: model.enteredGeofence
+                enteredGeofence: model.enteredGeofence,
+                saveHistory: model.saveHistory
             )
             fdbManager.addTask(updatedItem)
         }

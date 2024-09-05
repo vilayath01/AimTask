@@ -37,12 +37,14 @@ class FDBManager: ObservableObject {
                             let coordinateData = data["coordinate"] as? [String: Double],
                             let latitude = coordinateData["latitude"],
                             let longitude = coordinateData["longitude"],
-                            let enteredGeofence = data["enteredGeofence"] as? Bool
+                            let enteredGeofence = data["enteredGeofence"] as? Bool,
+                            let saveHistory = data["saveHistory"] as? Bool
+                                
                         else {
                             return nil
                         }
                         let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                        return TaskModel(locationName: locationName, dateTime: dateTime, taskItems: taskItems, coordinate: location, documentID: doc.documentID, enteredGeofence: enteredGeofence)
+                        return TaskModel(locationName: locationName, dateTime: dateTime, taskItems: taskItems, coordinate: location, documentID: doc.documentID, enteredGeofence: enteredGeofence, saveHistory: saveHistory)
                     }) ?? []
                     promise(.success(tasks))
                 }
@@ -71,7 +73,8 @@ class FDBManager: ObservableObject {
             "taskItems": task.taskItems,
             "locationName": task.locationName,
             "coordinate": coordinateData,
-            "enteredGeofence": task.enteredGeofence
+            "enteredGeofence": task.enteredGeofence,
+            "saveHistory": task.saveHistory
         ]
         
         let userTasksCollection = self.db.collection("users").document(user.uid).collection("tasks")
@@ -254,6 +257,24 @@ class FDBManager: ObservableObject {
             } else {
                 print("enteredGeofence updated successfully to \(value)")
                 self.fetchTasks() // Optional: Fetch tasks again if you want to refresh the data
+            }
+        }
+    }
+    
+    func updateSaveHistory(for documentID: String, to value: Bool) {
+        guard let user = Auth.auth().currentUser else {
+            print("No authenticated user found")
+            return
+        }
+        
+        let userTasksCollection = db.collection("users").document(user.uid).collection("tasks")
+        
+        userTasksCollection.document(documentID).updateData(["saveHistory": value]) { error in
+            if let error = error {
+                print("Failed to update saveHistory: \(error.localizedDescription)")
+            } else {
+                print("saveHistory updated successfully to \(value)")
+                self.fetchTasks() 
             }
         }
     }

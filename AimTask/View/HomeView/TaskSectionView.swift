@@ -43,6 +43,7 @@ struct TaskSectionView: View {
                     Button(action: {
                         if task.enteredGeofence {
                             // Perform checkmark-related action
+                            viewModel.saveHistory(docId: task.documentID, isSave: true)
                         } else {
                             viewModel.deleteWholeDoc(docId)
                         }
@@ -83,7 +84,7 @@ struct TaskSectionView_Previews: PreviewProvider {
         TaskSectionView(
             title: "Example: 510 glenferrie Road, Hawthorn,Australia.",
             tasks: [
-                TaskModel(locationName:"", dateTime: Date(),taskItems:  ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: "", enteredGeofence: false),
+                TaskModel(locationName:"", dateTime: Date(),taskItems:  ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: "", enteredGeofence: false, saveHistory: false),
             ], docId: [""], viewModel: HomeViewModel()
         )
     }
