@@ -49,4 +49,8 @@ class HomeViewModel: ObservableObject {
         
         return task.enteredGeofence
     }
+    
+    func saveHistory(docId: String, isSave: Bool) {
+        fdbManager.updateSaveHistory(for: docId, to: isSave)
+    }
 }

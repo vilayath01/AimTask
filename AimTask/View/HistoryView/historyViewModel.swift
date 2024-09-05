@@ -34,5 +34,9 @@ class HistoryViewModel: ObservableObject {
         
         fdbManager.fetchTasks()
     }
+    
+    func saveHistory(docId: String, isSave: Bool) {
+        fdbManager.updateSaveHistory(for: docId, to: isSave)
+    }
 }
 
