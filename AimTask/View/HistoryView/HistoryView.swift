@@ -13,6 +13,7 @@ struct HistoryView: View {
     @State private var showSomethingWentWrong = false
     @State private var enteredEmail: String = ""
     @State private var readyToSend: Bool = false
+   var emailService: EmailSerive
     
     var body: some View {
         ZStack {
@@ -50,6 +51,8 @@ struct HistoryView: View {
                                         Button(action: {
                                             // Action for the button
                                             print("Sent email: \(enteredEmail)")
+                                            
+                                            emailService.sendEmail()
                                             
                                         }) {
                                             Image(systemName: !enteredEmail.isEmpty ? "paperplane.fill" : "paperplane")
@@ -105,7 +108,7 @@ struct HistoryView: View {
 
 struct HistoryView_Previews: PreviewProvider {
     static var previews: some View {
-        HistoryView()
+        HistoryView(emailService: EmailSerive())
     }
 }
 

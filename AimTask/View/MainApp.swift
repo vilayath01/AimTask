@@ -22,7 +22,7 @@ struct MainApp: View {
                     AddTaskMapView().tabItem {
                         Label("Add Task", systemImage: "target")
                     }
-                    HistoryView(historyViewModel: HistoryViewModel(loginViewModel: loginViewModel)).tabItem {
+                    HistoryView(historyViewModel: HistoryViewModel(loginViewModel: loginViewModel), emailService: EmailSerive()).tabItem {
                         Label("History", systemImage: "calendar.badge.clock")
                          
                     }
