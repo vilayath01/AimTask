@@ -12,7 +12,6 @@ struct HistoryView: View {
     @StateObject private var networkMonitor = NetworkMonitor()
     @State private var showSomethingWentWrong = false
     @State private var enteredEmail: String = ""
-    @State private var readyToSend: Bool = false
     
     var body: some View {
         ZStack {
@@ -20,7 +19,8 @@ struct HistoryView: View {
                 VStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-                            if historyViewModel.tasks.isEmpty {
+                            
+                            if !historyViewModel.tasks.contains(where: {$0.saveHistory}) {
                                 NoTasksView(taskViewToShow: false)
                                     .frame(maxHeight: .infinity)
                             } else {
@@ -36,8 +36,8 @@ struct HistoryView: View {
                         }
                         .padding()
                     }
-
-                    if !historyViewModel.tasks.isEmpty {
+                    
+                    if historyViewModel.tasks.contains(where: {$0.saveHistory}) {
                         
                         HStack {
                             TextField("Enter email", text: $enteredEmail)
@@ -48,8 +48,15 @@ struct HistoryView: View {
                                     HStack {
                                         Spacer()
                                         Button(action: {
-                                            // Action for the button
-                                            print("Sent email: \(enteredEmail)")
+                                            
+                                            if (enteredEmail.contains("@")) {
+                                                historyViewModel.enteredEmailAddress(email: enteredEmail)
+                                                enteredEmail = ""
+                                            } else {
+                                                print("enter valid email please")
+                                            }
+                                            
+                                            
                                             
                                         }) {
                                             Image(systemName: !enteredEmail.isEmpty ? "paperplane.fill" : "paperplane")
