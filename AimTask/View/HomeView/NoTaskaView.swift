@@ -11,12 +11,13 @@ import SwiftUI
 struct NoTasksView: View {
     @State var taskViewToShow: Bool
     var body: some View {
-        VStack {
+        VStack() {
             Text(taskViewToShow ? "No tasks added🙁" : "Good Luck!😉")
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.black)
                 .padding()
+                .padding(.top, taskViewToShow ? 0 : 200)
             
             Text(taskViewToShow ? "It looks like you haven't added any tasks yet!" : "Complete the task to share it with friends!")
                 .font(.subheadline)

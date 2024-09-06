@@ -28,6 +28,7 @@ struct HistoryTaskSection: View {
                 
                 Button(action: {
                     viewModel.saveHistory(docId: task.documentID, isSave: false)
+                    viewModel.clearSelectedTask(task: task)
                 }, label: {
                     Image(systemName: "trash")
                 })
@@ -46,6 +47,13 @@ struct HistoryTaskSection: View {
                 Spacer()
                 Button(action: {
                     isSelected.toggle()
+                    
+                   if isSelected {
+                        viewModel.selectTask(task: task)
+                    } else {
+                        viewModel.clearSelectedTask(task: task)
+                    }
+ 
                 }, label: {
                     Image(systemName: isSelected ? "checkmark.circle.fill" : "checkmark.circle")
                 })
