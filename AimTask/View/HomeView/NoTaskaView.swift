@@ -12,14 +12,15 @@ struct NoTasksView: View {
     @State var taskViewToShow: Bool
     var body: some View {
         VStack() {
-            Text(taskViewToShow ? "No tasks added🙁" : "Good Luck!😉")
+            Text(taskViewToShow ? "Good Luck!😉" : "No task completed yet!🙁")
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.black)
                 .padding()
                 .padding(.top, taskViewToShow ? 0 : 200)
+                .multilineTextAlignment(.center)
             
-            Text(taskViewToShow ? "It looks like you haven't added any tasks yet!" : "Complete the task to share it with friends!")
+            Text(taskViewToShow ? "Go ahead and add task!" : "Complete the task to share it with friends!")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }

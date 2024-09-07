@@ -11,11 +11,15 @@ class EmailService: ObservableObject {
     var locationNames: [String]
     var dateTimes: [String]
     var completedTasks: [String]
+    var historyViewModel: HistoryViewModel?
+    @Published var emailErrorMessage: String = ""
+    @Published var isPositive: Bool = false
     
-    init(locationNames: [String], dateTimes: [String], completedTasks: [String]) {
+    init(locationNames: [String], dateTimes: [String], completedTasks: [String], historyViewModel: HistoryViewModel? = nil) {
         self.locationNames = locationNames
         self.dateTimes = dateTimes
         self.completedTasks = completedTasks
+        self.historyViewModel = historyViewModel
     }
     
     func formatEmailBody() -> String {
@@ -77,11 +81,23 @@ class EmailService: ObservableObject {
                 print("No data in response")
                 return
             }
-            
+
             let responseString = String(data: data, encoding: .utf8)!
             print("Response: \(responseString)")
+            if responseString.contains("success") {
+                self.updateHistoryViewModel(errorMessage: "Email delivered successfully 👍🏻 🎉", isPositive: true)
+            } else if responseString.contains("error") {
+                self.updateHistoryViewModel(errorMessage: "Something is not right!", isPositive: false)
+            }
         }
         
         task.resume()
     }
+    
+    private func updateHistoryViewModel(errorMessage: String, isPositive: Bool) {
+           DispatchQueue.main.async {
+               self.historyViewModel?.errorMessage = errorMessage
+               self.historyViewModel?.isPositive = isPositive
+           }
+       }
 }

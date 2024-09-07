@@ -17,6 +17,13 @@ struct AddTaskMapView: View {
                 } icon: {
                     // Icon if needed
                 }
+                VStack {
+                    
+                    if !addTaskMapViewModel.errorMessage.isEmpty {
+                        ErrorBarView(errorMessage: $addTaskMapViewModel.errorMessage, isPositive:$addTaskMapViewModel.isPositve)
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .animation(.easeInOut, value: addTaskMapViewModel.errorMessage)
+                    }
                 
                 HStack {
                     HStack {
@@ -58,7 +65,9 @@ struct AddTaskMapView: View {
                             .foregroundColor(.primary)
                             .padding(.trailing, 4)
                     }
+                    
                 }
+            }
                 .padding()
                 
                 if !addTaskMapViewModel.searchResults.isEmpty && !addressSelected {

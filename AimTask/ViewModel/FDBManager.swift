@@ -14,6 +14,7 @@ class FDBManager: ObservableObject {
     @Published var tasks = [TaskModel]()
     private let db = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
+    @Published var errorMessage: String = ""
     
     func fetchTasks()  {
         guard let user = Auth.auth().currentUser
@@ -89,8 +90,8 @@ class FDBManager: ObservableObject {
                     }
                     
                     if let querySnapshot = querySnapshot, !querySnapshot.isEmpty {
-                        // If task with the same location name exists, skip updating or adding
-                        print("Already geo exists")
+                        
+                        self.errorMessage = "Already geo exists"
                         promise(.success(()))
                     } else {
                         // If no duplicates found, add the new task
@@ -108,6 +109,7 @@ class FDBManager: ObservableObject {
             switch completion {
             case .failure(let error):
                 print("Error occurred: \(error)")
+                self.errorMessage = "Something went wrong! Try again"
             case .finished:
                 print("Operation completed successfully")
             }
@@ -145,6 +147,7 @@ class FDBManager: ObservableObject {
                 switch completion {
                 case .failure(let error):
                     print("Failed to delete task: \(error.localizedDescription)")
+                    self.errorMessage = "Something went wrong! Try again"
                 case .finished:
                     print("Task deleted successfully")
                 }
@@ -198,6 +201,7 @@ class FDBManager: ObservableObject {
             switch completion {
             case .failure(let error):
                 print("Failed to delete task item: \(error.localizedDescription)")
+                self.errorMessage = "Something went wrong! Try again"
             case .finished:
                 print("Task item deleted successfully")
             }
@@ -233,6 +237,7 @@ class FDBManager: ObservableObject {
             userTasksCollection.document(documentID).updateData(["taskItems": taskItems]) { error in
                 if let error = error {
                     print("Failed to add task item: \(error.localizedDescription)")
+                    self.errorMessage = "Something went wrong! Try again"
                 } else {
                     print("Task item added successfully")
                     self.fetchTasks()
@@ -254,6 +259,7 @@ class FDBManager: ObservableObject {
         userTasksCollection.document(documentID).updateData(["enteredGeofence": value]) { error in
             if let error = error {
                 print("Failed to update enteredGeofence: \(error.localizedDescription)")
+                self.errorMessage = "Something went wrong! Try again"
             } else {
                 print("enteredGeofence updated successfully to \(value)")
                 self.fetchTasks() // Optional: Fetch tasks again if you want to refresh the data
@@ -272,9 +278,10 @@ class FDBManager: ObservableObject {
         userTasksCollection.document(documentID).updateData(["saveHistory": value]) { error in
             if let error = error {
                 print("Failed to update saveHistory: \(error.localizedDescription)")
+                self.errorMessage = "Something went wrong! Try again"
             } else {
                 print("saveHistory updated successfully to \(value)")
-                self.fetchTasks() 
+                self.fetchTasks()
             }
         }
     }
@@ -299,11 +306,13 @@ class FDBManager: ObservableObject {
             switch completion {
             case .failure(let error):
                 print("Failed to delete Account: \(error.localizedDescription)")
+                self.errorMessage = "Something went wrong! Try logout and login again"
+                
             case .finished:
                 print("Account deleted successfully")
             }}, receiveValue: { _ in
                 
             })
-        .store(in: &cancellables)  
+        .store(in: &cancellables)
     }
 }

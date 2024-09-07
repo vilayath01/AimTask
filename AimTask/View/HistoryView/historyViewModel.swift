@@ -12,6 +12,10 @@ class HistoryViewModel: ObservableObject {
     @Published var loginViewModel: LoginViewModel
     @Published var tasks: [TaskModel] = []
     private var emailAddress: String = ""
+    @Published var isPositive: Bool = false
+    @Published var errorMessage: String = ""
+    @Published var showDeleteAlert: Bool = false
+    var emailSerive: EmailService?
 
     // Store selected task details
     @Published var selectedLocationNames: [String] = []
@@ -33,7 +37,16 @@ class HistoryViewModel: ObservableObject {
 
     func deleteAccount()  {
         
-        fdbManager.delteAccount()
+        showDeleteAlert = true
+    }
+    
+    func confirmDeleteAccount() {
+        
+        if fdbManager.errorMessage.isEmpty {
+            fdbManager.delteAccount()
+        } else {
+            errorMessage = fdbManager.errorMessage
+        }
     }
     
     func fetchTasks() {
@@ -48,10 +61,13 @@ class HistoryViewModel: ObservableObject {
     func enteredEmailAddress(email: String) {
         if !selectedLocationNames.isEmpty {
             emailAddress = email
-            let emailService = EmailService(locationNames: selectedLocationNames, dateTimes: selectedDateTimes, completedTasks: selectedCompletedTasks)
+            let emailService = EmailService(locationNames: selectedLocationNames, dateTimes: selectedDateTimes, completedTasks: selectedCompletedTasks, historyViewModel: self)
             emailService.sendEmail(emailAddress: email)
+            emailSentMessage()
         } else {
             print("Please choose task to send via email")
+            self.isPositive = false
+            self.errorMessage = "Please choose task to send via email"
         }
     }
     
@@ -68,5 +84,10 @@ class HistoryViewModel: ObservableObject {
              selectedCompletedTasks.remove(at: index)
          }
      }
+    
+    func emailSentMessage() {
+        errorMessage = emailSerive?.emailErrorMessage ?? ""
+        isPositive = ((emailSerive?.isPositive) != nil)
+    }
 }
 

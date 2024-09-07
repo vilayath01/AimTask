@@ -43,9 +43,9 @@ struct TaskSectionView: View {
                     Button(action: {
                         if task.enteredGeofence {
                             // Perform checkmark-related action
-                            viewModel.saveHistory(docId: task.documentID, isSave: true)
+                            viewModel.saveHistory(docId: task.documentID, isSave: true, locationName: task.locationName, isPositive: true)
                         } else {
-                            viewModel.deleteWholeDoc(docId)
+                            viewModel.deleteWholeDoc(docId, locationName: task.locationName, isPositive: false)
                         }
                     }, label: {
                         Image(systemName: task.enteredGeofence ? "checkmark" : "trash")

@@ -35,10 +35,6 @@ struct LoginView: View {
         }
     }
     
-    private func signUpWithEmailPassword() {
-        
-    }
-    
     private func errorMessageView(_ message: String) -> some View {
         HStack {
             Text(message)
@@ -181,12 +177,10 @@ struct LoginView: View {
 
                 Spacer()
 
-                // Toggle between SignUp and Login
                 HStack {
                     Text(loginViewModel.flow == .signUp ? "Already have an account?" : "Want to create an account?")
                         .foregroundColor(.white)
                     Button(action: {
-                        // Navigate to login screen
                         loginViewModel.switchFlow()
                     }) {
                         Text(loginViewModel.flow == .signUp ? "Login" : "Sign up")
