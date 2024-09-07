@@ -42,6 +42,7 @@
 		55A5CE782C5F68B400F9E533 /* AddTaskMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A5CE772C5F68B400F9E533 /* AddTaskMapViewModel.swift */; };
 		55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */; };
 		55BE96382C8AD22700D9C692 /* EmailSerive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BE96372C8AD22700D9C692 /* EmailSerive.swift */; };
+		55BE963A2C8BD5F800D9C692 /* ErrorBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BE96392C8BD5F800D9C692 /* ErrorBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		55A5CE772C5F68B400F9E533 /* AddTaskMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskMapViewModel.swift; sourceTree = "<group>"; };
 		55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		55BE96372C8AD22700D9C692 /* EmailSerive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSerive.swift; sourceTree = "<group>"; };
+		55BE96392C8BD5F800D9C692 /* ErrorBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorBar.swift; sourceTree = "<group>"; };
 		55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LocationTest.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,13 +105,13 @@
 			path = LocalNotifications;
 			sourceTree = "<group>";
 		};
-		55546F292C85AD3000E34A0E /* Error */ = {
+		55546F292C85AD3000E34A0E /* ErrorView */ = {
 			isa = PBXGroup;
 			children = (
 				55546F2A2C85AD5200E34A0E /* ErrorScreen.swift */,
-				55546F2D2C85BD1C00E34A0E /* NetworkMonitor.swift */,
+				55BE96392C8BD5F800D9C692 /* ErrorBar.swift */,
 			);
-			path = Error;
+			path = ErrorView;
 			sourceTree = "<group>";
 		};
 		55A5CE372C4B571500F9E533 = {
@@ -133,8 +135,10 @@
 		55A5CE422C4B571500F9E533 /* AimTask */ = {
 			isa = PBXGroup;
 			children = (
+				55BE963D2C8BD96A00D9C692 /* NetworkMonitor */,
 				55BE96362C8AD20F00D9C692 /* EmailService */,
 				551009232C8093E100EE4E8C /* LocalNotifications */,
+				55546F292C85AD3000E34A0E /* ErrorView */,
 				55A5CE662C4D50AB00F9E533 /* View */,
 				55A5CE5B2C4D135A00F9E533 /* ViewModel */,
 				55A5CE582C4D128400F9E533 /* Model */,
@@ -173,7 +177,6 @@
 		55A5CE662C4D50AB00F9E533 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				55546F292C85AD3000E34A0E /* Error */,
 				55B5DFDC2C6996E500AC53A0 /* LoginView */,
 				55B5DFDB2C6996C700AC53A0 /* CustomAlertView */,
 				55B5DFDA2C69968900AC53A0 /* AddTaskMapView */,
@@ -243,6 +246,14 @@
 				55BE96372C8AD22700D9C692 /* EmailSerive.swift */,
 			);
 			path = EmailService;
+			sourceTree = "<group>";
+		};
+		55BE963D2C8BD96A00D9C692 /* NetworkMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				55546F2D2C85BD1C00E34A0E /* NetworkMonitor.swift */,
+			);
+			path = NetworkMonitor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -330,6 +341,7 @@
 				55546F2E2C85BD1C00E34A0E /* NetworkMonitor.swift in Sources */,
 				55A5CE5A2C4D12B200F9E533 /* Model.swift in Sources */,
 				551E58482C7603340008986A /* HomeViewModel.swift in Sources */,
+				55BE963A2C8BD5F800D9C692 /* ErrorBar.swift in Sources */,
 				38078FDE2C85448A00BC2E1D /* historyViewModel.swift in Sources */,
 				55BE96382C8AD22700D9C692 /* EmailSerive.swift in Sources */,
 				55A5CE462C4B571500F9E533 /* MainApp.swift in Sources */,

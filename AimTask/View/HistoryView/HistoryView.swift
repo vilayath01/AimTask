@@ -17,6 +17,11 @@ struct HistoryView: View {
         ZStack {
             NavigationView {
                 VStack {
+                    if !historyViewModel.errorMessage.isEmpty {
+                        ErrorBarView(errorMessage: $historyViewModel.errorMessage, isPositive: $historyViewModel.isPositive)
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .animation(.easeInOut, value: historyViewModel.errorMessage)
+                    }
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
                             
@@ -53,11 +58,9 @@ struct HistoryView: View {
                                                 historyViewModel.enteredEmailAddress(email: enteredEmail)
                                                 enteredEmail = ""
                                             } else {
-                                                print("enter valid email please")
+                                                historyViewModel.errorMessage = "enter valid email please"
                                             }
-                                            
-                                            
-                                            
+ 
                                         }) {
                                             Image(systemName: !enteredEmail.isEmpty ? "paperplane.fill" : "paperplane")
                                                 .foregroundColor(.blue)
@@ -78,6 +81,7 @@ struct HistoryView: View {
                             Button("Sign Out", action: historyViewModel.signOut)
                             Button("Delete Account", action: {
                                 historyViewModel.deleteAccount()
+                                
                             })
                         } label: {
                             Label("Options", systemImage: "ellipsis.circle")
@@ -85,6 +89,11 @@ struct HistoryView: View {
                     }
                 }
                 .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
+                .alert(isPresented: $historyViewModel.showDeleteAlert, content: {
+                    Alert(title: Text("Confirmation"), message: Text("Are you sure you want to delete your account? This action cannot be undone."), primaryButton: .destructive(Text("Okay"), action: {
+                        historyViewModel.confirmDeleteAccount()
+                    }), secondaryButton: .cancel())
+                })
             }
             .onAppear {
                 historyViewModel.fetchTasks()

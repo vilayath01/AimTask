@@ -13,6 +13,8 @@ class HomeViewModel: ObservableObject {
     
     @Published var tasks: [TaskModel] = []
     private var fdbManager: FDBManager
+    @Published var isPositive: Bool = false
+    @Published var errorMessage: String = ""
     
     init(fdbManager: FDBManager = FDBManager()) {
         
@@ -28,21 +30,39 @@ class HomeViewModel: ObservableObject {
         
         fdbManager.fetchTasks()
     }
-
+    
     
     func deleteTask(from documentID: String, item: String) {
         
-        fdbManager.deleteTask(from: documentID, item: item)
+        if fdbManager.errorMessage.isEmpty {
+            fdbManager.deleteTask(from: documentID, item: item)
+        } else {
+            errorMessage = fdbManager.errorMessage
+        }
     }
     
-    func deleteWholeDoc(_ documentId: [String]) {
+    func deleteWholeDoc(_ documentId: [String], locationName: String, isPositive: Bool) {
         
-        fdbManager.deleteDocument(with: documentId)
+        if fdbManager.errorMessage.isEmpty {
+            fdbManager.deleteDocument(with: documentId)
+            
+            DispatchQueue.main.async {
+                self.errorMessage = "Your \(locationName) task has been saved in history."
+                self.isPositive = isPositive
+                
+                print("This is errorMessage: \(self.errorMessage)")
+            }
+        } else {
+            errorMessage = fdbManager.errorMessage
+        }
     }
     
     func addTaskItem(from documentID: String, item: String) {
-        
-        fdbManager.addTaskItem(from: documentID, item: item)
+        if fdbManager.errorMessage.isEmpty {
+            fdbManager.addTaskItem(from: documentID, item: item)
+        } else {
+            errorMessage = fdbManager.errorMessage
+        }
     }
     
     func isGeofenceEntered(task: TaskModel) -> Bool {
@@ -50,7 +70,14 @@ class HomeViewModel: ObservableObject {
         return task.enteredGeofence
     }
     
-    func saveHistory(docId: String, isSave: Bool) {
+    func saveHistory(docId: String, isSave: Bool, locationName: String, isPositive: Bool) {
         fdbManager.updateSaveHistory(for: docId, to: isSave)
+        
+        DispatchQueue.main.async {
+            self.errorMessage = "Your \(locationName) task has been saved in history."
+            self.isPositive = isPositive
+            
+            print("This is errorMessage: \(self.errorMessage)")
+        }
     }
 }
