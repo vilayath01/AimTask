@@ -12,6 +12,7 @@ struct TaskItemView: View {
     @ObservedObject var viewModel: HomeViewModel
     @State private var newTaskText: String = ""
     @State private var isAddingTask: Bool = false
+    @State private var isPresented: Bool = false
     
     var task: TaskModel
     
@@ -94,19 +95,39 @@ struct TaskItemView: View {
                 }
                 
                 // Add Task button
-                Button(action: {
-                    isAddingTask.toggle()
-                }) {
-                    HStack {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.blue)
-                        Text("Add Task")
-                            .foregroundColor(.blue)
-                            .font(.headline)
-                            .padding(.leading, 5)
+                 HStack {
+                    Button(action: {
+                        isAddingTask.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundColor(.blue)
+                            Text("Add Task")
+                                .foregroundColor(.blue)
+                                .font(.headline)
+                                .padding(.leading, 5)
+                        }
+                    }
+                    .padding(.top)
+                    
+                    Spacer()
+                    
+                    Menu {
+                        Button(action: {
+                            // Directly save to history without confirmation dialog
+                            viewModel.saveHistory(docId: task.documentID, isSave: true, locationName: task.locationName, isPositive: true)
+                        }) {
+                            Label("Complete Task", systemImage: "checkmark.circle")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .font(.title)
+                            .foregroundColor(.gray)
+                            .padding(.trailing)
+                            .padding(.top)
                     }
                 }
-                .padding(.top)
+
             }
             Spacer()
         }

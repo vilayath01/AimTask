@@ -22,10 +22,29 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct AimTaskApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var loginViewModel = LoginViewModel()
+    @State private var isPrivacyScreenVisible = false
+    
     var body: some Scene {
         WindowGroup {
-            MainApp()
-                .environmentObject(loginViewModel)
+            ZStack {
+                MainApp()
+                    .environmentObject(loginViewModel)
+                
+                if isPrivacyScreenVisible {
+                    PrivacyView()
+                        .transition(.opacity)
+                }
+            }
+          
+            .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
+             
+                isPrivacyScreenVisible = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
+              
+                isPrivacyScreenVisible = false
+            }
         }
     }
 }
+

@@ -92,7 +92,12 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
                     let newRegion = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
                     self.position = .region(newRegion)
                     self.regionFromViewModel = newRegion
-                    self.addressName = "\(placemark.name ?? "") \(placemark.placemark.title ?? "")."
+                    if let name = placemark.name, !self.addressName.contains(name) {
+                        self.addressName = "\(name) \(placemark.placemark.title ?? "")"
+                    } else {
+                        self.addressName = "\(placemark.placemark.title ?? "")"
+                    }
+                   
                 } else {
                     self.errorMessage = "No results found."
                 }
