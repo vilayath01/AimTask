@@ -24,69 +24,47 @@ struct AddTaskMapView: View {
                             .transition(.move(edge: .top).combined(with: .opacity))
                             .animation(.easeInOut, value: addTaskMapViewModel.errorMessage)
                     }
-                
-                HStack {
+                    
                     HStack {
-                        TextField("Enter address", text: $addTaskMapViewModel.searchText)
-                            .padding(12)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(10)
-                            .onChange(of: addTaskMapViewModel.searchText) { newValue in
-                                if newValue.isEmpty {
-                                    addTaskMapViewModel.searchResults.removeAll()
-                                    addressSelected = false
-                                }
-                            }
-                        Button(action: {
-                            if !addTaskMapViewModel.searchText.isEmpty {
-                                addTaskMapViewModel.searchResults.removeAll()
-                                addTaskMapViewModel.performGeocoding(for: addTaskMapViewModel.searchText)
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                            }
-                        }) {
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(.primary)
-                                .padding(.trailing, 8)
-                        }
-                    }
-                    .padding(.horizontal, 8)
-                    
-                    Button(action: {
-                        if networkMonitor.isConnected {
-                            showAlert = true
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                        } else {
-                            showSomethingWentWrong = true
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        HStack {
+                            TextField("Enter address", text: $addTaskMapViewModel.searchTextFromCustomMap)
+                                .padding(12)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(10)
                             
+                            Button(action: {
+                                if !addTaskMapViewModel.searchTextFromCustomMap.isEmpty {
+                                    Task {
+                                        await addTaskMapViewModel.searchForPlaces()
+                                    }
+                                    
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                }                         }) {
+                                    Image(systemName: "magnifyingglass")
+                                        .foregroundColor(.primary)
+                                        .padding(.trailing, 8)
+                                }
                         }
-                    }) {
-                        Image(systemName: "plus")
-                            .foregroundColor(.primary)
-                            .padding(.trailing, 4)
-                    }
-                    
-                }
-            }
-                .padding()
-                
-                if !addTaskMapViewModel.searchResults.isEmpty && !addressSelected {
-                    
-                    List(addTaskMapViewModel.searchResults, id: \.self) { result in
+                        .padding(.horizontal, 8)
+                        
                         Button(action: {
-                            addTaskMapViewModel.selectCompletion(result)
-                            addTaskMapViewModel.searchResults.removeAll()
-                            addressSelected = true
-                        }) {
-                            VStack(alignment: .leading) {
-                                Text(result.title).font(.headline)
-                                Text(result.subtitle).font(.subheadline).foregroundColor(.gray)
+                            if networkMonitor.isConnected {
+                                showAlert = true
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            } else {
+                                showSomethingWentWrong = true
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                
                             }
+                        }) {
+                            Image(systemName: "plus")
+                                .foregroundColor(.primary)
+                                .padding(.trailing, 4)
                         }
+                        
                     }
-                    .listStyle(PlainListStyle())
-                    .frame(maxHeight: 200)
                 }
+                .padding()
                 
                 // Middle section with map
                 ZStack {
@@ -120,7 +98,10 @@ struct AddTaskMapView: View {
         .onAppear {
             addTaskMapViewModel.fetchTasks()
         }
+        
     }
+    
+    
 }
 
 struct AddTaskView_Previews: PreviewProvider {

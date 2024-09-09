@@ -102,7 +102,7 @@ struct CustomAlertView: View {
             fdbManager.addTask(updatedItem)
         }
         
-        addTaskMapViewModel.searchText = ""
+        addTaskMapViewModel.searchTextFromCustomMap = ""
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             fdbManager.fetchTasks()
             addTaskMapViewModel.fetchTasks()

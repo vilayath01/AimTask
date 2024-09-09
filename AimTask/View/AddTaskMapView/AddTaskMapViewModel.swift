@@ -12,17 +12,21 @@ import SwiftUI
 
 class AddTaskMapViewModel: NSObject, ObservableObject {
     //Map related properties
-    @Published var searchText: String = ""
+    @Published var searchTextFromCustomMap: String = ""
     @Published var regionFromViewModel: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0),
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        
     )
-    @Published var geofenceRegionsOnly: [CLCircularRegion] = []
-    @Published var searchResults: [MKLocalSearchCompletion] = []
-    @Published var errorMessage: String = ""
-    @Published var isPositve: Bool = false
     @Published var addressName: String = ""
     @Published var position: MapCameraPosition = .automatic
+    
+    @Published var geofenceRegionsOnly: [CLCircularRegion] = []
+    @Published var resultFromCustomMap: [MKMapItem] = []
+    
+    @Published var errorMessage: String = ""
+    @Published var isPositve: Bool = false
+    
     
     // Geofence-related properties
     @Published var tasks: [TaskModel] = []
@@ -47,7 +51,6 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         fetchTasks()
         
         completer.resultTypes = .address
-        completer.delegate = self
         setupLocationManager()
     }
     
@@ -71,99 +74,33 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
                 self?.updateGeofences()
             }
             .store(in: &cancellables)
-        
-        $searchText
-            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            .removeDuplicates()
-            .receive(on: DispatchQueue.main) // Ensure updates happen on the main thread
-            .sink { [weak self] text in
-                self?.completer.queryFragment = text
-            }
-            .store(in: &cancellables)
     }
     
-    func performGeocoding(for address: String) {
-        guard !address.isEmpty else { return }
+    func searchForPlaces() async {
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = searchTextFromCustomMap
+        request.region = regionFromViewModel
         
-        geocoder.geocodeAddressString(address) { [weak self] (placemarks, error) in
-            if let error = error {
-                DispatchQueue.main.async {
-                    self?.errorMessage = error.localizedDescription
-                }
-                return
-            }
-            
-            if let placemark = placemarks?.first,
-               let location = placemark.location {
-                
-                DispatchQueue.main.async {
-                    self?.regionFromViewModel = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
-                    self?.errorMessage = ""
-                    self?.addressName = "\(placemark.name ?? ""), \(placemark.locality ?? ""), \(placemark.country ?? "")."
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self?.errorMessage = "No location found."
-                }
-            }
-        }
-    }
-    
-    func updateSearchText(_ text: String) {
-        DispatchQueue.main.async {
-            self.searchText = text
-        }
-    }
-    
-    func selectCompletion(_ completion: MKLocalSearchCompletion) {
-        let searchRequest = MKLocalSearch.Request(completion: completion)
-        let search = MKLocalSearch(request: searchRequest)
-        
-        search.start { [weak self] (response, error) in
-            if let error = error {
-                DispatchQueue.main.async {
-                    self?.errorMessage = error.localizedDescription
-                }
-                return
-            }
-            
-            guard let response = response, let mapItem = response.mapItems.first else {
-                DispatchQueue.main.async {
-                    self?.errorMessage = "No location found"
-                }
-                return
-            }
-
-            let coordinate = mapItem.placemark.coordinate
-            
-            let title = mapItem.placemark.title ?? "Unknown"
-            let subtitle = mapItem.placemark.subtitle ?? "No details available"
+        do {
+            let resultFromCustomMap = try await MKLocalSearch(request: request).start()
             
             DispatchQueue.main.async {
-                self?.updateSearchText("\(title), \(subtitle)")
-                self?.regionFromViewModel = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
-                self?.position = .region(self?.regionFromViewModel ?? MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
+                self.resultFromCustomMap = resultFromCustomMap.mapItems
+                guard let placemark = resultFromCustomMap.mapItems.first else { return }
                 
-                let name = mapItem.placemark.name ?? "Unknown place"
-                let locality = mapItem.placemark.locality ?? "Unknown locality"
-                let country = mapItem.placemark.country ?? "Unknown country"
-                
-                self?.addressName = "\(name), \(locality), \(country)"
-                self?.errorMessage = ""
+                if let coordinate = resultFromCustomMap.mapItems.first?.placemark.coordinate {
+                    let newRegion = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+                    self.position = .region(newRegion)
+                    self.regionFromViewModel = newRegion
+                    self.addressName = "\(placemark.name ?? "") \(placemark.placemark.title ?? "")."
+                } else {
+                    self.errorMessage = "No results found."
+                }
             }
-        }
-    }}
-
-extension AddTaskMapViewModel: MKLocalSearchCompleterDelegate {
-    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        DispatchQueue.main.async {
-            self.searchResults = completer.results
-        }
-    }
-    
-    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-        DispatchQueue.main.async {
-            print("Issue1: \(error.localizedDescription)")
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "Error searching for places: \(error.localizedDescription)"
+            }
         }
     }
 }
@@ -186,11 +123,11 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
         guard let location = locations.first else { return }
         if let previousLocation = previousLocation {
             let distance = location.distance(from: previousLocation)
-            if distance < 2.0 {
+            if distance < 5.0 {
                 return
             }
         }
-
+        
         previousLocation = location
         reverseGeocodeLocation(location)
         
@@ -208,7 +145,8 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             DispatchQueue.main.async {
                 guard let placemark = placemarks?.first else { return }
-                self?.addressName = "\(placemark.name ?? ""), \(placemark.locality ?? ""), \(placemark.country ?? "")."
+                
+                self?.addressName = "\(placemark.name ?? ""), \(placemark.locality ?? "")."
                 self?.regionFromViewModel = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
             }
         }
@@ -228,7 +166,7 @@ extension AddTaskMapViewModel {
     func fetchTasks() {
         fdbManager.fetchTasks()
     }
-
+    
     private func updateGeofences() {
         clearGeofences()
         
