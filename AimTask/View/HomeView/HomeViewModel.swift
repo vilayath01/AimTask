@@ -34,34 +34,34 @@ class HomeViewModel: ObservableObject {
     
     func deleteTask(from documentID: String, item: String) {
         
-        if fdbManager.errorMessage.isEmpty {
+        if fdbManager.errorMessageFDB.isEmpty {
             fdbManager.deleteTask(from: documentID, item: item)
         } else {
-            errorMessage = fdbManager.errorMessage
+            errorMessage = fdbManager.errorMessageFDB
         }
     }
     
     func deleteWholeDoc(_ documentId: [String], locationName: String, isPositive: Bool) {
         
-        if fdbManager.errorMessage.isEmpty {
+        if fdbManager.errorMessageFDB.isEmpty {
             fdbManager.deleteDocument(with: documentId)
             
             DispatchQueue.main.async {
-                self.errorMessage = "Your \(locationName) task has been saved in history."
+                self.errorMessage = "Your \(locationName) task has been deleted."
                 self.isPositive = isPositive
                 
                 print("This is errorMessage: \(self.errorMessage)")
             }
         } else {
-            errorMessage = fdbManager.errorMessage
+            errorMessage = fdbManager.errorMessageFDB
         }
     }
     
     func addTaskItem(from documentID: String, item: String) {
-        if fdbManager.errorMessage.isEmpty {
+        if fdbManager.errorMessageFDB.isEmpty {
             fdbManager.addTaskItem(from: documentID, item: item)
         } else {
-            errorMessage = fdbManager.errorMessage
+            errorMessage = fdbManager.errorMessageFDB
         }
     }
     

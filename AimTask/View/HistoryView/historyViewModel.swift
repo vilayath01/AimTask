@@ -42,10 +42,10 @@ class HistoryViewModel: ObservableObject {
     
     func confirmDeleteAccount() {
         
-        if fdbManager.errorMessage.isEmpty {
+        if fdbManager.errorMessageFDB.isEmpty {
             fdbManager.delteAccount()
         } else {
-            errorMessage = fdbManager.errorMessage
+            errorMessage = fdbManager.errorMessageFDB
         }
     }
     
