@@ -46,6 +46,7 @@ class HistoryViewModel: ObservableObject {
             fdbManager.delteAccount()
         } else {
             errorMessage = fdbManager.errorMessageFDB
+            isPositive = false
         }
     }
     
