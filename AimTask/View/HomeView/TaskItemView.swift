@@ -111,23 +111,23 @@ struct TaskItemView: View {
                     .padding(.top)
                     
                     Spacer()
-                    
-                    Menu {
-                        Button(action: {
-                            // Directly save to history without confirmation dialog
-                            viewModel.saveHistory(docId: task.documentID, isSave: true, locationName: task.locationName, isPositive: true)
-                        }) {
-                            Label("Complete Task", systemImage: "checkmark.circle")
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis")
-                            .font(.title)
-                            .foregroundColor(.gray)
-                            .padding(.trailing)
-                            .padding(.top)
-                    }
+                     if !task.enteredGeofence {
+                         Menu {
+                             Button(action: {
+                                 // Directly save to history without confirmation dialog
+                                 viewModel.saveHistory(docId: task.documentID, isSave: true, locationName: task.locationName, isPositive: true)
+                             }) {
+                                 Label("Complete Task", systemImage: "checkmark.circle")
+                             }
+                         } label: {
+                             Image(systemName: "ellipsis")
+                                 .font(.title)
+                                 .foregroundColor(.gray)
+                                 .padding(.trailing)
+                                 .padding(.top)
+                         }
+                     }
                 }
-
             }
             Spacer()
         }
