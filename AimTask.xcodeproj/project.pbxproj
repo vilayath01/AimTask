@@ -10,6 +10,7 @@
 		38078FDE2C85448A00BC2E1D /* historyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38078FDD2C85448A00BC2E1D /* historyViewModel.swift */; };
 		3848443A2C8EC6AF00C1D623 /* PrivacyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384844392C8EC6AF00C1D623 /* PrivacyScreen.swift */; };
 		388CF5C72C6AED7C00EC361D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */; };
+		5506D2F62C8F14B6002C2715 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5506D2F52C8F14B6002C2715 /* OnboardingView.swift */; };
 		551009252C8093FD00EE4E8C /* LocalNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551009242C8093FD00EE4E8C /* LocalNotifications.swift */; };
 		551E58482C7603340008986A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551E58472C7603340008986A /* HomeViewModel.swift */; };
 		553EA91D2C719E7900AC44DE /* NoTaskaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553EA91C2C719E7900AC44DE /* NoTaskaView.swift */; };
@@ -50,6 +51,7 @@
 		38078FDD2C85448A00BC2E1D /* historyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = historyViewModel.swift; sourceTree = "<group>"; };
 		384844392C8EC6AF00C1D623 /* PrivacyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyScreen.swift; sourceTree = "<group>"; };
 		388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5506D2F52C8F14B6002C2715 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		551009242C8093FD00EE4E8C /* LocalNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotifications.swift; sourceTree = "<group>"; };
 		551E58472C7603340008986A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		553EA91C2C719E7900AC44DE /* NoTaskaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTaskaView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,14 @@
 				384844392C8EC6AF00C1D623 /* PrivacyScreen.swift */,
 			);
 			path = Privacy;
+			sourceTree = "<group>";
+		};
+		5506D2F42C8F149C002C2715 /* Onboarding  */ = {
+			isa = PBXGroup;
+			children = (
+				5506D2F52C8F14B6002C2715 /* OnboardingView.swift */,
+			);
+			path = "Onboarding ";
 			sourceTree = "<group>";
 		};
 		551009232C8093E100EE4E8C /* LocalNotifications */ = {
@@ -188,6 +198,7 @@
 		55A5CE662C4D50AB00F9E533 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5506D2F42C8F149C002C2715 /* Onboarding  */,
 				55B5DFDC2C6996E500AC53A0 /* LoginView */,
 				55B5DFDB2C6996C700AC53A0 /* CustomAlertView */,
 				55B5DFDA2C69968900AC53A0 /* AddTaskMapView */,
@@ -351,6 +362,7 @@
 				55A5CE6C2C4D515E00F9E533 /* HistoryView.swift in Sources */,
 				55546F2E2C85BD1C00E34A0E /* NetworkMonitor.swift in Sources */,
 				55A5CE5A2C4D12B200F9E533 /* Model.swift in Sources */,
+				5506D2F62C8F14B6002C2715 /* OnboardingView.swift in Sources */,
 				551E58482C7603340008986A /* HomeViewModel.swift in Sources */,
 				55BE963A2C8BD5F800D9C692 /* ErrorBar.swift in Sources */,
 				38078FDE2C85448A00BC2E1D /* historyViewModel.swift in Sources */,
