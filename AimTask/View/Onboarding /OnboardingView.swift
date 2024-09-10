@@ -8,6 +8,20 @@
 import Foundation
 import SwiftUI
 
+enum Onboarding {
+
+    static let onboardingWelcomeTitle = "onboarding_welcome_title"
+    static let onboardingWelcomeDescription = "onboarding_welcome_description"
+    static let addTaskToCompleteTitle = "onboarding_task_complete_title"
+    static let addTaskToCompleteDescription = "onboarding_task_complete_description"
+    static let emailTitle = "onboarding_email_title"
+    static let emailDescription = "onboarding_email_description"
+    static let finalTitle = "onboarding_final_title"
+    static let finalDescription = "onboarding_final_description"
+    static let letsBeginButton = "onboarding_lets_begin_button"
+    
+}
+
 struct OnboardingView: View {
     @Binding var hasCompletedOnboarding: Bool
     
@@ -33,17 +47,14 @@ struct WelcomeScreen: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 150, height: 200)
-           
             
-            Text("Welcome to Aim Task!")
-                .font(.largeTitle)
-                .fontWeight(.bold)
+            
+            styledText(Onboarding.onboardingWelcomeTitle.localized)
+                
                 .multilineTextAlignment(.center)
             
-            Text("""
-            Your personal task manager that helps you stay organized. Complete tasks effortlessly with geofence technology, receiving notifications as you enter or leave specific locations so you never miss a task. Create an anonymous account easily—no need to use your actual email.
-            """)
-                .font(.title3)
+            styledText(Onboarding.onboardingWelcomeDescription.localized, fontSize: 18)
+              
                 .multilineTextAlignment(.center)
                 .padding()
             
@@ -64,15 +75,12 @@ struct TaskCompleteScreen: View {
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .padding()
             
-            Text("Add Task to Complete")
-                .font(.largeTitle)
-                .fontWeight(.bold)
+           styledText(Onboarding.addTaskToCompleteTitle.localized)
+                
                 .multilineTextAlignment(.center)
             
-            Text("""
-            Create location-based tasks by pressing the ‘+’ button. Set the geofence on the map and save. Whenever you pass by that location, a notification will remind you of the tasks you need to complete there. Ensure location permissions are always enabled for geofencing to work properly.
-            """)
-                .font(.title3)
+           styledText(Onboarding.addTaskToCompleteDescription.localized, fontSize: 18)
+                
                 .multilineTextAlignment(.center)
                 .padding()
             
@@ -94,16 +102,12 @@ struct EmailScreen: View {
                 .clipShape(Circle())
                 .padding(.bottom, 40)
             
-            Text("Send a Completed Task via Email")
-                .font(.largeTitle)
-                .fontWeight(.bold)
+            styledText(Onboarding.emailTitle.localized)
+               
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
             
-            Text("""
-            After completing a task, save it to your history by tapping the green checkmark in the home tab. Then, select the task you want to send via email to your friend or colleague.
-            """)
-                .font(.title3)
+            styledText(Onboarding.emailDescription.localized, fontSize: 18)
                 .multilineTextAlignment(.center)
                 .padding()
             
@@ -120,13 +124,12 @@ struct OnboardingFinalScreen: View {
         VStack {
             Spacer()
             
-            Text("You're All Set!")
-                .font(.largeTitle)
-                .fontWeight(.bold)
+            styledText(Onboarding.finalTitle.localized)
+                
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 20)
             
-            Text("You're ready to start using Aim Task to stay organized and productive.")
+            styledText(Onboarding.finalDescription.localized, fontSize: 18)
                 .font(.title3)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 30)
@@ -140,9 +143,7 @@ struct OnboardingFinalScreen: View {
             Button(action: {
                 hasCompletedOnboarding = true
             }) {
-                Text("Let's Begin")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+                styledText(Onboarding.letsBeginButton.localized,fontSize: 18, isBold: false)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.green)

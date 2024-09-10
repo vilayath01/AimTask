@@ -25,16 +25,13 @@ struct TaskItemView: View {
                     
                     HStack {
                         Circle()
-                            .fill(Color.purple)
+                            .fill(Color.black)
                             .frame(width: 30, height: 30)
                             .overlay(Text(alphabet)
                                 .foregroundColor(.white)
                                 .font(.headline))
                         
-                        Text(task.taskItems[index])
-                            .font(.subheadline)
-                            .fontWeight(task.enteredGeofence ? .semibold : .regular)
-                        
+                        styledText(task.taskItems[index], fontSize: 14, isBold: task.enteredGeofence)
                         
                         Spacer()
                         
@@ -65,6 +62,7 @@ struct TaskItemView: View {
                             .padding(10)
                             .background(Color(UIColor.systemGray6))
                             .cornerRadius(8)
+                            .font(.custom("Avenir", size: 14))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(Color.gray.opacity(0.5), lineWidth: 1)
@@ -95,38 +93,36 @@ struct TaskItemView: View {
                 }
                 
                 // Add Task button
-                 HStack {
+                HStack {
                     Button(action: {
                         isAddingTask.toggle()
                     }) {
                         HStack {
                             Image(systemName: "plus.circle.fill")
                                 .foregroundColor(.blue)
-                            Text("Add Task")
-                                .foregroundColor(.blue)
-                                .font(.headline)
+                            styledText(HomeViewString.addTask.localized, fontSize: 16, textColor: .blue)
                                 .padding(.leading, 5)
                         }
                     }
                     .padding(.top)
                     
                     Spacer()
-                     if !task.enteredGeofence {
-                         Menu {
-                             Button(action: {
-                                 // Directly save to history without confirmation dialog
-                                 viewModel.saveHistory(docId: task.documentID, isSave: true, locationName: task.locationName, isPositive: true)
-                             }) {
-                                 Label("Complete Task", systemImage: "checkmark.circle")
-                             }
-                         } label: {
-                             Image(systemName: "ellipsis")
-                                 .font(.title)
-                                 .foregroundColor(.gray)
-                                 .padding(.trailing)
-                                 .padding(.top)
-                         }
-                     }
+                    if !task.enteredGeofence {
+                        Menu {
+                            Button(action: {
+                                // Directly save to history without confirmation dialog
+                                viewModel.saveHistory(docId: task.documentID, isSave: true, locationName: task.locationName, isPositive: true)
+                            }) {
+                                Label(HomeViewString.completedTask.localized, systemImage: "checkmark.circle")
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .font(.title)
+                                .foregroundColor(.gray)
+                                .padding(.trailing)
+                                .padding(.top)
+                        }
+                    }
                 }
             }
             Spacer()

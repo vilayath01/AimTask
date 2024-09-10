@@ -33,8 +33,8 @@ struct HistoryView: View {
                                     HistoryTaskSection(
                                         viewModel: historyViewModel,
                                         task: task,
-                                        title: "Location: \(task.locationName)",
-                                        subtitle: "Date & Time: \(task.dateTime.formatted())"
+                                        title: HistoryViewString.localized(HistoryViewString.locationName.localized, task.locationName),
+                                        subtitle: HistoryViewString.localized(HistoryViewString.dateTime.localized, task.dateTime.formatted())
                                     )
                                 }
                             }
@@ -45,10 +45,11 @@ struct HistoryView: View {
                     if historyViewModel.tasks.contains(where: {$0.saveHistory}) {
                         
                         HStack {
-                            TextField("Enter email", text: $enteredEmail)
+                            TextField(HistoryViewString.enterEmailPlaceholder.localized, text: $enteredEmail)
                                 .padding()
-                                .background(Color.white.opacity(0.7))
+                                .background(Color(.systemGray6))
                                 .cornerRadius(8)
+                                .font(.custom("Avenir", size: 16))
                                 .overlay(
                                     HStack {
                                         Spacer()
@@ -58,9 +59,9 @@ struct HistoryView: View {
                                                 historyViewModel.enteredEmailAddress(email: enteredEmail)
                                                 enteredEmail = ""
                                             } else {
-                                                historyViewModel.errorMessage = "enter valid email please"
+                                                historyViewModel.errorMessage = HistoryViewString.validEmailError.localized
                                             }
- 
+                                            
                                         }) {
                                             Image(systemName: !enteredEmail.isEmpty ? "paperplane.fill" : "paperplane")
                                                 .foregroundColor(.blue)
@@ -74,23 +75,34 @@ struct HistoryView: View {
                     }
                     
                 }
-                .navigationTitle("History")
+                .navigationTitle(HistoryViewString.title.localized)
+                
+                
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Menu {
-                            Button("Sign Out", action: historyViewModel.signOut)
-                            Button("Delete Account", action: {
+                            Button(HistoryViewString.signOut.localized, action: historyViewModel.signOut)
+                            Button(HistoryViewString.deleteAccount.localized, action: {
                                 historyViewModel.deleteAccount()
                                 
                             })
                         } label: {
-                            Label("Options", systemImage: "ellipsis.circle")
+                            VStack {
+                                Image(systemName: "gear")
+                                    .font(.headline)
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .padding(.trailing)
+                                
+                                styledText("Setting",fontSize: 14, textColor: .black)
+                                    .padding(.trailing)
+                            }
                         }
                     }
                 }
                 .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
                 .alert(isPresented: $historyViewModel.showDeleteAlert, content: {
-                    Alert(title: Text("Confirmation"), message: Text("Are you sure you want to delete your account? This action cannot be undone."), primaryButton: .destructive(Text("Okay"), action: {
+                    Alert(title: Text(HistoryViewString.alertTitle.localized), message: Text(HistoryViewString.alertDescription.localized), primaryButton: .destructive(Text(HistoryViewString.okay.localized), action: {
                         historyViewModel.confirmDeleteAccount()
                     }), secondaryButton: .cancel())
                 })

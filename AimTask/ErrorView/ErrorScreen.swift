@@ -19,8 +19,7 @@ struct SomethingWentWrongView: View {
                 .scaledToFit()
                 .frame(width: 60, height: 60)
             
-            Text("Looks like you're not connected to world!")
-                .font(.headline)
+            styledText("Looks like you're not connected to world!", fontSize: 20)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
             
@@ -38,7 +37,7 @@ struct SomethingWentWrongView: View {
             }
         }
         .padding()
-        .background(Color.yellow)
+        .background(Color(red: 105/255, green: 155/255, blue: 157/255))
         .cornerRadius(20)
         .shadow(radius: 10)
         .frame(maxWidth: 300)
@@ -54,9 +53,8 @@ struct SomethingWentWrongView: View {
 struct SomethingWentWrongCardView_Previews: PreviewProvider {
     static var previews: some View {
         SomethingWentWrongView(retryAction: {
-            // Example retry action
-            print("Retry button tapped")
+
         })
-            .background(Color.gray.opacity(0.2).edgesIgnoringSafeArea(.all)) // Background for preview
+            .background(Color.gray.opacity(0.2).edgesIgnoringSafeArea(.all)) 
     }
 }

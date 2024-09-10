@@ -18,19 +18,16 @@ struct TaskSectionView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 if let task = tasks.first(where: { $0.locationName == title }) {
-                    Text(title)
-                        .font(.title2)
+                    styledText(title, fontSize: 18)
+                        
                         .fontWeight(task.enteredGeofence ? .bold : .semibold)
-                        .foregroundColor(.primary)
+                      
                         .padding(.leading)
                         .padding(.top, 10)
                         .padding(.bottom, 5)
                        
                 } else {
-                    Text(title)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
+                    styledText(title, fontSize: 18, isBold: false)
                         .padding(.leading)
                         .padding(.top, 10)
                         .padding(.bottom, 5)

@@ -39,7 +39,10 @@ struct HomeView: View {
                         }
                     }
                 }
-                .navigationTitle("Home: \(loginViewModel.displayName.usernameFromEmail())")
+                .navigationTitle("\(HomeViewString.title.localized): \(loginViewModel.displayName.usernameFromEmail())")
+                .font(.custom("Avenir", size: 20))
+                .fontWeight(.bold)
+                .foregroundColor(.black)
                 .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
             }
             .onAppear {
