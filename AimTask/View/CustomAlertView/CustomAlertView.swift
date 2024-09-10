@@ -7,14 +7,13 @@ struct CustomAlertView: View {
     @Binding var addTaskModel: [TaskModel]
     @ObservedObject var customAlertViewModel: CustomAlertViewModel
     @ObservedObject var addTaskMapViewModel: AddTaskMapViewModel
-
+    
     var fdbManager = FDBManager()
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Add task Items @ \(locationName)")
-                .font(.headline)
-                .foregroundColor(Color.black)
+            styledText(CustomAlertString.localized(CustomAlertString.addTaskItem.localized, locationName), fontSize: 20)
+                
             
             List {
                 ForEach($addTaskModel.indices, id: \.self) { index in
@@ -27,7 +26,7 @@ struct CustomAlertView: View {
             HStack {
                 Spacer()
                 
-                Button("Cancel") {
+                Button(CustomAlertString.cancel.localized) {
                     isPresented = false
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -38,7 +37,7 @@ struct CustomAlertView: View {
                 .shadow(radius: 5)
                 .padding(.trailing)
                 
-                Button("Save") {
+                Button(CustomAlertString.save.localized) {
                     onSave(addTaskModel: addTaskModel)
                     isPresented = false
                 }
@@ -51,7 +50,7 @@ struct CustomAlertView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(Color(red: 105/255, green: 155/255, blue: 157/255))
         .cornerRadius(16)
         .shadow(radius: 10)
         .padding()
@@ -59,11 +58,17 @@ struct CustomAlertView: View {
     
     @ViewBuilder
     private func createListItemView(for index: Int) -> some View {
-        ForEach(addTaskModel[index].taskItems.indices, id: \.self) { taskIndex in
-            // Create a binding for the individual task item
+        // Make sure the array exists and isn't modified during iteration
+        let taskItems = addTaskModel[index].taskItems
+        
+        ForEach(taskItems.indices, id: \.self) { taskIndex in
             let taskItemBinding = Binding<String>(
-                get: { addTaskModel[index].taskItems[taskIndex] },
-                set: { newValue in addTaskModel[index].taskItems[taskIndex] = newValue }
+                get: { addTaskModel[index].taskItems[safe: taskIndex] ?? ""  },
+                set: { newValue in
+                    if taskIndex < addTaskModel[index].taskItems.count {
+                        addTaskModel[index].taskItems[taskIndex] = newValue
+                    }
+                }
             )
             
             let isLast = taskIndex == addTaskModel[index].taskItems.count - 1
@@ -76,26 +81,35 @@ struct CustomAlertView: View {
                 isFirst: isFirst,
                 onAdd: {
                     customAlertViewModel.addItem(to: &addTaskModel[index].taskItems)
-                }, onRemove: {
-                    customAlertViewModel.removeItem(at: taskIndex, from: &addTaskModel[index].taskItems)
-                }, showRemoveButton: showRemoveButton
+                },
+                onRemove: {
+                    if taskIndex < addTaskModel[index].taskItems.count {
+                        // Ensure the index is safe to remove
+                        customAlertViewModel.removeItem(at: taskIndex, from: &addTaskModel[index].taskItems)
+                    } else {
+                        print("Index out of bounds during removal.")
+                    }
+                },
+                showRemoveButton: showRemoveButton
             )
+        }
+        .onAppear {
+            customAlertViewModel.removeAllButOneItem(from: &addTaskModel[index].taskItems)
         }
     }
     
     private func onSave(addTaskModel: [TaskModel]) {
         let selectedLocation = addTaskMapViewModel.regionFromViewModel.center
-        print("selectLocation: \(selectedLocation)")
         guard !(selectedLocation.latitude == 0.0 && selectedLocation.longitude == 0.0) else {
-                return
-            }
+            return
+        }
         addTaskModel.forEach { model in
             let updatedItem = TaskModel(
                 locationName: locationName,
                 dateTime: Date(),
                 taskItems: model.taskItems,
                 coordinate: selectedLocation,
-                documentID: "", 
+                documentID: "",
                 enteredGeofence: model.enteredGeofence,
                 saveHistory: model.saveHistory
             )

@@ -18,10 +18,7 @@ struct HistoryTaskSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text(title)
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.primary)
+               styledText(title, fontSize: 18)
                     .padding(.leading)
                 
                 Spacer()
@@ -34,10 +31,8 @@ struct HistoryTaskSection: View {
                 })
             }
             
-            Text(subtitle)
-                .font(.title3)
-                .fontWeight(.semibold)
-                .foregroundColor(.primary)
+            styledText(subtitle, fontSize: 16, isBold: false)
+                
                 .padding(.leading)
                 .padding(.top, 5)
             

@@ -16,9 +16,8 @@ struct HistoryTaskItem: View {
         VStack (alignment: .leading){
             
             ForEach (taskItems, id: \.self) { task in
-                Text("✅ : \(task) ")
-                    .font(.body)
-                    .foregroundColor(.primary)
+                styledText("✅ : \(task) ", fontSize: 16, isBold: false)
+                    
             }
         }
         .padding(.leading)

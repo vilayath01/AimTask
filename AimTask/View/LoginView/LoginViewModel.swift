@@ -24,7 +24,25 @@ enum LogInOrSignUpError: Error {
     case invalidEmail
     case passwordMismatch
     case emptyFields
-    case custom(String) // For custom error messages
+    case custom(String)
+}
+
+enum LoginSingup {
+    static let welcome = "welcome"
+    static let login = "login"
+    static let signUp = "signUp"
+    static let email = "email"
+    static let password = "password"
+    static let confirmPassword = "confirm_password"
+    static let haveAccountDescription = "have_account_description"
+    static let wantAccountDescription = "want_account_description"
+    static let invalidEmail = "invalid_email"
+    static let passwordMismatch = "password_mismatch"
+    static let emptyField = "empty_field"
+    static let invalidCredential = "invalid_credential"
+    static let emailAlreadyInUse = "email_already_in_use"
+    static let weakPassword = "weak_password"
+    static let unknownError = "unknown_error"
 }
 
 @MainActor
@@ -81,11 +99,11 @@ class LoginViewModel: ObservableObject {
     func setErrorMessage(for error: LogInOrSignUpError) {
         switch error {
         case .invalidEmail:
-            errorMessage = "Looks like invalid Email..!"
+            errorMessage = LoginSingup.invalidEmail.localized
         case .passwordMismatch:
-            errorMessage = "Password do not match!"
+            errorMessage = LoginSingup.passwordMismatch.localized
         case .emptyFields:
-            errorMessage = "please fill in all the fields."
+            errorMessage = LoginSingup.emptyField.localized
         case .custom(let message):
             errorMessage = message
         }
@@ -197,14 +215,14 @@ extension LoginViewModel {
     private func handleError(_ error: NSError) {
         switch error.code {
         case AuthErrorCode.invalidCredential.rawValue:
-            errorMessage = "The supplied auth credential is malformed or has expired."
+            errorMessage = LoginSingup.invalidCredential.localized
         case AuthErrorCode.emailAlreadyInUse.rawValue:
-            errorMessage = "The email address is already in use."
+            errorMessage = LoginSingup.emailAlreadyInUse.localized
         case AuthErrorCode.weakPassword.rawValue:
-            errorMessage = "The password is too weak."
+            errorMessage = LoginSingup.weakPassword.localized
             // Add more cases as needed
         default:
-            errorMessage = "An unknown error occurred. Please try again."
+            errorMessage = LoginSingup.unknownError.localized
         }
         authenticationState = .unauthenticated
         isAlert = true

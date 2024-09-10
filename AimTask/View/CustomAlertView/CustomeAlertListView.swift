@@ -5,7 +5,6 @@
 //  Created by Vilayath Mohammed on 17/8/2024.
 //
 
-import Foundation
 import SwiftUI
 
 struct CustomAlertListView: View {
@@ -21,9 +20,9 @@ struct CustomAlertListView: View {
             Circle()
                 .frame(width: 33, height: 33)
                 .foregroundColor(.cyan)
-                .overlay(Text("A").foregroundColor(.white))
+                .overlay(Text("✔️").foregroundColor(.white))
             
-            TextField("List item", text: $taskItem)
+            TextField(CustomAlertString.listItemPlaceholder.localized, text: $taskItem)
                 .textFieldStyle(PlainTextFieldStyle())
                 .padding(.leading, 4)
             
@@ -31,18 +30,19 @@ struct CustomAlertListView: View {
             
             if isLast {
                 Button(action: {
-                    onAdd?()
+                    onAdd?() // Safely call onAdd closure
                 }) {
                     Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.blue)
+                        .foregroundColor(taskItem.isEmpty ? .gray : .blue)
                         .padding(.trailing, 4)
                 }
+                .disabled(taskItem.isEmpty)
                 .buttonStyle(PlainButtonStyle())
             }
             
-            if showRemoveButton  {
+            if showRemoveButton {
                 Button(action: {
-                    onRemove?()
+                    onRemove?() // Safely call onRemove closure
                 }) {
                     Image(systemName: "minus.circle.fill")
                         .foregroundColor(.red)

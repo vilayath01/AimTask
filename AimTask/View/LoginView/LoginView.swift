@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct LoginView: View {
-  
+    
     @State private var isPasswordVisible: Bool = false
     @State private var isConfirmPasswordVisible: Bool = false
     @State private var emailContainsSpecialCharecter: Bool = false
     @State private var isEmptyField: Bool = false
- 
+    
     
     @EnvironmentObject var loginViewModel: LoginViewModel
     @Environment(\.dismiss) var dismiss
@@ -29,9 +29,9 @@ struct LoginView: View {
     
     private func signInWithEmailPassword() {
         Task {
-          if await loginViewModel.signInWithEmailPassword() == true {
-            dismiss()
-          }
+            if await loginViewModel.signInWithEmailPassword() == true {
+                dismiss()
+            }
         }
     }
     
@@ -51,13 +51,13 @@ struct LoginView: View {
         ZStack {
             // Background color
             Color.black.ignoresSafeArea()
-
+            
             // Diagonal red shape
             GeometryReader { geometry in
                 Path { path in
                     let width = geometry.size.width
                     let height = geometry.size.height
-
+                    
                     path.move(to: CGPoint(x: 0, y: 0))
                     path.addLine(to: CGPoint(x: width, y: 0))
                     path.addLine(to: CGPoint(x: width, y: height * 0.4))
@@ -66,19 +66,21 @@ struct LoginView: View {
                 }
                 .fill(Color(red: 105/255, green: 155/255, blue: 157/255))
             }
-
+            
             VStack {
-                Spacer().frame(height: 100) // Adjust the spacing as needed
-
-                Text(loginViewModel.flow == .signUp ? "Welcome" : "Login")
-                    .foregroundColor(.white)
-                    .font(.largeTitle)
-                    .bold()
-                    .padding(.bottom, 40)
-
+                Spacer().frame(height: 100)
+                
+                styledText(
+                    loginViewModel.flow == .signUp
+                    ? LoginSingup.welcome.localized
+                    : LoginSingup.login.localized,
+                    fontSize: 28, textColor: .white
+                )
+                .padding(.bottom, 40)
+                
                 VStack(spacing: 20) {
                     // Email field
-                    TextField("Email", text: $loginViewModel.refineEmail)
+                    TextField(LoginSingup.email.localized, text: $loginViewModel.refineEmail)
                         .keyboardType(.emailAddress)
                         .padding()
                         .background(Color.white.opacity(0.1))
@@ -88,18 +90,18 @@ struct LoginView: View {
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
                         .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
-
+                    
                     // Password field
                     HStack{
                         if isPasswordVisible {
-                            TextField("Password", text: $loginViewModel.refinePassword)
+                            TextField(LoginSingup.password.localized, text: $loginViewModel.refinePassword)
                                 .padding()
                                 .background(Color.white.opacity(0.1))
                                 .cornerRadius(5)
                                 .foregroundColor(.white)
                                 .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
                         } else {
-                            SecureField("Password", text: $loginViewModel.refinePassword)
+                            SecureField(LoginSingup.password.localized, text: $loginViewModel.refinePassword)
                                 .padding()
                                 .background(Color.white.opacity(0.1))
                                 .cornerRadius(5)
@@ -116,20 +118,20 @@ struct LoginView: View {
                         .padding(.trailing, 10)
                     }
                     .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
-                   
+                    
                     
                     
                     if loginViewModel.flow == .signUp {
                         HStack {
                             if isConfirmPasswordVisible {
-                                TextField("Confirm Password", text: $loginViewModel.confirmPassword)
+                                TextField(LoginSingup.confirmPassword.localized, text: $loginViewModel.confirmPassword)
                                     .padding()
                                     .background(Color.white.opacity(0.1))
                                     .cornerRadius(5)
                                     .foregroundColor(.white)
                                     .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
                             } else {
-                                SecureField("Confirm Password", text: $loginViewModel.confirmPassword)
+                                SecureField(LoginSingup.confirmPassword.localized, text: $loginViewModel.confirmPassword)
                                     .padding()
                                     .background(Color.white.opacity(0.1))
                                     .cornerRadius(5)
@@ -145,11 +147,11 @@ struct LoginView: View {
                             .padding(.trailing, 10)
                         }
                         .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
-                      
+                        
                     }
                 }
                 .padding(.horizontal, 40)
-
+                
                 Button(action: {
                     if loginViewModel.flow == .signUp {
                         loginViewModel.signUp(email: loginViewModel.refineEmail, password: loginViewModel.refinePassword, confirmPassword: loginViewModel.confirmPassword)
@@ -157,34 +159,30 @@ struct LoginView: View {
                         loginViewModel.login(email: loginViewModel.refineEmail, password: loginViewModel.refinePassword)
                     }
                 }) {
-                    Text(loginViewModel.flow == .signUp ? "Sign up" : "Login")
-                        .bold()
+                    styledText(loginViewModel.flow == .signUp ? LoginSingup.signUp.localized : LoginSingup.login.localized, fontSize: 20, textColor: .white)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.red)
-                        .foregroundColor(.white)
                         .cornerRadius(10)
                 }
                 .padding(.vertical, 20)
                 .padding(.horizontal, 40)
-
-               
+                
+                
                 VStack {
                     if !loginViewModel.errorMessage.isEmpty {
                         errorMessageView(loginViewModel.errorMessage)
                     }
                 }
-
+                
                 Spacer()
-
+                
                 HStack {
-                    Text(loginViewModel.flow == .signUp ? "Already have an account?" : "Want to create an account?")
-                        .foregroundColor(.white)
+                    styledText(loginViewModel.flow == .signUp ? LoginSingup.haveAccountDescription.localized : LoginSingup.wantAccountDescription.localized, fontSize: 18, textColor: .white)
                     Button(action: {
                         loginViewModel.switchFlow()
                     }) {
-                        Text(loginViewModel.flow == .signUp ? "Login" : "Sign up")
-                            .foregroundColor(.red)
+                        styledText(loginViewModel.flow == .signUp ? LoginSingup.login.localized : LoginSingup.signUp.localized, fontSize: 18, textColor: .red)
                     }
                 }
                 .padding(.bottom, 30)

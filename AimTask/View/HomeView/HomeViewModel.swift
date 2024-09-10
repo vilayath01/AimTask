@@ -9,6 +9,20 @@ import Foundation
 import SwiftUI
 import CoreLocation
 
+enum HomeViewString {
+    static let title = "title_home"
+    static let savedInHistory = "saved_in_history"
+    static let taskDeleted = "task_deleted"
+    static let addTask = "add_task"
+    static let completedTask = "completed_task" 
+    
+    
+    static func localized(_ key: String, _ arguments: CVarArg...) -> String {
+        let formatString = NSLocalizedString(key, comment: "")
+        return String(format: formatString, arguments: arguments)
+    }
+}
+
 class HomeViewModel: ObservableObject {
     
     @Published var tasks: [TaskModel] = []
@@ -47,10 +61,8 @@ class HomeViewModel: ObservableObject {
             fdbManager.deleteDocument(with: documentId)
             
             DispatchQueue.main.async {
-                self.errorMessage = "Your \(locationName) task has been deleted."
+                self.errorMessage = HomeViewString.localized(HomeViewString.taskDeleted, locationName)
                 self.isPositive = isPositive
-                
-                print("This is errorMessage: \(self.errorMessage)")
             }
         } else {
             errorMessage = fdbManager.errorMessageFDB
@@ -74,10 +86,9 @@ class HomeViewModel: ObservableObject {
         fdbManager.updateSaveHistory(for: docId, to: isSave)
         
         DispatchQueue.main.async {
-            self.errorMessage = "Your \(locationName) task has been saved in history."
+            self.errorMessage = HomeViewString.localized(HomeViewString.savedInHistory.localized, locationName)
             self.isPositive = isPositive
-            
-            print("This is errorMessage: \(self.errorMessage)")
+
         }
     }
 }

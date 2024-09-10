@@ -9,7 +9,7 @@ import SwiftUI
 import CoreLocation
 
 struct MainApp: View {
-
+    
     @EnvironmentObject var loginViewModel: LoginViewModel
     
     var body: some View {
@@ -24,7 +24,7 @@ struct MainApp: View {
                     }
                     HistoryView(historyViewModel: HistoryViewModel(loginViewModel: loginViewModel)).tabItem {
                         Label("History", systemImage: "calendar.badge.clock")
-                         
+                        
                     }
                     
                 }
@@ -33,9 +33,9 @@ struct MainApp: View {
             }
         }
         .onAppear {
-                   LocalNotifications.shared.configure(with: loginViewModel)
-               }
-      
+            LocalNotifications.shared.configure(with: loginViewModel)
+        }
+        
     }
 }
 

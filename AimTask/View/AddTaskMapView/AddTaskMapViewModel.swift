@@ -10,6 +10,13 @@ import MapKit
 import Combine
 import SwiftUI
 
+enum MapViewString {
+    static let title = "add_task_title"
+    static let searchPlaceholder = "search_placeholder"
+    static let errorMessage = "error_message"
+    static let locationAccessErrorMessage = "location_error"
+}
+
 class AddTaskMapViewModel: NSObject, ObservableObject {
     //Map related properties
     @Published var searchTextFromCustomMap: String = ""
@@ -69,7 +76,6 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         fdbManager.$tasks
             .receive(on: DispatchQueue.main)
             .sink { [weak self] tasks in
-                print("Tasks updated: \(tasks.count)")
                 self?.tasks = tasks
                 self?.updateGeofences()
             }
@@ -99,12 +105,12 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
                     }
                    
                 } else {
-                    self.errorMessage = "No results found."
+                    self.errorMessage = MapViewString.errorMessage.localized
                 }
             }
         } catch {
             DispatchQueue.main.async {
-                self.errorMessage = "Error searching for places: \(error.localizedDescription)"
+                self.errorMessage = MapViewString.errorMessage.localized
             }
         }
     }
@@ -117,7 +123,7 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
             locationManager.requestLocation()
         case .denied, .restricted:
             DispatchQueue.main.async {
-                self.errorMessage = "Location access is restricted or denied."
+                self.errorMessage = MapViewString.locationAccessErrorMessage.localized
             }
         default:
             break
@@ -128,7 +134,7 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
         guard let location = locations.first else { return }
         if let previousLocation = previousLocation {
             let distance = location.distance(from: previousLocation)
-            if distance < 5.0 {
+            if distance < 10 {
                 return
             }
         }
@@ -212,7 +218,7 @@ extension AddTaskMapViewModel {
         if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
             locationManager.startMonitoring(for: geofenceRegion)
         } else {
-            self.errorMessage = "Geofenceing is not supported on this device."
+            self.errorMessage = MapViewString.errorMessage.localized
         }
     }
     
@@ -237,12 +243,12 @@ extension AddTaskMapViewModel {
             fdbManager.updateEnteredGeofence(for:task.documentID , to: false)
             
             let title = task.locationName
-            let body = "You have exited the area of task: \(task.locationName)."
+            let body = "You have exited: \(task.locationName)."
             LocalNotifications.shared.scheduleNotification(title: title, body: body)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        self.errorMessage = "Failed to monitor region: \(error.localizedDescription)"
+        self.errorMessage = MapViewString.errorMessage.localized
     }
 }

@@ -13,7 +13,7 @@ struct AddTaskMapView: View {
         ZStack {
             VStack {
                 Label {
-                    Text("Add Task").bold()
+                    styledText(MapViewString.title.localized, fontSize: 20)
                 } icon: {
                     // Icon if needed
                 }
@@ -27,10 +27,11 @@ struct AddTaskMapView: View {
                     
                     HStack {
                         HStack {
-                            TextField("Enter address", text: $addTaskMapViewModel.searchTextFromCustomMap)
+                            TextField(MapViewString.searchPlaceholder.localized, text: $addTaskMapViewModel.searchTextFromCustomMap)
                                 .padding(12)
                                 .background(Color(.systemGray6))
                                 .cornerRadius(10)
+                                .font(.custom("Avenir", size: 16))
                             
                             Button(action: {
                                 if !addTaskMapViewModel.searchTextFromCustomMap.isEmpty {
@@ -41,8 +42,9 @@ struct AddTaskMapView: View {
                                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 }                         }) {
                                     Image(systemName: "magnifyingglass")
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(.black)
                                         .padding(.trailing, 8)
+                                        .bold()
                                 }
                         }
                         .padding(.horizontal, 8)
@@ -58,8 +60,10 @@ struct AddTaskMapView: View {
                             }
                         }) {
                             Image(systemName: "plus")
-                                .foregroundColor(.primary)
+                                .foregroundColor(.black)
                                 .padding(.trailing, 4)
+                                .bold()
+                            
                         }
                         
                     }
@@ -74,6 +78,8 @@ struct AddTaskMapView: View {
                 }
                 .frame(maxHeight: .infinity)
             }
+            
+            
             .background(Color(red: 105/255, green: 155/255, blue: 157/255))
             
             

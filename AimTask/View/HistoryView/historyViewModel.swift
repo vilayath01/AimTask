@@ -7,6 +7,25 @@
 
 import Foundation
 
+enum HistoryViewString {
+    static let title = "title_history"
+    static let locationName = "location_name"
+    static let dateTime = "date_time"
+    static let enterEmailPlaceholder = "enter_email_placeholder"
+    static let validEmailError = "error_valid_email"
+    static let signOut = "sign_out"
+    static let deleteAccount = "delete_account"
+    static let alertTitle = "alert_title"
+    static let alertDescription = "alert_description"
+    static let okay =  "okay"
+    static let chooseTaskError = "error_choose_task"
+    
+    static func localized(_ key: String, _ arguments: CVarArg...) -> String {
+        let formatString = NSLocalizedString(key, comment: "")
+        return String(format: formatString, arguments: arguments)
+    }
+}
+
 class HistoryViewModel: ObservableObject {
     private var fdbManager: FDBManager
     @Published var loginViewModel: LoginViewModel
@@ -16,12 +35,12 @@ class HistoryViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var showDeleteAlert: Bool = false
     var emailSerive: EmailService?
-
+    
     // Store selected task details
     @Published var selectedLocationNames: [String] = []
     @Published var selectedDateTimes: [String] = []
     @Published var selectedCompletedTasks: [String] = []
-
+    
     init(loginViewModel: LoginViewModel, fdbManager: FDBManager = FDBManager()) {
         self.loginViewModel = loginViewModel
         self.fdbManager = fdbManager
@@ -30,11 +49,11 @@ class HistoryViewModel: ObservableObject {
             .assign(to: &$tasks)
         fetchTasks()
     }
-
+    
     @MainActor func signOut() {
         loginViewModel.signOut()
     }
-
+    
     func deleteAccount()  {
         
         showDeleteAlert = true
@@ -66,25 +85,24 @@ class HistoryViewModel: ObservableObject {
             emailService.sendEmail(emailAddress: email)
             emailSentMessage()
         } else {
-            print("Please choose task to send via email")
             self.isPositive = false
-            self.errorMessage = "Please choose task to send via email"
+            self.errorMessage = HistoryViewString.chooseTaskError.localized
         }
     }
     
     func selectTask(task: TaskModel) {
-           selectedLocationNames.append(task.locationName)
-           selectedDateTimes.append(task.dateTime.formatted())
-           selectedCompletedTasks.append(task.taskItems.joined(separator: ", "))
-       }
-
-     func clearSelectedTask(task: TaskModel) {
-         if let index = selectedLocationNames.firstIndex(of: task.locationName) {
-             selectedLocationNames.remove(at: index)
-             selectedDateTimes.remove(at: index)
-             selectedCompletedTasks.remove(at: index)
-         }
-     }
+        selectedLocationNames.append(task.locationName)
+        selectedDateTimes.append(task.dateTime.formatted())
+        selectedCompletedTasks.append(task.taskItems.joined(separator: ", "))
+    }
+    
+    func clearSelectedTask(task: TaskModel) {
+        if let index = selectedLocationNames.firstIndex(of: task.locationName) {
+            selectedLocationNames.remove(at: index)
+            selectedDateTimes.remove(at: index)
+            selectedCompletedTasks.remove(at: index)
+        }
+    }
     
     func emailSentMessage() {
         errorMessage = emailSerive?.emailErrorMessage ?? ""

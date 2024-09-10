@@ -20,6 +20,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct AimTaskApp: App {
+    init() {
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.backgroundColor = UIColor.clear
+    
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+    }
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var loginViewModel = LoginViewModel()
     @State private var isPrivacyScreenVisible = false
