@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		38078FDE2C85448A00BC2E1D /* historyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38078FDD2C85448A00BC2E1D /* historyViewModel.swift */; };
+		380F84CC2C916ED800E4BFA9 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380F84CB2C916ED800E4BFA9 /* AppConfig.swift */; };
 		3848443A2C8EC6AF00C1D623 /* PrivacyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384844392C8EC6AF00C1D623 /* PrivacyScreen.swift */; };
 		388CF5C72C6AED7C00EC361D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */; };
 		5506D2F62C8F14B6002C2715 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5506D2F52C8F14B6002C2715 /* OnboardingView.swift */; };
@@ -50,6 +51,8 @@
 
 /* Begin PBXFileReference section */
 		38078FDD2C85448A00BC2E1D /* historyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = historyViewModel.swift; sourceTree = "<group>"; };
+		380F84CA2C914C7F00E4BFA9 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		380F84CB2C916ED800E4BFA9 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		384844392C8EC6AF00C1D623 /* PrivacyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyScreen.swift; sourceTree = "<group>"; };
 		388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5506D2F52C8F14B6002C2715 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -139,6 +142,8 @@
 		55A5CE372C4B571500F9E533 = {
 			isa = PBXGroup;
 			children = (
+				380F84CB2C916ED800E4BFA9 /* AppConfig.swift */,
+				380F84CA2C914C7F00E4BFA9 /* Config.xcconfig */,
 				5506D2F72C8FDC4E002C2715 /* Localizable.strings */,
 				55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */,
 				55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */,
@@ -381,6 +386,7 @@
 				55A5CE6E2C5CCB7C00F9E533 /* CustomAlertView.swift in Sources */,
 				553EA91F2C719ED600AC44DE /* TaskItemView.swift in Sources */,
 				553EA9212C719F5F00AC44DE /* TaskSectionView.swift in Sources */,
+				380F84CC2C916ED800E4BFA9 /* AppConfig.swift in Sources */,
 				55A5C4802C89C1C500D8D781 /* HistoryTaskSection.swift in Sources */,
 				55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */,
 				55546F2B2C85AD5200E34A0E /* ErrorScreen.swift in Sources */,
@@ -531,6 +537,7 @@
 		};
 		55A5CE4F2C4B571600F9E533 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 380F84CA2C914C7F00E4BFA9 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -542,6 +549,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AimTask/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to notify you of tasks at specific locations, even when the app is in the background";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to remind you of tasks even when the app is closed.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show nearby tasks.";
@@ -566,6 +574,7 @@
 		};
 		55A5CE502C4B571600F9E533 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 380F84CA2C914C7F00E4BFA9 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -577,6 +586,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AimTask/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to notify you of tasks at specific locations, even when the app is in the background";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We need your location to remind you of tasks even when the app is closed.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show nearby tasks.";
