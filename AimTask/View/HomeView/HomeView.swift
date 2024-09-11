@@ -39,7 +39,14 @@ struct HomeView: View {
                         }
                     }
                 }
-                .navigationTitle("\(HomeViewString.title.localized): \(loginViewModel.displayName.usernameFromEmail())")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        VStack {
+                            styledText("\(HomeViewString.title.localized): \(loginViewModel.displayName.usernameFromEmail())")
+                        }
+                    }
+                }
                 .font(.custom("Avenir", size: 20))
                 .fontWeight(.bold)
                 .foregroundColor(.black)

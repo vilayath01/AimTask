@@ -61,7 +61,7 @@
 
 /* HomeView Strings */
 
-"saved_in_history" = "your %@ task has been saved in history. ";
+"saved_in_history" = "Your %@ task has been saved in history. ";
 "task_deleted" = "Your %@ task has been deleted.";
 "add_task" = "Add Task";
 "completed_task" = "Completed Task";

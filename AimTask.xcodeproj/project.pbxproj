@@ -51,12 +51,12 @@
 
 /* Begin PBXFileReference section */
 		38078FDD2C85448A00BC2E1D /* historyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = historyViewModel.swift; sourceTree = "<group>"; };
-		380F84CA2C914C7F00E4BFA9 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		380F84CB2C916ED800E4BFA9 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		384844392C8EC6AF00C1D623 /* PrivacyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyScreen.swift; sourceTree = "<group>"; };
 		388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5506D2F52C8F14B6002C2715 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		5506D2F82C8FDC4E002C2715 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5506D2FA2C919DCF002C2715 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		551009242C8093FD00EE4E8C /* LocalNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotifications.swift; sourceTree = "<group>"; };
 		551E58472C7603340008986A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		553EA91C2C719E7900AC44DE /* NoTaskaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTaskaView.swift; sourceTree = "<group>"; };
@@ -142,8 +142,8 @@
 		55A5CE372C4B571500F9E533 = {
 			isa = PBXGroup;
 			children = (
+				5506D2FA2C919DCF002C2715 /* Config.xcconfig */,
 				380F84CB2C916ED800E4BFA9 /* AppConfig.swift */,
-				380F84CA2C914C7F00E4BFA9 /* Config.xcconfig */,
 				5506D2F72C8FDC4E002C2715 /* Localizable.strings */,
 				55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */,
 				55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */,
@@ -537,7 +537,7 @@
 		};
 		55A5CE4F2C4B571600F9E533 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 380F84CA2C914C7F00E4BFA9 /* Config.xcconfig */;
+			baseConfigurationReference = 5506D2FA2C919DCF002C2715 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -574,7 +574,7 @@
 		};
 		55A5CE502C4B571600F9E533 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 380F84CA2C914C7F00E4BFA9 /* Config.xcconfig */;
+			baseConfigurationReference = 5506D2FA2C919DCF002C2715 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

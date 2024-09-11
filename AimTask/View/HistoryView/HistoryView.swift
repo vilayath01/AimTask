@@ -49,7 +49,14 @@ struct HistoryView: View {
                                 .padding()
                                 .background(Color(.systemGray6))
                                 .cornerRadius(8)
+                                .textFieldStyle(PlainTextFieldStyle())
+                                .padding(.leading, 4)
                                 .font(.custom("Avenir", size: 16))
+                                .bold()
+                                .textInputAutocapitalization(.never)
+                                .disableAutocorrection(true)
+                                .keyboardType(.emailAddress)
+                                
                                 .overlay(
                                     HStack {
                                         Spacer()
@@ -75,7 +82,15 @@ struct HistoryView: View {
                     }
                     
                 }
-                .navigationTitle(HistoryViewString.title.localized)
+//                .navigationTitle(HistoryViewString.title.localized)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        VStack {
+                            styledText("\(HistoryViewString.title.localized)")
+                        }
+                    }
+                }
                 
                 
                 .toolbar {

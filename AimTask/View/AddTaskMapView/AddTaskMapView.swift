@@ -31,7 +31,10 @@ struct AddTaskMapView: View {
                                 .padding(12)
                                 .background(Color(.systemGray6))
                                 .cornerRadius(10)
+                                .textFieldStyle(PlainTextFieldStyle())
+                                .padding(.leading, 4)
                                 .font(.custom("Avenir", size: 16))
+                                .bold()
                             
                             Button(action: {
                                 if !addTaskMapViewModel.searchTextFromCustomMap.isEmpty {

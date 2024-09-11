@@ -25,6 +25,9 @@ struct CustomAlertListView: View {
             TextField(CustomAlertString.listItemPlaceholder.localized, text: $taskItem)
                 .textFieldStyle(PlainTextFieldStyle())
                 .padding(.leading, 4)
+                .font(.custom("Avenir", size: 16))
+                .bold()
+                
             
             Spacer()
             

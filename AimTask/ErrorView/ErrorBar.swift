@@ -15,7 +15,7 @@ struct ErrorBarView: View {
     var body: some View {
         if !errorMessage.isEmpty {
             HStack {
-                Text(errorMessage)
+                styledText(errorMessage, fontSize: 16, isBold: false)
                     .foregroundColor(.white)
                     .padding()
                     .background(isPositive ? Color.green.opacity(0.8) : Color.red.opacity(0.8))
