@@ -132,7 +132,7 @@ struct OnboardingFinalScreen: View {
             styledText(Onboarding.finalDescription.localized, fontSize: 18)
                 .font(.title3)
                 .multilineTextAlignment(.center)
-                .padding(.bottom, 30)
+                .padding(.bottom, 50)
             
             Image("confetti")
                 .resizable()

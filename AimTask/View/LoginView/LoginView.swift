@@ -81,43 +81,62 @@ struct LoginView: View {
                 VStack(spacing: 20) {
                     // Email field
                     TextField(LoginSingup.email.localized, text: $loginViewModel.refineEmail)
-                        .keyboardType(.emailAddress)
                         .padding()
-                        .background(Color.white.opacity(0.1))
-                        .cornerRadius(5)
-                        .foregroundColor(.white)
-                        .keyboardType(.emailAddress)
-                        .autocapitalization(.none)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .padding(.leading, 4)
+                        .font(.custom("Avenir", size: 16))
+                        .bold()
+                        .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
-                        .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
+                        .keyboardType(.emailAddress)
                     
                     // Password field
                     HStack{
                         if isPasswordVisible {
                             TextField(LoginSingup.password.localized, text: $loginViewModel.refinePassword)
                                 .padding()
-                                .background(Color.white.opacity(0.1))
-                                .cornerRadius(5)
-                                .foregroundColor(.white)
-                                .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                                .textFieldStyle(PlainTextFieldStyle())
+                                .padding(.leading, 4)
+                                .font(.custom("Avenir", size: 16))
+                                .bold()
+                                .textInputAutocapitalization(.never)
+                                .disableAutocorrection(true)
+                            
                         } else {
                             SecureField(LoginSingup.password.localized, text: $loginViewModel.refinePassword)
                                 .padding()
-                                .background(Color.white.opacity(0.1))
-                                .cornerRadius(5)
-                                .foregroundColor(.white)
-                                .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                                .textFieldStyle(PlainTextFieldStyle())
+                                .padding(.leading, 4)
+                                .font(.custom("Avenir", size: 16))
+                                .bold()
+                                
+                               
                         }
                         
                         Button(action: {
                             isPasswordVisible.toggle()
                         }) {
                             Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
-                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                                .padding(.leading, 4)
+                                .font(.custom("Avenir", size: 16))
+                                .bold()
+                                .foregroundColor(.black)
+                                
+                               
+                               
                         }
                         .padding(.trailing, 10)
                     }
-                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
+                    
                     
                     
                     
@@ -126,27 +145,38 @@ struct LoginView: View {
                             if isConfirmPasswordVisible {
                                 TextField(LoginSingup.confirmPassword.localized, text: $loginViewModel.confirmPassword)
                                     .padding()
-                                    .background(Color.white.opacity(0.1))
-                                    .cornerRadius(5)
-                                    .foregroundColor(.white)
-                                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(8)
+                                    .textFieldStyle(PlainTextFieldStyle())
+                                    .padding(.leading, 4)
+                                    .font(.custom("Avenir", size: 16))
+                                    .bold()
+                                   
                             } else {
                                 SecureField(LoginSingup.confirmPassword.localized, text: $loginViewModel.confirmPassword)
                                     .padding()
-                                    .background(Color.white.opacity(0.1))
-                                    .cornerRadius(5)
-                                    .foregroundColor(.white)
-                                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(8)
+                                    .textFieldStyle(PlainTextFieldStyle())
+                                    .padding(.leading, 4)
+                                    .font(.custom("Avenir", size: 16))
+                                    .bold()
                             }
                             Button(action: {
                                 isConfirmPasswordVisible.toggle()
                             }) {
-                                Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
-                                    .foregroundColor(.white)
+                                Image(systemName: isConfirmPasswordVisible ? "eye" : "eye.slash")
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(8)
+                                    .padding(.leading, 4)
+                                    .font(.custom("Avenir", size: 16))
+                                    .bold()
+                                    .foregroundColor(.black)
                             }
                             .padding(.trailing, 10)
                         }
-                        .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.white))
+                       
                         
                     }
                 }

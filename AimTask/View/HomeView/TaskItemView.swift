@@ -63,6 +63,7 @@ struct TaskItemView: View {
                             .background(Color(UIColor.systemGray6))
                             .cornerRadius(8)
                             .font(.custom("Avenir", size: 14))
+                            .bold()
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(Color.gray.opacity(0.5), lineWidth: 1)
