@@ -27,21 +27,37 @@ struct AddTaskMapView: View {
                     
                     VStack {
                         HStack {
-                            TextField(MapViewString.searchPlaceholder.localized, text: $addTaskMapViewModel.searchTextFromCustomMap)
-                                .padding(12)
-                                .background(Color(.systemGray6))
-                                .cornerRadius(10)
-                                .textFieldStyle(PlainTextFieldStyle())
-                                .padding(.leading, 4)
-                                .font(.custom("Avenir", size: 16))
-                                .bold()
-                                .onChange(of: addTaskMapViewModel.searchTextFromCustomMap) {
-                                    if addTaskMapViewModel.searchTextFromCustomMap.isEmpty {
-                                        addTaskMapViewModel.suggestions.removeAll()
-                                    } else {
-                                        addTaskMapViewModel.updateSearchSuggestions(query: addTaskMapViewModel.searchTextFromCustomMap)
+                            HStack {
+                                ZStack(alignment: .trailing) {
+                                    TextField(MapViewString.searchPlaceholder.localized, text: $addTaskMapViewModel.searchTextFromCustomMap)
+                                        .padding(12)
+                                        .background(Color(.systemGray6))
+                                        .cornerRadius(10)
+                                        .textFieldStyle(PlainTextFieldStyle())
+                                        .font(.custom("Avenir", size: 16))
+                                        .bold()
+                                        .onChange(of: addTaskMapViewModel.searchTextFromCustomMap) {
+                                            if addTaskMapViewModel.searchTextFromCustomMap.isEmpty {
+                                                addTaskMapViewModel.suggestions.removeAll()
+                                            } else {
+                                                addTaskMapViewModel.updateSearchSuggestions(query: addTaskMapViewModel.searchTextFromCustomMap)
+                                            }
+                                        }
+
+                                    if !addTaskMapViewModel.searchTextFromCustomMap.isEmpty {
+                                        Button(action: {
+                                            addTaskMapViewModel.searchTextFromCustomMap = ""
+                                            addTaskMapViewModel.suggestions.removeAll()
+                                        }) {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(.gray)
+                                                .padding(.trailing, 8)
+                                                .background(Color(.systemGray6))
+                                        }
                                     }
                                 }
+                                .padding(.horizontal, 8)
+                            }
                             Button(action: {
                                 if !addTaskMapViewModel.searchTextFromCustomMap.isEmpty {
                                     Task {
