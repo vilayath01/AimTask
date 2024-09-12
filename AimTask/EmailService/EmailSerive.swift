@@ -63,7 +63,7 @@ class EmailService: ObservableObject {
         let emailData: [String: Any] = [
             "Messages": [
                 [
-                    "From": ["Email": "vilayathussain290@gmail.com", "Name": "AimTask"],
+                    "From": ["Email": "aimtask01@aimtask.com.au", "Name": "AimTask"],
                     "To": [["Email": "\(emailAddress)", "Name": "Vilayath"]],
                     "Subject": "Task Summary from AimTask",
                     "TextPart": "Here is your task summary.",

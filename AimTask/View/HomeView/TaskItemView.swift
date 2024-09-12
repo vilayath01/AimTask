@@ -60,8 +60,9 @@ struct TaskItemView: View {
                     HStack {
                         TextField("Add new task", text: $newTaskText)
                             .padding(10)
-                            .background(Color(UIColor.systemGray6))
+                            .background(Color(.systemGray6))
                             .cornerRadius(8)
+                            .foregroundColor(Color(.systemGray))
                             .font(.custom("Avenir", size: 14))
                             .bold()
                             .overlay(
