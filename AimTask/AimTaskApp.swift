@@ -10,23 +10,56 @@ import FirebaseCore
 import FirebaseAuth
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-//      Auth.auth().useEmulator(withHost: "localhost", port: 9099)
-
-    return true
-  }
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        
+        return true
+    }
 }
 
 @main
 struct AimTaskApp: App {
+    init() {
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.backgroundColor = UIColor.clear
+    
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+    }
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var loginViewModel = LoginViewModel()
+    @State private var isPrivacyScreenVisible = false
+    @AppStorage("hasCompletedOnboarding")
+    private var hasCompletedOnboarding = false
+    
     var body: some Scene {
         WindowGroup {
-            MainApp()
-                .environmentObject(loginViewModel)
+            ZStack {
+                if hasCompletedOnboarding {
+                    MainApp()
+                        .environmentObject(loginViewModel)
+                } else {
+                    OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
+                }
+                
+                
+                if isPrivacyScreenVisible {
+                    PrivacyView()
+                        .transition(.opacity)
+                        .animation(.easeInOut, value: isPrivacyScreenVisible)
+                }
+            }
+            
+            .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
+                
+                isPrivacyScreenVisible = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
+                
+                isPrivacyScreenVisible = false
+            }
         }
     }
 }
+

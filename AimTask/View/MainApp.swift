@@ -9,7 +9,7 @@ import SwiftUI
 import CoreLocation
 
 struct MainApp: View {
-//    @ObservedObject var viewModel = TaskViewModel()
+    
     @EnvironmentObject var loginViewModel: LoginViewModel
     
     var body: some View {
@@ -19,12 +19,12 @@ struct MainApp: View {
                     HomeView() .tabItem {
                         Label("Home", systemImage: "house")
                     }
-                    AddTaskView().tabItem {
+                    AddTaskMapView().tabItem {
                         Label("Add Task", systemImage: "target")
                     }
-                    HistoryView().tabItem {
+                    HistoryView(historyViewModel: HistoryViewModel(loginViewModel: loginViewModel)).tabItem {
                         Label("History", systemImage: "calendar.badge.clock")
-                         
+                        
                     }
                     
                 }
@@ -32,11 +32,14 @@ struct MainApp: View {
                 LoginView()
             }
         }
-      
-      
+        .onAppear {
+            LocalNotifications.shared.configure(with: loginViewModel)
+        }
+        
     }
 }
 
 #Preview {
     MainApp()
+        .environmentObject(LoginViewModel())
 }

@@ -1,0 +1,89 @@
+/*
+ Localizable.strings
+ AimTask
+ 
+ Created by Vilayath Mohammed on 10/9/2024.
+ 
+ */
+
+/* Onboarding Strings */
+"onboarding_welcome_title" = "Welcome to Aim Task!";
+"onboarding_welcome_description" = "Your personal task manager that helps you stay organized. Complete tasks effortlessly with geofence technology, receiving notifications as you enter or leave specific locations so you never miss a task. Create an anonymous account easily—no need to use your actual email.";
+
+"onboarding_task_complete_title" = "Add Task to Complete";
+"onboarding_task_complete_description" = " Create location-based tasks by pressing the ‘+’ button. Set the geofence on the map and save. Whenever you pass by that location, a notification will remind you of the tasks you need to complete there. Ensure location permissions are always enabled for geofencing to work properly.";
+
+"onboarding_email_title" = "Send a Completed Task via Email";
+"onboarding_email_description" = " After completing a task, save it to your history by tapping the green checkmark in the home tab. Then, select the task you want to send via email to your friend or colleague.";
+
+"onboarding_final_title" = "You're All Set!";
+"onboarding_final_description" = "You're ready to start using Aim Task to stay organized and productive.";
+"onboarding_lets_begin_button" = "Let's Begin";
+
+/* Login and SignUp Strings */
+
+"welcome" = "Welcome";
+"login" = "Login";
+"signUp" = "Sign up";
+"email" = "Email";
+"password" = "Password";
+"confirm_password" = "Confirm Password";
+"have_account_description" = "Already have an account?";
+"want_account_description" = "Want to create an account?";
+"invalid_email" = "Looks like invalid Email..!";
+"password_mismatch" = "Password do not match!";
+"empty_field" = "please fill in all the fields.";
+"invalid_credential" = "The supplied auth credential is malformed or has expired.";
+"email_already_in_use" =  "The email address is already in use.";
+"weak_password" = "The password is too weak.";
+"unknown_error" = "An unknown error occurred. Please try again.";
+
+/* CustomAlertView Strings */
+
+"add_task_item" = "Add task items @ %@";
+"cancle" = "Cancel";
+"save" = "Save";
+"list_item_placeholder" = "Ex: buy 50mm screws";
+
+/* addTaskView Strings */
+
+"add_task_title" = "Add Task";
+"search_placeholder" = "Search places or address.";
+"error_message" = "Something went wrong.";
+"location_error" = "Location access is restricted or denied.";
+
+/* NoTaskView Strings */
+
+"good_luck_title" = "Good Luck!😉";
+"good_luck_description" = "Go ahead and add task!";
+"no_task_completed_yet_title" = "No task completed yet!🙁";
+"no_task_completed_yet_description" = "Complete the task to share it with friends!";
+
+/* HomeView Strings */
+
+"saved_in_history" = "Your %@ task has been saved in history. ";
+"task_deleted" = "Your %@ task has been deleted.";
+"add_task" = "Add Task";
+"completed_task" = "Completed Task";
+"title_home" = "Home";
+
+/* HistoryView Strings */
+
+"location_name" = "Location: %@.";
+"date_time" =  "Date & Time: %@.";
+"enter_email_placeholder" = "Enter email";
+"error_valid_email" = "Enter valid email please";
+"title_history" = "History";
+"sign_out" = "Sign Out";
+"delete_account" = "Delete Account";
+"alert_title" = "Confirmation";
+"alert_description" = "Are you sure you want to delete your account? This action cannot be undone.";
+"okay" = "Okay";
+"error_choose_task" = "Please choose task to send via email";
+
+/* FDBStrings */
+
+"error_message" = "Something went wrong! Try again";
+
+"error_deleteAccount_message" = "Something went wrong! Try logout and login again";
+
