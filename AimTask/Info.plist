@@ -6,6 +6,8 @@
 	<array>
 		<dict/>
 	</array>
+	<key>CFBundleTypeName</key>
+	<string>AimTask</string>
 	<key>Secret email private</key>
 	<string>$(SECRET_KEY_EMAIL_PRIVATE)</string>
 	<key>Secret email public</key>
