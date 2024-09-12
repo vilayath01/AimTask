@@ -129,7 +129,7 @@ struct LoginView: View {
                                 .padding(.leading, 4)
                                 .font(.custom("Avenir", size: 16))
                                 .bold()
-                                .foregroundColor(.black)
+                                .foregroundColor(Color(.systemGray))
                                 
                                
                                
@@ -172,7 +172,7 @@ struct LoginView: View {
                                     .padding(.leading, 4)
                                     .font(.custom("Avenir", size: 16))
                                     .bold()
-                                    .foregroundColor(.black)
+                                    .foregroundColor(Color(.systemGray))
                             }
                             .padding(.trailing, 10)
                         }

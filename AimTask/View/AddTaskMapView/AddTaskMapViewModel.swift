@@ -27,6 +27,7 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
     )
     @Published var addressName: String = ""
     @Published var position: MapCameraPosition = .automatic
+    @Published var suggestions: [MKLocalSearchCompletion] = []
     
     @Published var geofenceRegionsOnly: [CLCircularRegion] = []
     @Published var resultFromCustomMap: [MKMapItem] = []
@@ -44,7 +45,7 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
     }
     
     private var geocoder = CLGeocoder()
-    private var completer = MKLocalSearchCompleter()
+    private var searchCompleter = MKLocalSearchCompleter()
     private var cancellables = Set<AnyCancellable>()
     private var locationManager = CLLocationManager()
     private var fdbManager: FDBManager
@@ -56,8 +57,9 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         super.init()
         setupBindings()
         fetchTasks()
-        
-        completer.resultTypes = .address
+        self.searchCompleter.resultTypes = .address
+        self.searchCompleter.delegate = self
+      
         setupLocationManager()
     }
     
@@ -69,6 +71,7 @@ class AddTaskMapViewModel: NSObject, ObservableObject {
         locationManager.startUpdatingLocation()
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
+       
     }
     
     func setupBindings() {
@@ -161,6 +164,21 @@ extension AddTaskMapViewModel: CLLocationManagerDelegate {
                 self?.regionFromViewModel = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
             }
         }
+    }
+}
+
+extension AddTaskMapViewModel: MKLocalSearchCompleterDelegate {
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        self.suggestions = completer.results
+    }
+    
+    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: any Error) {
+        print("suggestionError:\(error)")
+        errorMessage = error.localizedDescription
+    }
+    
+    func updateSearchSuggestions(query: String) {
+        self.searchCompleter.queryFragment = query
     }
 }
 

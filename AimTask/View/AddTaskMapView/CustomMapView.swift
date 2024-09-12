@@ -60,6 +60,7 @@ struct CustomMapView: View {
             MapUserLocationButton()
             MapCompass()
             MapScaleView()
+            
         }
     }
     
