@@ -15,6 +15,9 @@ struct HomeView: View {
     
     var body: some View {
         ZStack {
+            Color(red: 105/255, green: 155/255, blue: 157/255)
+                .ignoresSafeArea(.all) 
+            
             NavigationView {
                 VStack {
                     if !viewModel.errorMessage.isEmpty {
@@ -36,9 +39,11 @@ struct HomeView: View {
                                 }
                             }
                             .padding(.top)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -52,11 +57,12 @@ struct HomeView: View {
                 .foregroundColor(.black)
                 .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
             }
+            .navigationViewStyle(StackNavigationViewStyle())
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onAppear {
                 viewModel.fetchTasks()
             }
             
-            // Overlay the "Something Went Wrong" card
             if showSomethingWentWrong {
                 SomethingWentWrongView(retryAction: {
                     if networkMonitor.isConnected {
@@ -74,12 +80,5 @@ struct HomeView: View {
             print("Network status changed: \(isConnected)")
             showSomethingWentWrong = !isConnected
         }
-    }
-}
-
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-            .environmentObject(LoginViewModel())
     }
 }

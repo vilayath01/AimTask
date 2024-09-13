@@ -15,6 +15,8 @@ struct HistoryView: View {
     
     var body: some View {
         ZStack {
+            Color(red: 105/255, green: 155/255, blue: 157/255)
+                .ignoresSafeArea(.all)
             NavigationView {
                 VStack {
                     if !historyViewModel.errorMessage.isEmpty {
@@ -122,6 +124,8 @@ struct HistoryView: View {
                     }), secondaryButton: .cancel())
                 })
             }
+            .navigationViewStyle(StackNavigationViewStyle()) // For iPad compatibility
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onAppear {
                 historyViewModel.fetchTasks()
             }
