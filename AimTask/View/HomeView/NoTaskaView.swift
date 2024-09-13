@@ -32,6 +32,7 @@ struct NoTasksView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(red: 105/255, green: 155/255, blue: 157/255))
         .ignoresSafeArea()
+        .multilineTextAlignment(.center)
     }
 }
 
