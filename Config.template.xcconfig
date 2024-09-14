@@ -1,0 +1,12 @@
+//
+//  Config.template.xcconfig
+//  AimTask
+//
+//  Created by Vilayath Mohammed on 14/9/2024.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+SECRET_KEY_EMAIL_PUBLIC = <your-public-key-here>
+SECRET_KEY_EMAIL_PRIVATE = <your-private-key-here>
