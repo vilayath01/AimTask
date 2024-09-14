@@ -89,6 +89,7 @@
 		55BE96372C8AD22700D9C692 /* EmailSerive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSerive.swift; sourceTree = "<group>"; };
 		55BE96392C8BD5F800D9C692 /* ErrorBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorBar.swift; sourceTree = "<group>"; };
 		55F442182C93D5BD0006F530 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		55F442192C954B9E0006F530 /* Config.template.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.template.xcconfig; sourceTree = "<group>"; };
 		55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LocationTest.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,6 +145,7 @@
 		55A5CE372C4B571500F9E533 = {
 			isa = PBXGroup;
 			children = (
+				55F442192C954B9E0006F530 /* Config.template.xcconfig */,
 				55F442182C93D5BD0006F530 /* PrivacyInfo.xcprivacy */,
 				552030E72C927D980030AEE6 /* Read me.md */,
 				5506D2FA2C919DCF002C2715 /* Config.xcconfig */,
