@@ -8,5 +8,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-SECRET_KEY_EMAIL_PUBLIC = <your-public-key-here>
-SECRET_KEY_EMAIL_PRIVATE = <your-private-key-here>
+SECRET_KEY_EMAIL_PUBLIC = $(EMAIL_PUBLIC_KEY)
+SECRET_KEY_EMAIL_PRIVATE = $(EMAIL_PRIVATE_KEY)
