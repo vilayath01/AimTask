@@ -15,8 +15,8 @@ struct HomeView: View {
     
     var body: some View {
         ZStack {
-            Color(red: 105/255, green: 155/255, blue: 157/255)
-                .ignoresSafeArea(.all) 
+            Color.aimTaskBackground
+                .ignoresSafeArea(.all)
             
             NavigationView {
                 VStack {
@@ -35,7 +35,7 @@ struct HomeView: View {
                                 ForEach(Dictionary(grouping: viewModel.tasks, by: { $0.locationName }).keys.sorted(), id: \.self) { locationName in
                                     let tasksForLocation = viewModel.tasks.filter { $0.locationName == locationName }
                                     let docIDsForLocation = tasksForLocation.map { $0.documentID }
-                                    TaskSectionView(title: locationName, tasks: tasksForLocation, docId: docIDsForLocation, viewModel: viewModel)
+                                    TaskSectionView(title: locationName, tasks: tasksForLocation, docId: docIDsForLocation, viewModel: viewModel, fdbManager: FDBManager() )
                                 }
                             }
                             .padding(.top)
@@ -55,7 +55,7 @@ struct HomeView: View {
                 .font(.custom("Avenir", size: 20))
                 .fontWeight(.bold)
                 .foregroundColor(.black)
-                .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
+                .background(Color.aimTaskBackground.ignoresSafeArea())
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .frame(maxWidth: .infinity, maxHeight: .infinity)

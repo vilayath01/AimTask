@@ -48,6 +48,8 @@
 		55BE96382C8AD22700D9C692 /* EmailSerive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BE96372C8AD22700D9C692 /* EmailSerive.swift */; };
 		55BE963A2C8BD5F800D9C692 /* ErrorBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BE96392C8BD5F800D9C692 /* ErrorBar.swift */; };
 		55F442292C966B6C0006F530 /* AimTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F442282C966B6C0006F530 /* AimTaskTests.swift */; };
+		55F442372C98F4690006F530 /* PostOnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F442362C98F4690006F530 /* PostOnBoardingView.swift */; };
+		55F4423A2C9951940006F530 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F442392C9951940006F530 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +104,8 @@
 		55F442192C954B9E0006F530 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		55F442262C966B6C0006F530 /* AimTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AimTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F442282C966B6C0006F530 /* AimTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimTaskTests.swift; sourceTree = "<group>"; };
+		55F442362C98F4690006F530 /* PostOnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostOnBoardingView.swift; sourceTree = "<group>"; };
+		55F442392C9951940006F530 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LocationTest.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -170,7 +174,6 @@
 				380F84CB2C916ED800E4BFA9 /* AppConfig.swift */,
 				5506D2F72C8FDC4E002C2715 /* Localizable.strings */,
 				55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */,
-				55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */,
 				55A5CE422C4B571500F9E533 /* AimTask */,
 				55F442272C966B6C0006F530 /* AimTaskTests */,
 				55A5CE412C4B571500F9E533 /* Products */,
@@ -189,6 +192,8 @@
 		55A5CE422C4B571500F9E533 /* AimTask */ = {
 			isa = PBXGroup;
 			children = (
+				55F442382C9951710006F530 /* Extensions */,
+				55F442332C98F4010006F530 /* PostOnboarding */,
 				384844382C8EC69A00C1D623 /* Privacy */,
 				55BE963D2C8BD96A00D9C692 /* NetworkMonitor */,
 				55BE96362C8AD20F00D9C692 /* EmailService */,
@@ -320,6 +325,23 @@
 			path = AimTaskTests;
 			sourceTree = "<group>";
 		};
+		55F442332C98F4010006F530 /* PostOnboarding */ = {
+			isa = PBXGroup;
+			children = (
+				55F442362C98F4690006F530 /* PostOnBoardingView.swift */,
+			);
+			path = PostOnboarding;
+			sourceTree = "<group>";
+		};
+		55F442382C9951710006F530 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */,
+				55F442392C9951940006F530 /* ColorExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -441,6 +463,7 @@
 				38078FDE2C85448A00BC2E1D /* historyViewModel.swift in Sources */,
 				55BE96382C8AD22700D9C692 /* EmailSerive.swift in Sources */,
 				55A5CE462C4B571500F9E533 /* MainApp.swift in Sources */,
+				55F4423A2C9951940006F530 /* ColorExtension.swift in Sources */,
 				55A5CE702C5CCEA900F9E533 /* CustomAlertListViewModel.swift in Sources */,
 				55632C4C2C708128006C3DD8 /* CustomeAlertListView.swift in Sources */,
 				55A5CE5D2C4D137800F9E533 /* FDBManager.swift in Sources */,
@@ -455,6 +478,7 @@
 				55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */,
 				55546F2B2C85AD5200E34A0E /* ErrorScreen.swift in Sources */,
 				5584C6452C8072E60007F27C /* CustomMapView.swift in Sources */,
+				55F442372C98F4690006F530 /* PostOnBoardingView.swift in Sources */,
 				551009252C8093FD00EE4E8C /* LocalNotifications.swift in Sources */,
 				556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */,
 				55A5CE682C4D512900F9E533 /* HomeView.swift in Sources */,

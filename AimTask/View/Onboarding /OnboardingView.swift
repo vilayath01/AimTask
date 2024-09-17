@@ -33,7 +33,7 @@ struct OnboardingView: View {
             OnboardingFinalScreen(hasCompletedOnboarding: $hasCompletedOnboarding)
         }
         .tabViewStyle(PageTabViewStyle())
-        .background(Color(red: 105/255, green: 155/255, blue: 157/255))
+        .background(Color.aimTaskBackground)
         .ignoresSafeArea()
     }
 }
@@ -118,6 +118,7 @@ struct EmailScreen: View {
 }
 
 struct OnboardingFinalScreen: View {
+    @State private var isNavigatingToPostOnboarding = false
     @Binding var hasCompletedOnboarding: Bool
     
     var body: some View {
@@ -125,12 +126,10 @@ struct OnboardingFinalScreen: View {
             Spacer()
             
             styledText(Onboarding.finalTitle.localized)
-                
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 20)
             
             styledText(Onboarding.finalDescription.localized, fontSize: 18)
-                .font(.title3)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 50)
             
@@ -140,6 +139,7 @@ struct OnboardingFinalScreen: View {
                 .frame(height: 200)
                 .padding(.bottom, 40)
             
+            // Button to trigger navigation
             Button(action: {
                 hasCompletedOnboarding = true
             }) {
@@ -149,13 +149,13 @@ struct OnboardingFinalScreen: View {
                     .background(Color.green)
                     .foregroundColor(.white)
                     .cornerRadius(10)
-                    .padding(.horizontal)
-                    .padding(.bottom, 50)
             }
+            .padding(.horizontal, 50)
             
             Spacer()
         }
         .padding()
+        .navigationTitle("Onboarding Complete")
     }
 }
 

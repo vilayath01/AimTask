@@ -10,33 +10,37 @@ import SwiftUI
 struct HistoryView: View {
     @StateObject var historyViewModel = HistoryViewModel(loginViewModel: LoginViewModel())
     @StateObject private var networkMonitor = NetworkMonitor()
+    @StateObject private var loginViewModel = LoginViewModel()
     @State private var showSomethingWentWrong = false
     @State private var enteredEmail: String = ""
+    @State private var showLoginView: Bool = false
     
     var body: some View {
         ZStack {
-            Color(red: 105/255, green: 155/255, blue: 157/255)
+            Color.aimTaskBackground
                 .ignoresSafeArea(.all)
-            NavigationView {
+            
+            NavigationView { // Updated to NavigationStack for iOS 16+
                 VStack {
                     if !historyViewModel.errorMessage.isEmpty {
                         ErrorBarView(errorMessage: $historyViewModel.errorMessage, isPositive: $historyViewModel.isPositive)
                             .transition(.move(edge: .top).combined(with: .opacity))
                             .animation(.easeInOut, value: historyViewModel.errorMessage)
                     }
+                    
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-                            
                             if !historyViewModel.tasks.contains(where: {$0.saveHistory}) {
                                 NoTasksView(taskViewToShow: false)
                                     .frame(maxHeight: .infinity)
                             } else {
-                                ForEach (historyViewModel.tasks.filter{$0.saveHistory}, id: \.documentID){ task in
+                                ForEach(historyViewModel.tasks.filter{$0.saveHistory}, id: \.documentID) { task in
                                     HistoryTaskSection(
                                         viewModel: historyViewModel,
                                         task: task,
                                         title: HistoryViewString.localized(HistoryViewString.locationName.localized, task.locationName),
-                                        subtitle: HistoryViewString.localized(HistoryViewString.dateTime.localized, task.dateTime.formatted())
+                                        addTaskDateTimeSubtitle: HistoryViewString.localized(HistoryViewString.addTaskDateTime.localized, task.addTaskDateTime.formatted()),
+                                        completedTaskDateTimeSubtitle: HistoryViewString.localized(HistoryViewString.completedTaskDateTime.localized, task.completedTaskDateTime.formatted())
                                     )
                                 }
                             }
@@ -45,7 +49,6 @@ struct HistoryView: View {
                     }
                     
                     if historyViewModel.tasks.contains(where: {$0.saveHistory}) {
-                        
                         HStack {
                             TextField(HistoryViewString.enterEmailPlaceholder.localized, text: $enteredEmail)
                                 .padding()
@@ -58,19 +61,16 @@ struct HistoryView: View {
                                 .textInputAutocapitalization(.never)
                                 .disableAutocorrection(true)
                                 .keyboardType(.emailAddress)
-                                
                                 .overlay(
                                     HStack {
                                         Spacer()
                                         Button(action: {
-                                            
-                                            if (enteredEmail.contains("@")) {
+                                            if enteredEmail.contains("@") {
                                                 historyViewModel.enteredEmailAddress(email: enteredEmail)
                                                 enteredEmail = ""
                                             } else {
                                                 historyViewModel.errorMessage = HistoryViewString.validEmailError.localized
                                             }
-                                            
                                         }) {
                                             Image(systemName: !enteredEmail.isEmpty ? "paperplane.fill" : "paperplane")
                                                 .foregroundColor(.blue)
@@ -82,9 +82,8 @@ struct HistoryView: View {
                         }
                         .padding()
                     }
-                    
                 }
-//                .navigationTitle(HistoryViewString.title.localized)
+                
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -92,17 +91,17 @@ struct HistoryView: View {
                             styledText("\(HistoryViewString.title.localized)")
                         }
                     }
-                }
-                
-                
-                .toolbar {
+                    
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Menu {
-                            Button(HistoryViewString.signOut.localized, action: historyViewModel.signOut)
-                            Button(HistoryViewString.deleteAccount.localized, action: {
-                                historyViewModel.deleteAccount()
-                                
-                            })
+                            if loginViewModel.authenticationState == .anonymous {
+                                Button("Create Account") {
+                                    showLoginView = true
+                                }
+                            } else {
+                                Button(HistoryViewString.signOut.localized, action: historyViewModel.signOut)
+                                Button(HistoryViewString.deleteAccount.localized, action: historyViewModel.deleteAccount)
+                            }
                         } label: {
                             VStack {
                                 Image(systemName: "gear")
@@ -111,26 +110,33 @@ struct HistoryView: View {
                                     .foregroundColor(.black)
                                     .padding(.trailing)
                                 
-                                styledText("Setting",fontSize: 14, textColor: .black)
+                                styledText("Setting", fontSize: 14, textColor: .black)
                                     .padding(.trailing)
                             }
                         }
                     }
                 }
-                .background(Color(red: 105/255, green: 155/255, blue: 157/255).ignoresSafeArea())
-                .alert(isPresented: $historyViewModel.showDeleteAlert, content: {
-                    Alert(title: Text(HistoryViewString.alertTitle.localized), message: Text(HistoryViewString.alertDescription.localized), primaryButton: .destructive(Text(HistoryViewString.okay.localized), action: {
-                        historyViewModel.confirmDeleteAccount()
-                    }), secondaryButton: .cancel())
-                })
+                
+                .background(Color.aimTaskBackground.ignoresSafeArea())
+                .alert(isPresented: $historyViewModel.showDeleteAlert) {
+                    Alert(
+                        title: Text(HistoryViewString.alertTitle.localized),
+                        message: Text(HistoryViewString.alertDescription.localized),
+                        primaryButton: .destructive(Text(HistoryViewString.okay.localized), action: {
+                            historyViewModel.confirmDeleteAccount()
+                        }),
+                        secondaryButton: .cancel()
+                    )
+                }
             }
-            .navigationViewStyle(StackNavigationViewStyle()) // For iPad compatibility
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onAppear {
                 historyViewModel.fetchTasks()
             }
             
-            // Overlay the "Something Went Wrong" card
+            .fullScreenCover(isPresented: $showLoginView) {
+                LoginView()
+            }
+            
             if showSomethingWentWrong {
                 SomethingWentWrongView(retryAction: {
                     if networkMonitor.isConnected {
@@ -155,4 +161,3 @@ struct HistoryView_Previews: PreviewProvider {
         HistoryView()
     }
 }
-

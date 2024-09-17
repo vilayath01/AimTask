@@ -50,7 +50,7 @@ struct CustomAlertView: View {
             }
         }
         .padding()
-        .background(Color(red: 105/255, green: 155/255, blue: 157/255))
+        .background(Color.aimTaskBackground)
         .cornerRadius(16)
         .shadow(radius: 10)
         .padding()
@@ -106,7 +106,8 @@ struct CustomAlertView: View {
         addTaskModel.forEach { model in
             let updatedItem = TaskModel(
                 locationName: locationName,
-                dateTime: Date(),
+                addTaskDateTime: Date(),
+                completedTaskDateTime: Date(),
                 taskItems: model.taskItems,
                 coordinate: selectedLocation,
                 documentID: "",
