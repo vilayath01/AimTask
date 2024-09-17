@@ -9,29 +9,36 @@ import Foundation
 
 class EmailService: ObservableObject {
     var locationNames: [String]
-    var dateTimes: [String]
+    var taskAddedDateTime: [String]
+    var taskCompletedDateTime: [String]
     var completedTasks: [String]
     var historyViewModel: HistoryViewModel?
+    var userName: String
     @Published var emailErrorMessage: String = ""
     @Published var isPositive: Bool = false
     
-    init(locationNames: [String], dateTimes: [String], completedTasks: [String], historyViewModel: HistoryViewModel? = nil) {
+    init(locationNames: [String], taskAddedDateTime: [String], taskCompletedDateTime:[String], completedTasks: [String], historyViewModel: HistoryViewModel? = nil, userName: String) {
         self.locationNames = locationNames
-        self.dateTimes = dateTimes
+        self.taskAddedDateTime = taskAddedDateTime
+        self.taskCompletedDateTime = taskCompletedDateTime
         self.completedTasks = completedTasks
         self.historyViewModel = historyViewModel
+        self.userName = userName
     }
     
     func formatEmailBody() -> String {
         var htmlContent = "<h3>This email is from AIMTASK app completed task summary and it's details</h3>"
         
         for (index, location) in locationNames.enumerated() {
-            let dateTime = index < dateTimes.count ? dateTimes[index] : "N/A"
+            let taskAddedDateTime = index < taskAddedDateTime.count ? taskAddedDateTime[index] : "N/A"
+            let taskCompletedDateTime = index < taskCompletedDateTime.count ? taskCompletedDateTime[index] : "N/A"
             let completedTask = index < completedTasks.count ? completedTasks[index] : "No completed tasks"
             
             htmlContent += """
+                <p><strong>Name :</strong>\(userName.usernameFromEmail())</p>
                 <p><strong>Location 📍:</strong>\(location)</p>
-                <p><strong>Date & Time ⏱️:</strong>\(dateTime)</p>
+                <p><strong>Task Added Date & Time ⏱️:</strong>\(taskAddedDateTime)</p>
+                <p><strong>Task Completed Date & Time ⏱️:</strong>\(taskCompletedDateTime)</p>
                 <p><strong>Completed Tasks ✅:</strong>\(completedTask)</p>
                 <hr>
             """

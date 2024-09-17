@@ -10,7 +10,8 @@ import Foundation
 enum HistoryViewString {
     static let title = "title_history"
     static let locationName = "location_name"
-    static let dateTime = "date_time"
+    static let addTaskDateTime = "add_task_date_time"
+    static let completedTaskDateTime = "completed_task_date_time"
     static let enterEmailPlaceholder = "enter_email_placeholder"
     static let validEmailError = "error_valid_email"
     static let signOut = "sign_out"
@@ -38,8 +39,10 @@ class HistoryViewModel: ObservableObject {
     
     // Store selected task details
     @Published var selectedLocationNames: [String] = []
-    @Published var selectedDateTimes: [String] = []
+    @Published var selectedaddDateTimes: [String] = []
+    @Published var selectedCompletedDateTimes: [String] = []
     @Published var selectedCompletedTasks: [String] = []
+    
     
     init(loginViewModel: LoginViewModel, fdbManager: FDBManager = FDBManager()) {
         self.loginViewModel = loginViewModel
@@ -78,10 +81,10 @@ class HistoryViewModel: ObservableObject {
         fdbManager.updateSaveHistory(for: docId, to: isSave)
     }
     
-    func enteredEmailAddress(email: String) {
+    @MainActor func enteredEmailAddress(email: String) {
         if !selectedLocationNames.isEmpty {
             emailAddress = email
-            let emailService = EmailService(locationNames: selectedLocationNames, dateTimes: selectedDateTimes, completedTasks: selectedCompletedTasks, historyViewModel: self)
+            let emailService = EmailService(locationNames: selectedLocationNames,taskAddedDateTime: selectedaddDateTimes, taskCompletedDateTime: selectedCompletedDateTimes,completedTasks: selectedCompletedTasks, historyViewModel: self, userName:loginViewModel.displayName )
             emailService.sendEmail(emailAddress: email)
             emailSentMessage()
         } else {
@@ -92,14 +95,16 @@ class HistoryViewModel: ObservableObject {
     
     func selectTask(task: TaskModel) {
         selectedLocationNames.append(task.locationName)
-        selectedDateTimes.append(task.dateTime.formatted())
+        selectedaddDateTimes.append(task.addTaskDateTime.formatted())
+        selectedCompletedDateTimes.append(task.completedTaskDateTime.formatted())
         selectedCompletedTasks.append(task.taskItems.joined(separator: ", "))
     }
     
     func clearSelectedTask(task: TaskModel) {
         if let index = selectedLocationNames.firstIndex(of: task.locationName) {
             selectedLocationNames.remove(at: index)
-            selectedDateTimes.remove(at: index)
+            selectedaddDateTimes.remove(at: index)
+            selectedCompletedDateTimes.remove(at: index)
             selectedCompletedTasks.remove(at: index)
         }
     }

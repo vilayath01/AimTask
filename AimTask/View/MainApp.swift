@@ -9,24 +9,25 @@ import SwiftUI
 import CoreLocation
 
 struct MainApp: View {
-    
     @EnvironmentObject var loginViewModel: LoginViewModel
+    @Binding var showMainView: Bool
     
     var body: some View {
         Group {
             if loginViewModel.authenticationState == .authenticated {
                 TabView {
-                    HomeView() .tabItem {
-                        Label("Home", systemImage: "house")
-                    }
-                    AddTaskMapView().tabItem {
-                        Label("Add Task", systemImage: "target")
-                    }
-                    HistoryView(historyViewModel: HistoryViewModel(loginViewModel: loginViewModel)).tabItem {
-                        Label("History", systemImage: "calendar.badge.clock")
-                        
-                    }
-                    
+                    HomeView()
+                        .tabItem {
+                            Label("Home", systemImage: "house")
+                        }
+                    AddTaskMapView()
+                        .tabItem {
+                            Label("Add Task", systemImage: "target")
+                        }
+                    HistoryView(historyViewModel: HistoryViewModel(loginViewModel: loginViewModel))
+                        .tabItem {
+                            Label("History", systemImage: "calendar.badge.clock")
+                        }
                 }
             } else {
                 LoginView()
@@ -35,11 +36,6 @@ struct MainApp: View {
         .onAppear {
             LocalNotifications.shared.configure(with: loginViewModel)
         }
-        
     }
 }
 
-#Preview {
-    MainApp()
-        .environmentObject(LoginViewModel())
-}

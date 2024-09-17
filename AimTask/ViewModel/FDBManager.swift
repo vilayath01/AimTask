@@ -9,6 +9,7 @@ import Foundation
 import Firebase
 import Combine
 import CoreLocation
+import SwiftUI
 
 enum FDBString {
     static let errorMessge = "error_message"
@@ -17,9 +18,12 @@ enum FDBString {
 
 class FDBManager: ObservableObject {
     @Published var tasks = [TaskModel]()
+    @Published var errorMessageFDB: String = ""
+    @AppStorage("showMainView") var showMainView: Bool = false
     private let db = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
-    @Published var errorMessageFDB: String = ""
+   
+    
     
     func fetchTasks()  {
         guard let user = Auth.auth().currentUser
@@ -39,7 +43,8 @@ class FDBManager: ObservableObject {
                         guard
                             let locationName = data["locationName"] as? String,
                             let taskItems = data["taskItems"] as? [String],
-                            let dateTime = (data["dateTime"] as? Timestamp)?.dateValue(),
+                            let addTaskDateTime = (data["addTaskDateTime"] as? Timestamp)?.dateValue(),
+                            let completedTaskDateTime = (data["completedTaskDateTime"] as? Timestamp)?.dateValue(),
                             let coordinateData = data["coordinate"] as? [String: Double],
                             let latitude = coordinateData["latitude"],
                             let longitude = coordinateData["longitude"],
@@ -50,7 +55,7 @@ class FDBManager: ObservableObject {
                             return nil
                         }
                         let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                        return TaskModel(locationName: locationName, dateTime: dateTime, taskItems: taskItems, coordinate: location, documentID: doc.documentID, enteredGeofence: enteredGeofence, saveHistory: saveHistory)
+                        return TaskModel(locationName: locationName, addTaskDateTime: addTaskDateTime, completedTaskDateTime: completedTaskDateTime, taskItems: taskItems, coordinate: location, documentID: doc.documentID, enteredGeofence: enteredGeofence, saveHistory: saveHistory)
                     }) ?? []
                     promise(.success(tasks))
                 }
@@ -75,7 +80,8 @@ class FDBManager: ObservableObject {
         ]
         
         let data: [String: Any] = [
-            "dateTime": Timestamp(date: task.dateTime),
+            "addTaskDateTime": Timestamp(date: task.addTaskDateTime),
+            "completedTaskDateTime": Timestamp(date: task.completedTaskDateTime),
             "taskItems": task.taskItems,
             "locationName": task.locationName,
             "coordinate": coordinateData,
@@ -251,6 +257,24 @@ class FDBManager: ObservableObject {
         }
     }
     
+    func completedTaskDateTime(from documentID: String, dateTime: Date) {
+        guard let user = Auth.auth().currentUser else {
+            print("No authenticated user found")
+            return
+        }
+        
+        let userTasksCollection = db.collection("users").document(user.uid).collection("tasks")
+        
+        userTasksCollection.document(documentID).updateData(["completedTaskDateTime": dateTime]) { error in
+            if let error = error {
+                print("Failed to update completedTaskDateTime: \(error.localizedDescription)")
+                self.errorMessageFDB = FDBString.errorMessge.localized
+            } else {
+                print("completedTaskDateTime updated successfully")
+                self.fetchTasks()
+            }
+        }
+    }
     //MARK:- update geofence entry and exit
     
     func updateEnteredGeofence(for documentID: String, to value: Bool) {
@@ -315,6 +339,7 @@ class FDBManager: ObservableObject {
                 
             case .finished:
                 print("Account deleted successfully")
+                self.showMainView = false
             }}, receiveValue: { _ in
                 
             })

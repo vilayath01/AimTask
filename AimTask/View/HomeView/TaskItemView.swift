@@ -10,10 +10,10 @@ import SwiftUI
 
 struct TaskItemView: View {
     @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var fdbManager: FDBManager
     @State private var newTaskText: String = ""
     @State private var isAddingTask: Bool = false
-    @State private var isPresented: Bool = false
-    
+
     var task: TaskModel
     
     var body: some View {
@@ -112,8 +112,8 @@ struct TaskItemView: View {
                     if !task.enteredGeofence {
                         Menu {
                             Button(action: {
-                                // Directly save to history without confirmation dialog
                                 viewModel.saveHistory(docId: task.documentID, isSave: true, locationName: task.locationName, isPositive: true)
+                                fdbManager.completedTaskDateTime(from: task.documentID, dateTime: Date())
                             }) {
                                 Label(HomeViewString.completedTask.localized, systemImage: "checkmark.circle")
                             }
@@ -137,6 +137,6 @@ struct TaskItemView: View {
 
 struct TaskItemView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskItemView(viewModel: HomeViewModel(), task: TaskModel(locationName: "", dateTime: Date(), taskItems: ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: "", enteredGeofence: false, saveHistory: false))
+        TaskItemView(viewModel: HomeViewModel(), fdbManager: FDBManager(), task: TaskModel(locationName: "", addTaskDateTime: Date(), completedTaskDateTime: Date(), taskItems: ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: "", enteredGeofence: false, saveHistory: false))
     }
 }

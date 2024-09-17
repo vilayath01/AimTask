@@ -64,7 +64,7 @@ struct LoginView: View {
                     path.addLine(to: CGPoint(x: 0, y: height * 0.7))
                     path.closeSubpath()
                 }
-                .fill(Color(red: 105/255, green: 155/255, blue: 157/255))
+                .fill(Color.aimTaskBackground)
             }
             
             VStack {
@@ -189,7 +189,7 @@ struct LoginView: View {
                         loginViewModel.login(email: loginViewModel.refineEmail, password: loginViewModel.refinePassword)
                     }
                 }) {
-                    styledText(loginViewModel.flow == .signUp ? LoginSingup.signUp.localized : LoginSingup.login.localized, fontSize: 20, textColor: .white)
+                    styledText(loginViewModel.flow == .signUp ? LoginSingup.signUp.localized : LoginSingup.login.localized, fontSize: 18, textColor: .white)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.red)

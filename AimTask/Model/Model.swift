@@ -12,7 +12,8 @@ import SwiftUI
 struct TaskModel: Identifiable {
     var id: UUID = UUID()
     var locationName: String = ""
-    var dateTime: Date = Date()
+    var addTaskDateTime: Date = Date()
+    var completedTaskDateTime: Date = Date()
     var taskItems: [String]
     var coordinate: CLLocationCoordinate2D
     var documentID: String
@@ -20,9 +21,10 @@ struct TaskModel: Identifiable {
     var saveHistory: Bool = false
     
 
-    init(locationName: String, dateTime: Date, taskItems: [String] = [], coordinate: CLLocationCoordinate2D, documentID: String,enteredGeofence: Bool, saveHistory: Bool ) {
+    init(locationName: String, addTaskDateTime: Date, completedTaskDateTime: Date, taskItems: [String] = [], coordinate: CLLocationCoordinate2D, documentID: String,enteredGeofence: Bool, saveHistory: Bool ) {
         self.locationName = locationName
-        self.dateTime = dateTime
+        self.addTaskDateTime = addTaskDateTime
+        self.completedTaskDateTime = completedTaskDateTime
         self.taskItems = taskItems
         self.coordinate = coordinate
         self.documentID = documentID

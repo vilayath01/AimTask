@@ -14,15 +14,16 @@ final class LocalNotifications: NSObject, UNUserNotificationCenterDelegate {
     // Singleton pattern
     static let shared = LocalNotifications()
     private var loginViewModel: LoginViewModel?
-
+    @State var showMainView: Bool = false
+    
     private override init() {
         super.init()
         UNUserNotificationCenter.current().delegate = self
     }
     
     func configure(with loginViewModel: LoginViewModel) {
-            self.loginViewModel = loginViewModel
-        }
+        self.loginViewModel = loginViewModel
+    }
     
     // Request notification permission from the user
     func requestNotificationPermission() {
@@ -35,7 +36,7 @@ final class LocalNotifications: NSObject, UNUserNotificationCenterDelegate {
             }
         }
     }
-
+    
     // Schedule the notification
     func scheduleNotification(title: String, body: String) {
         let content = UNMutableNotificationContent()
@@ -58,27 +59,27 @@ final class LocalNotifications: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound])
     }
-
+    
     // Handle the user's response to the notification
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-           guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                 let window = windowScene.windows.first,
-                 let loginViewModel = loginViewModel else {
-               completionHandler()
-               return
-           }
-
-           DispatchQueue.main.async {
-               let rootView: AnyView
-               if loginViewModel.authenticationState == .authenticated {
-                   rootView = AnyView(MainApp().environmentObject(loginViewModel))
-               } else {
-                   rootView = AnyView(LoginView().environmentObject(loginViewModel))
-               }
-
-               window.rootViewController = UIHostingController(rootView: rootView)
-               window.makeKeyAndVisible()
-           }
-
-           completionHandler()
-       }}
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let loginViewModel = loginViewModel else {
+            completionHandler()
+            return
+        }
+        
+        DispatchQueue.main.async {
+            let rootView: AnyView
+            if loginViewModel.authenticationState == .authenticated {
+                rootView = AnyView(MainApp(showMainView: self.$showMainView).environmentObject(loginViewModel))
+            } else {
+                rootView = AnyView(LoginView().environmentObject(loginViewModel))
+            }
+            
+            window.rootViewController = UIHostingController(rootView: rootView)
+            window.makeKeyAndVisible()
+        }
+        
+        completionHandler()
+    }}

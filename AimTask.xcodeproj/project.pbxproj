@@ -47,7 +47,20 @@
 		55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */; };
 		55BE96382C8AD22700D9C692 /* EmailSerive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BE96372C8AD22700D9C692 /* EmailSerive.swift */; };
 		55BE963A2C8BD5F800D9C692 /* ErrorBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BE96392C8BD5F800D9C692 /* ErrorBar.swift */; };
+		55F442292C966B6C0006F530 /* AimTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F442282C966B6C0006F530 /* AimTaskTests.swift */; };
+		55F442372C98F4690006F530 /* PostOnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F442362C98F4690006F530 /* PostOnBoardingView.swift */; };
+		55F4423A2C9951940006F530 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F442392C9951940006F530 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		55F4422A2C966B6C0006F530 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55A5CE382C4B571500F9E533 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55A5CE3F2C4B571500F9E533;
+			remoteInfo = AimTask;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		38078FDD2C85448A00BC2E1D /* historyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = historyViewModel.swift; sourceTree = "<group>"; };
@@ -89,6 +102,10 @@
 		55BE96392C8BD5F800D9C692 /* ErrorBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorBar.swift; sourceTree = "<group>"; };
 		55F442182C93D5BD0006F530 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		55F442192C954B9E0006F530 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		55F442262C966B6C0006F530 /* AimTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AimTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55F442282C966B6C0006F530 /* AimTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimTaskTests.swift; sourceTree = "<group>"; };
+		55F442362C98F4690006F530 /* PostOnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostOnBoardingView.swift; sourceTree = "<group>"; };
+		55F442392C9951940006F530 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LocationTest.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,6 +119,13 @@
 				55A5CE632C4D18A900F9E533 /* FirebaseAnalytics in Frameworks */,
 				55A5CE652C4D18A900F9E533 /* FirebaseStorage in Frameworks */,
 				55A5CE5F2C4D145100F9E533 /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55F442232C966B6C0006F530 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,8 +174,8 @@
 				380F84CB2C916ED800E4BFA9 /* AppConfig.swift */,
 				5506D2F72C8FDC4E002C2715 /* Localizable.strings */,
 				55FE0C9C2C7E04B000EF457B /* LocationTest.gpx */,
-				55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */,
 				55A5CE422C4B571500F9E533 /* AimTask */,
+				55F442272C966B6C0006F530 /* AimTaskTests */,
 				55A5CE412C4B571500F9E533 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -160,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				55A5CE402C4B571500F9E533 /* AimTask.app */,
+				55F442262C966B6C0006F530 /* AimTaskTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,6 +192,8 @@
 		55A5CE422C4B571500F9E533 /* AimTask */ = {
 			isa = PBXGroup;
 			children = (
+				55F442382C9951710006F530 /* Extensions */,
+				55F442332C98F4010006F530 /* PostOnboarding */,
 				384844382C8EC69A00C1D623 /* Privacy */,
 				55BE963D2C8BD96A00D9C692 /* NetworkMonitor */,
 				55BE96362C8AD20F00D9C692 /* EmailService */,
@@ -290,6 +317,31 @@
 			path = NetworkMonitor;
 			sourceTree = "<group>";
 		};
+		55F442272C966B6C0006F530 /* AimTaskTests */ = {
+			isa = PBXGroup;
+			children = (
+				55F442282C966B6C0006F530 /* AimTaskTests.swift */,
+			);
+			path = AimTaskTests;
+			sourceTree = "<group>";
+		};
+		55F442332C98F4010006F530 /* PostOnboarding */ = {
+			isa = PBXGroup;
+			children = (
+				55F442362C98F4690006F530 /* PostOnBoardingView.swift */,
+			);
+			path = PostOnboarding;
+			sourceTree = "<group>";
+		};
+		55F442382C9951710006F530 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */,
+				55F442392C9951940006F530 /* ColorExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -317,6 +369,24 @@
 			productReference = 55A5CE402C4B571500F9E533 /* AimTask.app */;
 			productType = "com.apple.product-type.application";
 		};
+		55F442252C966B6C0006F530 /* AimTaskTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55F4422C2C966B6C0006F530 /* Build configuration list for PBXNativeTarget "AimTaskTests" */;
+			buildPhases = (
+				55F442222C966B6C0006F530 /* Sources */,
+				55F442232C966B6C0006F530 /* Frameworks */,
+				55F442242C966B6C0006F530 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55F4422B2C966B6C0006F530 /* PBXTargetDependency */,
+			);
+			name = AimTaskTests;
+			productName = AimTaskTests;
+			productReference = 55F442262C966B6C0006F530 /* AimTaskTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -329,6 +399,10 @@
 				TargetAttributes = {
 					55A5CE3F2C4B571500F9E533 = {
 						CreatedOnToolsVersion = 15.4;
+					};
+					55F442252C966B6C0006F530 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 55A5CE3F2C4B571500F9E533;
 					};
 				};
 			};
@@ -349,6 +423,7 @@
 			projectRoot = "";
 			targets = (
 				55A5CE3F2C4B571500F9E533 /* AimTask */,
+				55F442252C966B6C0006F530 /* AimTaskTests */,
 			);
 		};
 /* End PBXProject section */
@@ -362,6 +437,13 @@
 				5506D2F92C8FDC4E002C2715 /* Localizable.strings in Resources */,
 				388CF5C72C6AED7C00EC361D /* GoogleService-Info.plist in Resources */,
 				55A5CE482C4B571600F9E533 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55F442242C966B6C0006F530 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +463,7 @@
 				38078FDE2C85448A00BC2E1D /* historyViewModel.swift in Sources */,
 				55BE96382C8AD22700D9C692 /* EmailSerive.swift in Sources */,
 				55A5CE462C4B571500F9E533 /* MainApp.swift in Sources */,
+				55F4423A2C9951940006F530 /* ColorExtension.swift in Sources */,
 				55A5CE702C5CCEA900F9E533 /* CustomAlertListViewModel.swift in Sources */,
 				55632C4C2C708128006C3DD8 /* CustomeAlertListView.swift in Sources */,
 				55A5CE5D2C4D137800F9E533 /* FDBManager.swift in Sources */,
@@ -395,6 +478,7 @@
 				55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */,
 				55546F2B2C85AD5200E34A0E /* ErrorScreen.swift in Sources */,
 				5584C6452C8072E60007F27C /* CustomMapView.swift in Sources */,
+				55F442372C98F4690006F530 /* PostOnBoardingView.swift in Sources */,
 				551009252C8093FD00EE4E8C /* LocalNotifications.swift in Sources */,
 				556DE3782C6460900056EED3 /* LoginViewModel.swift in Sources */,
 				55A5CE682C4D512900F9E533 /* HomeView.swift in Sources */,
@@ -406,7 +490,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55F442222C966B6C0006F530 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55F442292C966B6C0006F530 /* AimTaskTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		55F4422B2C966B6C0006F530 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55A5CE3F2C4B571500F9E533 /* AimTask */;
+			targetProxy = 55F4422A2C966B6C0006F530 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		5506D2F72C8FDC4E002C2715 /* Localizable.strings */ = {
@@ -613,6 +713,42 @@
 			};
 			name = Release;
 		};
+		55F4422D2C966B6C0006F530 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 79V4PCSCQX;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = villa.co.au.AimTaskTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AimTask.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AimTask";
+			};
+			name = Debug;
+		};
+		55F4422E2C966B6C0006F530 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 79V4PCSCQX;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = villa.co.au.AimTaskTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AimTask.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AimTask";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -630,6 +766,15 @@
 			buildConfigurations = (
 				55A5CE4F2C4B571600F9E533 /* Debug */,
 				55A5CE502C4B571600F9E533 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55F4422C2C966B6C0006F530 /* Build configuration list for PBXNativeTarget "AimTaskTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55F4422D2C966B6C0006F530 /* Debug */,
+				55F4422E2C966B6C0006F530 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

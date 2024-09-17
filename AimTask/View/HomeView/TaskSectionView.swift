@@ -13,6 +13,7 @@ struct TaskSectionView: View {
     var tasks: [TaskModel]
     var docId: [String]
     @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var fdbManager: FDBManager
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -41,6 +42,7 @@ struct TaskSectionView: View {
                         if task.enteredGeofence {
                             // Perform checkmark-related action
                             viewModel.saveHistory(docId: task.documentID, isSave: true, locationName: task.locationName, isPositive: true)
+                            fdbManager.completedTaskDateTime(from: task.documentID, dateTime: Date())
                         } else {
                             viewModel.deleteWholeDoc(docId, locationName: task.locationName, isPositive: false)
                         }
@@ -62,7 +64,7 @@ struct TaskSectionView: View {
             }
             
             ForEach(tasks) { task in
-                TaskItemView(viewModel: viewModel, task: task)
+                TaskItemView(viewModel: viewModel, fdbManager: fdbManager, task: task)
                 
             }
         }
@@ -81,8 +83,8 @@ struct TaskSectionView_Previews: PreviewProvider {
         TaskSectionView(
             title: "Example: 510 glenferrie Road, Hawthorn,Australia.",
             tasks: [
-                TaskModel(locationName:"", dateTime: Date(),taskItems:  ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: "", enteredGeofence: false, saveHistory: false),
-            ], docId: [""], viewModel: HomeViewModel()
+                TaskModel(locationName:"", addTaskDateTime: Date(), completedTaskDateTime: Date(),taskItems:  ["Task 1", "Task 2"], coordinate: .init(latitude: 0.0, longitude: 0.0), documentID: "", enteredGeofence: false, saveHistory: false),
+            ], docId: [""], viewModel: HomeViewModel(), fdbManager: FDBManager()
         )
     }
 }
