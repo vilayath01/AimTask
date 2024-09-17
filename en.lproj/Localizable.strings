@@ -8,7 +8,7 @@
 
 /* Onboarding Strings */
 "onboarding_welcome_title" = "Welcome to Aim Task!";
-"onboarding_welcome_description" = "Your personal task manager that helps you stay organized. Complete tasks effortlessly with geofence technology, receiving notifications as you enter or leave specific locations so you never miss a task. Create an anonymous account easily—no need to use your actual email.";
+"onboarding_welcome_description" = "Your personal task manager that helps you stay organized. Complete tasks effortlessly with geofence technology, receiving notifications as you enter or leave specific locations so you never miss a task. Explore the app by using an anonymous account and easily convert it into a permanent account—no need to use your actual email.";
 
 "onboarding_task_complete_title" = "Add Task to Complete";
 "onboarding_task_complete_description" = " Create location-based tasks by pressing the ‘+’ button. Set the geofence on the map and save. Whenever you pass by that location, a notification will remind you of the tasks you need to complete there. Ensure location permissions are always enabled for geofencing to work properly.";
@@ -70,7 +70,8 @@
 /* HistoryView Strings */
 
 "location_name" = "Location: %@.";
-"date_time" =  "Date & Time: %@.";
+"add_task_date_time" =  "Task added Date & Time:\n%@.";
+"completed_task_date_time" =  "Task completed Date & Time:\n%@.";
 "enter_email_placeholder" = "Enter email";
 "error_valid_email" = "Enter valid email please";
 "title_history" = "History";
@@ -87,3 +88,9 @@
 
 "error_deleteAccount_message" = "Something went wrong! Try logout and login again";
 
+/* PostOnboardingScreen */
+
+"welcome_title" = "Welcome to AimTask";
+"exploring_description" = "Get started by exploring the app. You can create an account anytime you want. Your anonymous data will be synced to your new account once created.";
+"create_button_text" = "Create Account";
+"explore_button_text" = "Explore App";

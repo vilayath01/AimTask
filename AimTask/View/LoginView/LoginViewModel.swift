@@ -8,11 +8,13 @@
 import Foundation
 import FirebaseAuth
 import AuthenticationServices
+import SwiftUI
 
 enum AuthenticationState {
     case unauthenticated
     case authenticating
     case authenticated
+    case anonymous
 }
 
 enum AuthenticationFlow {
@@ -59,23 +61,48 @@ class LoginViewModel: ObservableObject {
     @Published var authenticationState: AuthenticationState = .unauthenticated
     @Published var isLoading: Bool = false
     @Published var displayName: String = ""
+    @Published var isAnonymous: Bool = false
     
     init() {
         registerAuthStateHandler()
     }
     
     private var authStateHandler: AuthStateDidChangeListenerHandle?
-    
+
+    // MARK: - Anonymous Sign In
+    func loginAnonymously() {
+        resetState()
+        self.authenticationState = .authenticating
+        self.isLoading = true
+        defer { self.isLoading = false }
+        Task {
+            do {
+                let result = try await Auth.auth().signInAnonymously()
+                self.user = result.user
+                self.isAnonymous = true
+                finalizeAuthFlow()  // Updates showMainView based on authentication state
+            } catch {
+                handleError(error as NSError)
+            }
+        }
+    }
+
+    // MARK: - Firebase Auth State Handler
     func registerAuthStateHandler() {
         if authStateHandler == nil {
             authStateHandler = Auth.auth().addStateDidChangeListener { auth, user in
                 self.user = user
-                self.authenticationState = user == nil ? .unauthenticated : .authenticated
-                self.displayName = user?.email  ?? "😉"
+                if let user = user {
+                    self.authenticationState = user.isAnonymous ? .anonymous : .authenticated
+                    self.displayName = user.email ?? "Unknown 😉"
+                } else {
+                    self.authenticationState = .unauthenticated
+                }
             }
         }
     }
-    
+
+    // MARK: - Validation Logic
     func validateSignUp(email: String, password: String, confirmPassword: String) -> LogInOrSignUpError? {
         if email.isEmpty || password.isEmpty || confirmPassword.isEmpty {
             return .emptyFields
@@ -86,7 +113,7 @@ class LoginViewModel: ObservableObject {
         }
         return nil
     }
-    
+
     func validateLogin(email: String, password: String) -> LogInOrSignUpError? {
         if email.isEmpty || password.isEmpty {
             return .emptyFields
@@ -95,8 +122,101 @@ class LoginViewModel: ObservableObject {
         }
         return nil
     }
+
+    // MARK: - Sign Up / Login Logic
+    func signUp(email: String, password: String, confirmPassword: String) {
+        resetState()
+        self.isLoading = true
+        defer { self.isLoading = false }
+
+        if let error = validateSignUp(email: email, password: password, confirmPassword: confirmPassword) {
+            setErrorMessage(for: error)
+            return
+        }
+        
+        Task {
+           
+            if await signUpWithEmailPassword() == true {
+                finalizeAuthFlow()
+            } else {
+                authenticationState = .unauthenticated
+            }
+        }
+    }
+
+    func login(email: String, password: String) {
+        resetState()
+        self.isLoading = true
+        defer { self.isLoading = false }
+
+        if let error = validateLogin(email: email, password: password) {
+            setErrorMessage(for: error)
+            return
+        }
+       
+        
+        Task {
+          
+            if await signInWithEmailPassword() == true {
+                finalizeAuthFlow()
+            } else {
+                authenticationState = .unauthenticated
+            }
+        }
+    }
     
-    func setErrorMessage(for error: LogInOrSignUpError) {
+    // MARK: - Firebase Authentication Methods
+    func signInWithEmailPassword() async -> Bool {
+        self.isAnonymous = false
+        authenticationState = .authenticating
+        self.isLoading = true
+        defer { self.isLoading = false }
+        do {
+            try await Auth.auth().signIn(withEmail: refineEmail, password: refinePassword)
+            return true
+        } catch let authError as NSError {
+            handleError(authError)
+            return false
+        }
+    }
+
+    func signUpWithEmailPassword() async -> Bool {
+        self.isAnonymous = false
+        authenticationState = .authenticating
+        self.isLoading = true
+        defer { self.isLoading = false }
+
+        do {
+            let credential = EmailAuthProvider.credential(withEmail: refineEmail, password: refinePassword)
+            if let user = Auth.auth().currentUser, user.isAnonymous {
+                let result = try await user.link(with: credential)
+                self.user = result.user
+                finalizeAuthFlow()
+            } else {
+                try await Auth.auth().createUser(withEmail: refineEmail, password: refinePassword)
+                finalizeAuthFlow()
+            }
+            return true
+        } catch let authError as NSError {
+            handleError(authError)
+            return false
+        }
+    }
+    
+    // MARK: - Helper Functions
+    private func finalizeAuthFlow() {
+        self.authenticationState = .authenticated
+        resetAndSwitch()
+    }
+
+    private func resetState() {
+        self.isAnonymous = false
+        self.isLoading = true
+        defer { self.isLoading = false }
+        self.errorMessage = ""
+    }
+    
+    private func setErrorMessage(for error: LogInOrSignUpError) {
         switch error {
         case .invalidEmail:
             errorMessage = LoginSingup.invalidEmail.localized
@@ -108,89 +228,13 @@ class LoginViewModel: ObservableObject {
             errorMessage = message
         }
     }
-    
-    func signUp(email: String, password: String, confirmPassword: String) {
-        self.isLoading = true
-        defer { self.isLoading = false }
-        if let error = validateSignUp(email: email, password: password, confirmPassword: confirmPassword) {
-            setErrorMessage(for: error)
-            return
-        }
-        
-        Task {
-            if await signUpWithEmailPassword() == true {
-                self.flow = .signUp
-                self.authenticationState = .authenticated
-                resetAndSwitch()
-            } else {
-                self.authenticationState = .unauthenticated
-            }
-        }
-    }
-    
-    func login(email: String, password: String) {
-        self.isLoading = true
-        defer { self.isLoading = false }
-        
-        if let error = validateLogin(email: email, password: password) {
-            setErrorMessage(for: error)
-            
-            return
-        }
-        
-        Task {
-            if await signInWithEmailPassword() == true {
-                self.authenticationState = .authenticated
-                resetAndSwitch()
-            } else {
-                self.authenticationState = .unauthenticated
-            }
-        }
-    }
-}
 
-
-extension LoginViewModel {
-    func signInWithEmailPassword() async -> Bool {
-        authenticationState = .authenticating
-        self.isLoading = true
-        defer {self.isLoading = false}
-        do {
-            try await Auth.auth().signIn(withEmail: self.refineEmail, password: self.refinePassword)
-            
-            authenticationState = .authenticated
-            return true
-        }
-        catch let authError as NSError {
-            handleError(authError)
-            authenticationState = .unauthenticated
-            return false
-        }
-    }
-    
-    func signUpWithEmailPassword() async -> Bool {
-        authenticationState = .authenticating
-        self.isLoading = true
-        defer {self.isLoading = false}
-        do  {
-            try await Auth.auth().createUser(withEmail: refineEmail, password: refinePassword)
-            return true
-        }
-        catch let authError as NSError {
-            handleError(authError)
-            return false
-        }
-    }
-    
-    
     func signOut() {
-        self.isLoading = true
-        defer {self.isLoading = false}
+        resetState()
         do {
             try Auth.auth().signOut()
             authenticationState = .unauthenticated
-        }
-        catch {
+        } catch {
             errorMessage = error.localizedDescription
             isAlert = true
         }
@@ -209,9 +253,6 @@ extension LoginViewModel {
         errorMessage = ""
     }
     
-    
-    // Error Handling From Here
-    
     private func handleError(_ error: NSError) {
         switch error.code {
         case AuthErrorCode.invalidCredential.rawValue:
@@ -220,7 +261,6 @@ extension LoginViewModel {
             errorMessage = LoginSingup.emailAlreadyInUse.localized
         case AuthErrorCode.weakPassword.rawValue:
             errorMessage = LoginSingup.weakPassword.localized
-            // Add more cases as needed
         default:
             errorMessage = LoginSingup.unknownError.localized
         }

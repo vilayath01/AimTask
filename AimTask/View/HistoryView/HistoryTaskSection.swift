@@ -13,7 +13,8 @@ struct HistoryTaskSection: View {
     var viewModel: HistoryViewModel
     var task: TaskModel
     var title: String
-    var subtitle: String
+    var addTaskDateTimeSubtitle: String
+    var completedTaskDateTimeSubtitle: String
   
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -31,7 +32,10 @@ struct HistoryTaskSection: View {
                 })
             }
             
-            styledText(subtitle, fontSize: 16, isBold: false)
+            styledText(addTaskDateTimeSubtitle, fontSize: 16, isBold: false)
+                .padding(.leading)
+                .padding(.top, 5)
+            styledText(completedTaskDateTimeSubtitle, fontSize: 16, isBold: false)
                 
                 .padding(.leading)
                 .padding(.top, 5)

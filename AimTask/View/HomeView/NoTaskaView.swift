@@ -30,7 +30,7 @@ struct NoTasksView: View {
             styledText(taskViewToShow ? NoTasksViewString.goodLuckDescription.localized : NoTasksViewString.noTaskCompletedYetDescription.localized, fontSize: 18)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 105/255, green: 155/255, blue: 157/255))
+        .background(Color.aimTaskBackground)
         .ignoresSafeArea()
         .multilineTextAlignment(.center)
     }

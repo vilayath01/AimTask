@@ -127,7 +127,7 @@ struct AddTaskMapView: View {
             }
             
             
-            .background(Color(red: 105/255, green: 155/255, blue: 157/255))
+            .background(Color.aimTaskBackground)
             
             
             if showAlert {
