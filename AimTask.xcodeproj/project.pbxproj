@@ -376,6 +376,7 @@
 				55F442222C966B6C0006F530 /* Sources */,
 				55F442232C966B6C0006F530 /* Frameworks */,
 				55F442242C966B6C0006F530 /* Resources */,
+				55DEC0822C9C577D005F2305 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -448,6 +449,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		55DEC0822C9C577D005F2305 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo $GOOGLE_PLIST_BASE64 | base64 --decode > \"${SRCROOT}/Users/vilayathmohammed/Desktop/PersonalProject/AimTask/GoogleService-Info.plist\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		55A5CE3C2C4B571500F9E533 /* Sources */ = {
