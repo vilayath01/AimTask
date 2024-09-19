@@ -38,6 +38,9 @@ AimTask uses Xcode Cloud for its CI/CD pipeline, which is linked with GitHub. An
 - Xcode Cloud manages the CI/CD process and handles code compilation, testing, and deployment.
 - API keys and sensitive information are injected during the pipeline build, ensuring they are not pushed to the repository.
 
+## Note:
+- Working on Unit test  
+
 ## Getting Started
 
 1. **Clone the Repository**:
