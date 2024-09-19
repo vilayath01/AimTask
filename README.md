@@ -4,7 +4,7 @@ AimTask is a comprehensive task management app designed to help users manage the
 
 ## Features
 
-- **User Authentication**: Sign up, login, and manage users with Firebase Authentication.
+- **User Authentication**: Start by exploring the app with an anonymous Firebase account. When you decide to create a permanent account, all your tasks and data will be seamlessly synced to your personal account.
 - **Task Management**: Create, update, and delete tasks with Firebase Firestore Database.
 - **Location Services**: Utilize CoreLocation and MapKit for geofencing, location tracking, and map-based task management.
 - **Search Functionality**: Advanced search suggestions and location search using MapKit.
