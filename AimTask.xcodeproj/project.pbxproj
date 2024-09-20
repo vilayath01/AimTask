@@ -373,10 +373,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55F4422C2C966B6C0006F530 /* Build configuration list for PBXNativeTarget "AimTaskTests" */;
 			buildPhases = (
+				55DEC0822C9C577D005F2305 /* ShellScript */,
 				55F442222C966B6C0006F530 /* Sources */,
 				55F442232C966B6C0006F530 /* Frameworks */,
 				55F442242C966B6C0006F530 /* Resources */,
-				55DEC0822C9C577D005F2305 /* ShellScript */,
 			);
 			buildRules = (
 			);
