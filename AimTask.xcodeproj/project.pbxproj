@@ -468,7 +468,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo $GOOGLE_PLIST_BASE64 | base64 --decode > \"${SRCROOT}/GoogleService-Info.plist\"\n";
+			shellScript = "echo $GOOGLE_PLIST_BASE64 | base64 --decode > \"${PROJECT_DIR}/GoogleService-Info.plist\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
