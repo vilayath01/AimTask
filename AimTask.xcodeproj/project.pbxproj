@@ -47,6 +47,7 @@
 		55B5DFDE2C699E6F00AC53A0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5DFDD2C699E6F00AC53A0 /* StringExtension.swift */; };
 		55BE96382C8AD22700D9C692 /* EmailSerive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BE96372C8AD22700D9C692 /* EmailSerive.swift */; };
 		55BE963A2C8BD5F800D9C692 /* ErrorBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BE96392C8BD5F800D9C692 /* ErrorBar.swift */; };
+		55DEC0852CA10962005F2305 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */; };
 		55F442292C966B6C0006F530 /* AimTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F442282C966B6C0006F530 /* AimTaskTests.swift */; };
 		55F442372C98F4690006F530 /* PostOnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F442362C98F4690006F530 /* PostOnBoardingView.swift */; };
 		55F4423A2C9951940006F530 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F442392C9951940006F530 /* ColorExtension.swift */; };
@@ -445,6 +446,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55DEC0852CA10962005F2305 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
