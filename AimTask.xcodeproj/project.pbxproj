@@ -469,7 +469,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo $GOOGLE_PLIST_BASE64 | base64 --decode > \"${PROJECT_DIR}/GoogleService-Info.plist\"\n";
+			shellScript = "echo \"Copying GoogleService-Info-$CONFIGURATION.plist...\"\ncp \"${SRCROOT}/${PRODUCT_NAME}/Resources/GoogleServiceInfoPlists/GoogleService-Info-$CONFIGURATION.plist\" \"${SRCROOT}/${PRODUCT_NAME}/GoogleService-Info.plist\"\necho \"Copy completed.\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
