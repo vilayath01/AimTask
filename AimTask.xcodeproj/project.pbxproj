@@ -469,7 +469,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Copying GoogleService-Info-$CONFIGURATION.plist...\"\ncp \"${SRCROOT}/${PRODUCT_NAME}/Resources/GoogleServiceInfoPlists/GoogleService-Info-$CONFIGURATION.plist\" \"${SRCROOT}/${PRODUCT_NAME}/GoogleService-Info.plist\"\necho \"Copy completed.\"\n";
+			shellScript = "echo \"Copying GoogleService-Info.plist...\"\ncp \"${SRCROOT}/${PRODUCT_NAME}/Resources/GoogleServiceInfoPlists/GoogleService-Info.plist\" \"${SRCROOT}/${PRODUCT_NAME}/GoogleService-Info.plist\"\necho \"Copy completed.\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
