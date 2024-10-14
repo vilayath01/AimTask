@@ -349,6 +349,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55A5CE4E2C4B571600F9E533 /* Build configuration list for PBXNativeTarget "AimTask" */;
 			buildPhases = (
+				555BFC6F2CBCE42C00387B4A /* ShellScript */,
 				55A5CE3C2C4B571500F9E533 /* Sources */,
 				55A5CE3D2C4B571500F9E533 /* Frameworks */,
 				55A5CE3E2C4B571500F9E533 /* Resources */,
@@ -373,7 +374,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55F4422C2C966B6C0006F530 /* Build configuration list for PBXNativeTarget "AimTaskTests" */;
 			buildPhases = (
-				55DEC0822C9C577D005F2305 /* ShellScript */,
 				55F442222C966B6C0006F530 /* Sources */,
 				55F442232C966B6C0006F530 /* Frameworks */,
 				55F442242C966B6C0006F530 /* Resources */,
@@ -451,7 +451,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		55DEC0822C9C577D005F2305 /* ShellScript */ = {
+		555BFC6F2CBCE42C00387B4A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -466,7 +466,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo $GOOGLE_PLIST_BASE64 | base64 --decode > \"${SRCROOT}/GoogleService-Info.plist\"\n";
+			shellScript = "echo $GOOGLE_PLIST_BASE64 | base64 --decode > \"${SRCROOT}/GoogleService-Info.plist\"\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
