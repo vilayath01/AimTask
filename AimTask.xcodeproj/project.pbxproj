@@ -10,7 +10,7 @@
 		38078FDE2C85448A00BC2E1D /* historyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38078FDD2C85448A00BC2E1D /* historyViewModel.swift */; };
 		380F84CC2C916ED800E4BFA9 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380F84CB2C916ED800E4BFA9 /* AppConfig.swift */; };
 		3848443A2C8EC6AF00C1D623 /* PrivacyScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384844392C8EC6AF00C1D623 /* PrivacyScreen.swift */; };
-		388CF5C72C6AED7C00EC361D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */; };
+		38EC50222CB4F4DC006F2046 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38EC50212CB4F4DC006F2046 /* GoogleService-Info.plist */; };
 		5506D2F62C8F14B6002C2715 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5506D2F52C8F14B6002C2715 /* OnboardingView.swift */; };
 		5506D2F92C8FDC4E002C2715 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5506D2F72C8FDC4E002C2715 /* Localizable.strings */; };
 		551009252C8093FD00EE4E8C /* LocalNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551009242C8093FD00EE4E8C /* LocalNotifications.swift */; };
@@ -66,7 +66,7 @@
 		38078FDD2C85448A00BC2E1D /* historyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = historyViewModel.swift; sourceTree = "<group>"; };
 		380F84CB2C916ED800E4BFA9 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		384844392C8EC6AF00C1D623 /* PrivacyScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyScreen.swift; sourceTree = "<group>"; };
-		388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		38EC50212CB4F4DC006F2046 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5506D2F52C8F14B6002C2715 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		5506D2F82C8FDC4E002C2715 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		551009242C8093FD00EE4E8C /* LocalNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotifications.swift; sourceTree = "<group>"; };
@@ -203,8 +203,8 @@
 				55A5CE5B2C4D135A00F9E533 /* ViewModel */,
 				55A5CE582C4D128400F9E533 /* Model */,
 				55A5CE432C4B571500F9E533 /* AimTaskApp.swift */,
+				38EC50212CB4F4DC006F2046 /* GoogleService-Info.plist */,
 				55A5CE472C4B571600F9E533 /* Assets.xcassets */,
-				388CF5C62C6AED7C00EC361D /* GoogleService-Info.plist */,
 				55A5CE492C4B571600F9E533 /* Preview Content */,
 			);
 			path = AimTask;
@@ -349,6 +349,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55A5CE4E2C4B571600F9E533 /* Build configuration list for PBXNativeTarget "AimTask" */;
 			buildPhases = (
+				387BF3372CCB507900E94169 /* ShellScript */,
 				55A5CE3C2C4B571500F9E533 /* Sources */,
 				55A5CE3D2C4B571500F9E533 /* Frameworks */,
 				55A5CE3E2C4B571500F9E533 /* Resources */,
@@ -435,8 +436,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				55A5CE4B2C4B571600F9E533 /* Preview Assets.xcassets in Resources */,
+				38EC50222CB4F4DC006F2046 /* GoogleService-Info.plist in Resources */,
 				5506D2F92C8FDC4E002C2715 /* Localizable.strings in Resources */,
-				388CF5C72C6AED7C00EC361D /* GoogleService-Info.plist in Resources */,
 				55A5CE482C4B571600F9E533 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,6 +452,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		387BF3372CCB507900E94169 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo $GOOGLE_PLIST_BASE64 | base64 -d > \"${SRCROOT}/GoogleService-Info.plist\"\n";
+		};
 		55DEC0822C9C577D005F2305 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
