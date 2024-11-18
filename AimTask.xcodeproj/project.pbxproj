@@ -349,6 +349,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55A5CE4E2C4B571600F9E533 /* Build configuration list for PBXNativeTarget "AimTask" */;
 			buildPhases = (
+				5507FBC92CEAFA1B008011F0 /* ShellScript */,
 				55A5CE3C2C4B571500F9E533 /* Sources */,
 				55A5CE3D2C4B571500F9E533 /* Frameworks */,
 				55A5CE3E2C4B571500F9E533 /* Resources */,
@@ -451,6 +452,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5507FBC92CEAFA1B008011F0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"${SRCROOT}/scripts/replace_api_key.sh\"\n";
+		};
 		55DEC0822C9C577D005F2305 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
