@@ -352,6 +352,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55A5CE4E2C4B571600F9E533 /* Build configuration list for PBXNativeTarget "AimTask" */;
 			buildPhases = (
+				38FF434A2CF423AC00CB577B /* ShellScript */,
 				55A5CE3C2C4B571500F9E533 /* Sources */,
 				55A5CE3D2C4B571500F9E533 /* Frameworks */,
 				55A5CE3E2C4B571500F9E533 /* Resources */,
@@ -455,6 +456,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		38FF434A2CF423AC00CB577B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Path to the GoogleService-Info.plist in your project\nPLIST_FILE=\"${SRCROOT}/Path/To/GoogleService-Info.plist\"\n\n# Replace $GOOGLE_API_KEY with the actual environment variable value\nif [ -n \"$GOOGLE_API_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Set :API_KEY $GOOGLE_API_KEY\" \"$PLIST_FILE\"\nelse\n    echo \"ERROR: GOOGLE_API_KEY is not set.\"\n    exit 1\nfi\n";
+		};
 		55DEC0822C9C577D005F2305 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
