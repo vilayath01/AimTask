@@ -352,6 +352,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55A5CE4E2C4B571600F9E533 /* Build configuration list for PBXNativeTarget "AimTask" */;
 			buildPhases = (
+				38C124D52CA3E076005263B1 /* ShellScript */,
 				55A5CE3C2C4B571500F9E533 /* Sources */,
 				55A5CE3D2C4B571500F9E533 /* Frameworks */,
 				55A5CE3E2C4B571500F9E533 /* Resources */,
@@ -455,6 +456,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		38C124D52CA3E076005263B1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "shellScript = \"echo $GOOGLE_PLIST_BASE64 | base64 --decode > \\\"${PROJECT_DIR}/GoogleService-Info.plist\\\"\\n\";\n";
+		};
 		55DEC0822C9C577D005F2305 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
